@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>English Speaking Mastery Program | Mr. Mohammed Abdullah Othman</title>
   
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs (Compat Version for Standalone HTML) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <style>
@@ -38,7 +37,6 @@
       padding-bottom: 60px;
     }
 
-    /* Maintenance Mode Overlay */
     #maintenance-banner {
       display: none;
       background-color: var(--danger);
@@ -51,7 +49,6 @@
       z-index: 10000;
     }
 
-    /* Header */
     header {
       background: linear-gradient(180deg, #040a10 0%, #0d1e2e 100%);
       border-bottom: 2px solid var(--gold);
@@ -85,14 +82,12 @@
       font-size: 1.1rem;
     }
 
-    /* Container */
     .container {
       max-width: 950px;
       margin: auto;
       padding: 20px;
     }
 
-    /* Auth Box */
     .auth-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -146,7 +141,6 @@
       color: #040a10;
     }
 
-    /* Level Tabs */
     .level-nav {
       display: flex;
       gap: 10px;
@@ -179,7 +173,6 @@
       border-style: dashed;
     }
 
-    /* Unit Card & Lock state */
     .unit-container {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -198,7 +191,6 @@
       gap: 8px;
     }
 
-    /* Card Items */
     .phrase-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -249,7 +241,6 @@
       transform: scale(1.05);
     }
 
-    /* Quiz Box */
     .quiz-box {
       margin-top: 35px;
       background: #05101a;
@@ -290,7 +281,6 @@
       border-color: var(--gold);
     }
 
-    /* Result Modal / Paywall Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -319,7 +309,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: bold;
       color: var(--gold);
     }
@@ -469,28 +459,19 @@
 
   <script>
     // ==========================================
-    // 1. FIREBASE CONFIGURATION
-    // ضع بيانات مشروعك هنا عند إنشائه في Firebase Console
+    // 1. FIREBASE CONFIGURATION (تم الربط بمشروعك)
     // ==========================================
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyBb_E9gj9-JVReFhu6bOx0ZLKSsSDwL-G4",
+      authDomain: "eng-speaking-mastry-program.firebaseapp.com",
+      projectId: "eng-speaking-mastry-program",
+      storageBucket: "eng-speaking-mastry-program.firebasestorage.app",
+      messagingSenderId: "308624304588",
+      appId: "1:308624304588:web:9539c5d7ef56374a26d569"
     };
 
-    // تهيئة Firebase
-    let db = null;
-    try {
-      if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-      }
-    } catch (e) {
-      console.log("Firebase initialized in Local Mock Mode");
-    }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     // ==========================================
     // 2. NATURAL AMERICAN VOICE SPEECH ENGINE
@@ -500,8 +481,7 @@
     function initVoice() {
       if (!('speechSynthesis' in window)) return;
       const voices = window.speechSynthesis.getVoices();
-      // البحث عن أصوات أمريكية طبيعية عالية الجودة (Google, Neural, US English)
-      naturalAmericanVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google'))) 
+      naturalAmericanVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google') || v.name.includes('Samantha'))) 
                           || voices.find(v => v.lang === 'en-US');
     }
 
@@ -511,21 +491,18 @@
     }
 
     function speakAmerican(text) {
-      if (!('speechSynthesis' in window)) {
-        alert("متصفحك لا يدعم محرك الصوت المباشر");
-        return;
-      }
-      window.speechSynthesis.cancel(); // إيقاف أي جملة سابقة
+      if (!('speechSynthesis' in window)) return alert("المتصفح لا يدعم ميزة الصوت المباشر");
+      window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = 'en-US';
-      utter.rate = 0.9; // سرعة طبيعية تعليمية واضحة
+      utter.rate = 0.9;
       utter.pitch = 1.0;
       if (naturalAmericanVoice) utter.voice = naturalAmericanVoice;
       window.speechSynthesis.speak(utter);
     }
 
     // ==========================================
-    // 3. UNIT 1 CONTENT DATA (Greetings & Introductions)
+    // 3. UNIT 1 CONTENT DATA
     // ==========================================
     const unit1Phrases = {
       part1: [
@@ -564,7 +541,7 @@
     };
 
     // ==========================================
-    // 4. UNIT 1 QUIZ (20 Rigorous Questions)
+    // 4. UNIT 1 QUIZ (20 Questions - 80% Rule)
     // ==========================================
     const unit1Questions = [
       { q: "1. Which phrase is used to greet someone in the morning?", opts: ["Good morning", "Good night", "Goodbye", "Take care"], ans: 0 },
@@ -589,9 +566,6 @@
       { q: "20. When someone says 'See you tomorrow', you say:", opts: ["See you", "I am Ali", "Thank you very much", "I'm okay"], ans: 0 }
     ];
 
-    // ==========================================
-    // 5. RENDER FUNCTIONS
-    // ==========================================
     function renderSection(items, containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = items.map(item => `
@@ -622,9 +596,6 @@
       `).join('');
     }
 
-    // ==========================================
-    // 6. QUIZ GRADING & 80% PROGRESSION RULE
-    // ==========================================
     function submitUnitQuiz() {
       let score = 0;
       let unanswered = false;
@@ -639,9 +610,7 @@
       });
 
       if (unanswered) {
-        if (!confirm("لم تقم بالإجابة على جميع الأسئلة العشرين. هل تريد المتابعة وتصحيح الاختبار؟")) {
-          return;
-        }
+        if (!confirm("لم تجب عن جميع الأسئلة العشرين. هل تريد المتابعة وتصحيح الاختبار؟")) return;
       }
 
       const percentage = Math.round((score / unit1Questions.length) * 100);
@@ -654,38 +623,33 @@
       scoreCircle.innerText = `${score} / 20 (${percentage}%)`;
 
       if (passed) {
-        modalTitle.innerText = "تهانينا! لقد اجتزت الوحدة الأولى بنجاح 🎉";
+        modalTitle.innerText = "تهانينا! اجتزت الوحدة بنجاح 🎉";
         modalTitle.style.color = "var(--success)";
         resultMsg.innerText = "أحسنت! حققت نسبة 80% فأكثر وتم فتح الوحدة الثانية لك رسمياً.";
         document.getElementById('unit-2-lock-card').innerHTML = `
           <h3 style="color: var(--success); margin-bottom: 10px;">🔓 تم فتح الوحدة الثانية: Family & Friends</h3>
           <p>يمكنك الآن بدء دراسة الوحدة الثانية ومحتوياتها بنجاح.</p>
         `;
-        // حفظ الإنجاز في حساب الطالب محلياً وفي السحابة
         localStorage.setItem('unit1_passed', 'true');
         saveStudentProgress('A1_Unit1', score);
       } else {
-        modalTitle.innerText = "للأسف لم تحقق نسبة الاجتياز المطلوبة ❌";
+        modalTitle.innerText = "لم تحقق نسبة الاجتياز المطلوبة ❌";
         modalTitle.style.color = "var(--danger)";
-        resultMsg.innerText = "شرط الانتقال هو تحقيق 80% (16 من 20). راجع العبارات الصوتية وأعد المحاولة لتحقيق الطلاقة.";
+        resultMsg.innerText = "شرط الانتقال هو 80% (16 من 20). راجع العبارات واستمع لها جيداً وأعد المحاولة.";
       }
 
       document.getElementById('result-modal').style.display = 'flex';
     }
 
-    // ==========================================
-    // 7. USER AUTH & ACCESS CONTROL
-    // ==========================================
     function loginStudent() {
       const name = document.getElementById('student-name').value.trim();
       const code = document.getElementById('student-code').value.trim();
-      if (!name || !code) {
-        alert("يرجى إدخال الاسم الرباعي وكود الطالب.");
-        return;
-      }
+      if (!name || !code) return alert("يرجى إدخال الاسم الرباعي وكود الطالب.");
+      
       localStorage.setItem('student_name', name);
       localStorage.setItem('student_code', code);
       showLoggedInUser(name);
+      loadStudentCloudProgress(code);
     }
 
     function showLoggedInUser(name) {
@@ -697,7 +661,7 @@
     function requestPaidLevel(lvlName) {
       const hasPaid = localStorage.getItem(`paid_access_${lvlName}`) === 'true';
       if (hasPaid) {
-        alert(`أهلاً بك في المستوى ${lvlName}! المحتوى متاح لك.`);
+        alert(`مرحباً بك! المستوى ${lvlName} متاح لك.`);
       } else {
         document.getElementById('paywall-modal').style.display = 'flex';
       }
@@ -707,12 +671,9 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    // ==========================================
-    // 8. ADMIN ACTIONS
-    // ==========================================
     function openAdminModal() {
       const pass = prompt("أدخل كلمة مرور المشرف:");
-      if (pass === "admin1981" || pass === "0530665625") {
+      if (pass === "0530665625" || pass === "admin1981") {
         document.getElementById('admin-modal').style.display = 'flex';
       } else {
         alert("كلمة المرور غير صحيحة.");
@@ -724,36 +685,59 @@
       isMaintenance = !isMaintenance;
       const banner = document.getElementById('maintenance-banner');
       const btn = document.getElementById('toggle-maintenance-btn');
-      if (isMaintenance) {
-        banner.style.display = 'block';
-        btn.innerText = "إلغاء الإيقاف وتشغيل المنصة";
-        btn.style.background = "var(--success)";
-      } else {
-        banner.style.display = 'none';
-        btn.innerText = "إيقاف المنصة مؤقتاً";
-        btn.style.background = "var(--danger)";
-      }
+      banner.style.display = isMaintenance ? 'block' : 'none';
+      btn.innerText = isMaintenance ? "إلغاء الإيقاف وتشغيل المنصة" : "إيقاف المنصة مؤقتاً";
+      btn.style.background = isMaintenance ? "var(--success)" : "var(--danger)";
     }
 
     function adminGrantAccess() {
       const target = document.getElementById('admin-target-student').value.trim();
       if (!target) return alert("أدخل كود أو هاتف الطالب أولاً.");
-      localStorage.setItem(`paid_access_A2`, 'true');
-      alert(`تم تفعيل المستوى المدفوع A2 بنجاح للطالب: ${target}`);
-      closeModal('admin-modal');
+      
+      db.collection("students_progress").doc(target).set({
+        paid_access_A2: true,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true }).then(() => {
+        alert(`تم تفعيل المستوى المدفوع A2 بنجاح للطالب: ${target}`);
+        closeModal('admin-modal');
+      }).catch(err => {
+        alert("حدث خطأ: " + err.message);
+      });
     }
 
     function saveStudentProgress(unitId, score) {
-      if (db) {
-        const studentCode = localStorage.getItem('student_code') || 'guest';
-        db.collection("students_progress").doc(studentCode).set({
-          name: localStorage.getItem('student_name') || 'Unknown',
-          [unitId]: { score: score, passed: true, timestamp: new Date() }
-        }, { merge: true });
-      }
+      const studentCode = localStorage.getItem('student_code');
+      const studentName = localStorage.getItem('student_name');
+      if (!studentCode) return;
+
+      db.collection("students_progress").doc(studentCode).set({
+        name: studentName,
+        [unitId]: {
+          score: score,
+          passed: true,
+          date: firebase.firestore.FieldValue.serverTimestamp()
+        }
+      }, { merge: true });
     }
 
-    // On Load Initializations
+    function loadStudentCloudProgress(code) {
+      db.collection("students_progress").doc(code).get().then(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.A1_Unit1 && data.A1_Unit1.passed) {
+            localStorage.setItem('unit1_passed', 'true');
+            document.getElementById('unit-2-lock-card').innerHTML = `
+              <h3 style="color: var(--success); margin-bottom: 10px;">🔓 تم فتح الوحدة الثانية: Family & Friends</h3>
+              <p>مرحباً بعودتك! تم اجتياز الوحدة الأولى مسبقاً بدرجة ${data.A1_Unit1.score}/20.</p>
+            `;
+          }
+          if (data.paid_access_A2) {
+            localStorage.setItem('paid_access_A2', 'true');
+          }
+        }
+      });
+    }
+
     window.onload = function() {
       renderSection(unit1Phrases.part1, 'part1-phrases');
       renderSection(unit1Phrases.part2, 'part2-phrases');
@@ -762,7 +746,11 @@
       renderQuiz();
 
       const savedName = localStorage.getItem('student_name');
-      if (savedName) showLoggedInUser(savedName);
+      const savedCode = localStorage.getItem('student_code');
+      if (savedName && savedCode) {
+        showLoggedInUser(savedName);
+        loadStudentCloudProgress(savedCode);
+      }
     };
   </script>
 </body>
