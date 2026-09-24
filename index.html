@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Speaking Mastery Program | Mr. Mohammed Abdullah Othman</title>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --primary-dark: #07131d;
+      --card-bg: #0d1e2e;
+      --card-border: #1a3249;
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+    }
+
+    body {
+      background-color: var(--primary-dark);
+      color: var(--text-white);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    /* Maintenance Mode Overlay */
+    #maintenance-banner {
+      display: none;
+      background-color: var(--danger);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 10000;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(180deg, #040a10 0%, #0d1e2e 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 25px 20px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+    .trainer-tag {
+      font-weight: bold;
+      color: var(--gold-light);
+      font-size: 1.1rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 950px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    /* Auth Box */
+    .auth-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .auth-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex: 1;
+    }
+    input {
+      background: #040a10;
+      border: 1px solid var(--card-border);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 6px;
+      outline: none;
+      min-width: 180px;
+    }
+    input:focus {
+      border-color: var(--gold);
+    }
+    button {
+      background: var(--gold);
+      color: #040a10;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #e6c35c;
+    }
+    .btn-admin {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .btn-admin:hover {
+      background: var(--gold);
+      color: #040a10;
+    }
+
+    /* Level Tabs */
+    .level-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+    .level-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px;
+      text-align: center;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-white);
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .level-btn.active {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.12);
+    }
+    .level-btn.locked {
+      opacity: 0.6;
+      border-style: dashed;
+    }
+
+    /* Unit Card & Lock state */
+    .unit-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin: 25px 0 15px 0;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Card Items */
+    .phrase-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+    }
+    .phrase-card {
+      background: #081622;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .phrase-texts {
+      flex: 1;
+    }
+    .phrase-en {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 4px;
+      direction: ltr;
+      text-align: left;
+    }
+    .phrase-ar {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .speak-btn {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .speak-btn:hover {
+      background: var(--gold);
+      color: #040a10;
+      transform: scale(1.05);
+    }
+
+    /* Quiz Box */
+    .quiz-box {
+      margin-top: 35px;
+      background: #05101a;
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .q-item {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #14283b;
+    }
+    .q-text {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      direction: ltr;
+      text-align: left;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      direction: ltr;
+    }
+    .option-label {
+      background: #0d1e2e;
+      border: 1px solid var(--card-border);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .option-label:hover {
+      border-color: var(--gold);
+    }
+
+    /* Result Modal / Paywall Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      padding: 30px;
+      text-align: center;
+    }
+    .score-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      margin: 15px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: var(--gold);
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .contact-btn {
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      color: white;
+      display: block;
+    }
+    .btn-wa { background: #25D366; }
+    .btn-call { background: #0077b6; }
+  </style>
+</head>
+<body>
+
+  <div id="maintenance-banner">
+    ⚠️ المنصة قيد التحديث والصيانة حالياً من قبل الإدارة. يرجى المحاولة لاحقاً.
+  </div>
+
+  <header>
+    <div class="badge">A1 → C2 • Speak Like a Native</div>
+    <h1>English Speaking Mastery Program</h1>
+    <div class="subtitle">Think in English • Speak in English • Succeed in English</div>
+    <div class="trainer-tag">الإشراف والتدريب: أ. محمد عبدالله محمد عثمان</div>
+  </header>
+
+  <div class="container">
+    
+    <!-- User Login & Status Bar -->
+    <div class="auth-card">
+      <div id="auth-logged-out" class="auth-inputs">
+        <input type="text" id="student-name" placeholder="اسم المتدرب (رباعي)">
+        <input type="text" id="student-code" placeholder="كود الطالب أو الهاتف">
+        <button onclick="loginStudent()">تسجيل الدخول</button>
+      </div>
+      <div id="auth-logged-in" style="display: none; align-items: center; gap: 15px; width: 100%; justify-content: space-between;">
+        <div>مرحباً، <strong id="user-display-name" style="color: var(--gold);"></strong> 🎓</div>
+        <button class="btn-admin" onclick="openAdminModal()">لوحة تحكم المشرف</button>
+      </div>
+    </div>
+
+    <!-- Levels Tab Navigation -->
+    <div class="level-nav">
+      <div class="level-btn active" onclick="switchLevel('A1')">
+        <span>Level A1 Basic</span>
+        <small style="color: var(--success);">متاح مجاناً</small>
+      </div>
+      <div class="level-btn locked" onclick="requestPaidLevel('A2')">
+        <span>Level A2 Elementary</span>
+        <small style="color: var(--gold);">🔒 يتطلب تفعيل</small>
+      </div>
+      <div class="level-btn locked" onclick="requestPaidLevel('B')">
+        <span>Level B (Intermediate)</span>
+        <small style="color: var(--gold);">🔒 يتطلب تفعيل</small>
+      </div>
+      <div class="level-btn locked" onclick="requestPaidLevel('C')">
+        <span>Level C (Mastery)</span>
+        <small style="color: var(--gold);">🔒 يتطلب تفعيل</small>
+      </div>
+    </div>
+
+    <!-- Main Content: Level A1 - Unit 1 -->
+    <div id="unit-content" class="unit-container">
+      <h2 style="color: var(--gold); margin-bottom: 5px;">الوحدة الأولى: التحيات والتعارف</h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px; direction: ltr; text-align: left;">Unit 1: Greetings & Introductions</p>
+
+      <div class="section-title">Part 1: Basic Greetings (التحيات الأساسية)</div>
+      <div class="phrase-list" id="part1-phrases"></div>
+
+      <div class="section-title">Part 2: Introducing Yourself (التعريف بالنفس)</div>
+      <div class="phrase-list" id="part2-phrases"></div>
+
+      <div class="section-title">Part 3: Questions & Answers (الأسئلة والإجابات)</div>
+      <div class="phrase-list" id="part3-phrases"></div>
+
+      <div class="section-title">Part 4: Mini Dialogues (حوارات صوتية تفاعلية)</div>
+      <div class="phrase-list" id="dialogues-phrases"></div>
+
+      <!-- Quiz Section (20 Questions - 80% Rule) -->
+      <div class="quiz-box">
+        <h3 style="color: var(--gold); margin-bottom: 10px;">📝 الاختبار الإلكتروني للوحدة الأولى (20 سؤال)</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+          شرط الانتقال للوحدة الثانية: تحقيق نسبة 80% فما فوق (16 إجابة صحيحة على الأقل).
+        </p>
+        <div id="quiz-questions-container"></div>
+        <button style="width: 100%; margin-top: 15px; padding: 14px;" onclick="submitUnitQuiz()">تصحيح الاختبار والتحقق من النتيجة</button>
+      </div>
+    </div>
+
+    <!-- Unit 2 Placeholder (Locked until passing Unit 1) -->
+    <div id="unit-2-lock-card" class="unit-container" style="border: 2px dashed #1a3249; text-align: center; padding: 40px 20px;">
+      <h3 style="color: var(--text-muted); margin-bottom: 10px;">🔒 الوحدة الثانية: العائلة والأصدقاء (Unit 2: Family & Friends)</h3>
+      <p style="color: var(--text-muted);">هذه الوحدة مقفلة حالياً. لا يمكنك فتحها إلا بعد اجتياز اختبار الوحدة الأولى بنسبة 80% أو أكثر.</p>
+    </div>
+
+  </div>
+
+  <!-- Paywall Modal for A2, B, C -->
+  <div id="paywall-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 style="color: var(--gold); margin-bottom: 15px;">🔒 هذا المستوى مدفوع</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px;">
+        لفتح باقة المستويات المتقدمة (A2 فما فوق) والحصول على المنهج الكامل والمحادثات المتقدمة مع المدرب، يرجى التواصل لتفعيل حسابك بعد سداد الرسوم.
+      </p>
+      <div class="contact-links">
+        <a href="https://wa.me/966530665625" target="_blank" class="contact-btn btn-wa">مراسلة عبر واتساب (السعودية)</a>
+        <a href="https://wa.me/201146967730" target="_blank" class="contact-btn btn-wa">مراسلة عبر واتساب (مصر)</a>
+        <a href="tel:0530665625" class="contact-btn btn-call">اتصال هاتفي مباشر</a>
+      </div>
+      <button style="margin-top: 15px; background: transparent; border: 1px solid #475569; color: white;" onclick="closeModal('paywall-modal')">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- Quiz Result Modal -->
+  <div id="result-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 id="result-title" style="margin-bottom: 10px;"></h3>
+      <div class="score-circle" id="result-score"></div>
+      <p id="result-message" style="margin-bottom: 20px; font-size: 0.95rem;"></p>
+      <button onclick="closeModal('result-modal')" style="width: 100%;">استمرار</button>
+    </div>
+  </div>
+
+  <!-- Admin Modal -->
+  <div id="admin-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px; text-align: right;">
+      <h3 style="color: var(--gold); margin-bottom: 15px;">لوحة تحكم المشرف (أ. محمد عثمان)</h3>
+      <div style="margin-bottom: 15px;">
+        <label style="display:block; margin-bottom: 5px;">زر الطوارئ (إيقاف / تشغيل المنصة):</label>
+        <button id="toggle-maintenance-btn" style="background: var(--danger); color: white;" onclick="toggleSiteStatus()">إيقاف المنصة مؤقتاً</button>
+      </div>
+      <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 15px 0;">
+      <h4 style="margin-bottom: 10px;">تفعيل المستوى المدفوع لطالب:</h4>
+      <input type="text" id="admin-target-student" placeholder="كود أو هاتف الطالب" style="width: 100%; margin-bottom: 10px;">
+      <button onclick="adminGrantAccess()" style="width: 100%;">تفعيل اشتراك المستوى A2 للطالب</button>
+      <button onclick="closeModal('admin-modal')" style="width: 100%; margin-top: 10px; background: transparent; border: 1px solid var(--text-muted); color: white;">إغلاق لوحة المشرف</button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. FIREBASE CONFIGURATION
+    // ضع بيانات مشروعك هنا عند إنشائه في Firebase Console
+    // ==========================================
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // تهيئة Firebase
+    let db = null;
+    try {
+      if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+      }
+    } catch (e) {
+      console.log("Firebase initialized in Local Mock Mode");
+    }
+
+    // ==========================================
+    // 2. NATURAL AMERICAN VOICE SPEECH ENGINE
+    // ==========================================
+    let naturalAmericanVoice = null;
+
+    function initVoice() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      // البحث عن أصوات أمريكية طبيعية عالية الجودة (Google, Neural, US English)
+      naturalAmericanVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google'))) 
+                          || voices.find(v => v.lang === 'en-US');
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = initVoice;
+      initVoice();
+    }
+
+    function speakAmerican(text) {
+      if (!('speechSynthesis' in window)) {
+        alert("متصفحك لا يدعم محرك الصوت المباشر");
+        return;
+      }
+      window.speechSynthesis.cancel(); // إيقاف أي جملة سابقة
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.9; // سرعة طبيعية تعليمية واضحة
+      utter.pitch = 1.0;
+      if (naturalAmericanVoice) utter.voice = naturalAmericanVoice;
+      window.speechSynthesis.speak(utter);
+    }
+
+    // ==========================================
+    // 3. UNIT 1 CONTENT DATA (Greetings & Introductions)
+    // ==========================================
+    const unit1Phrases = {
+      part1: [
+        { en: "Hello.", ar: "مرحباً." },
+        { en: "Hi.", ar: "أهلاً." },
+        { en: "Good morning.", ar: "صباح الخير." },
+        { en: "Good afternoon.", ar: "مساء الخير (بعد الظهر)." },
+        { en: "Good evening.", ar: "مساء الخير." },
+        { en: "Nice to meet you.", ar: "سعيد بلقائك." },
+        { en: "How are you?", ar: "كيف حالك؟" },
+        { en: "I'm fine, thank you.", ar: "أنا بخير، شكراً لك." },
+        { en: "Have a nice day.", ar: "أتمنى لك يوماً سعيداً." },
+        { en: "You too.", ar: "وأنت أيضاً." }
+      ],
+      part2: [
+        { en: "My name is Ahmed.", ar: "اسمي أحمد." },
+        { en: "I am from Saudi Arabia.", ar: "أنا من المملكة العربية السعودية." },
+        { en: "I live in Riyadh.", ar: "أعيش في الرياض." },
+        { en: "I am a student.", ar: "أنا طالب." },
+        { en: "I am twenty years old.", ar: "عمري عشرون عاماً." },
+        { en: "I speak Arabic.", ar: "أتحدث اللغة العربية." },
+        { en: "I am learning English.", ar: "أنا أتعلم اللغة الإنجليزية." }
+      ],
+      part3: [
+        { en: "What is your name?", ar: "ما اسمك؟" },
+        { en: "Where are you from?", ar: "من أين أنت؟" },
+        { en: "Where do you live?", ar: "أين تعيش؟" },
+        { en: "How old are you?", ar: "كم عمرك؟" },
+        { en: "What do you do?", ar: "ماذا تعمل؟" },
+        { en: "Do you speak English?", ar: "هل تتحدث الإنجليزية؟" }
+      ],
+      dialogues: [
+        { en: "A: Hello! My name is Ali. What's your name?\nB: Hi Ali! I'm Omar. Nice to meet you.", ar: "حوار 1: التعارف وتبادل الأسماء" },
+        { en: "A: How are you today?\nB: I'm great, thank you! How about you?", ar: "حوار 2: السؤال عن الحال بطريقة طبيعية" }
+      ]
+    };
+
+    // ==========================================
+    // 4. UNIT 1 QUIZ (20 Rigorous Questions)
+    // ==========================================
+    const unit1Questions = [
+      { q: "1. Which phrase is used to greet someone in the morning?", opts: ["Good morning", "Good night", "Goodbye", "Take care"], ans: 0 },
+      { q: "2. When someone says 'Nice to meet you', the natural response is:", opts: ["You too", "Nice to meet you too", "I am fine", "Excuse me"], ans: 1 },
+      { q: "3. How do you respond to 'How are you?'", opts: ["I am 20", "I live in Riyadh", "I'm fine, thank you", "My name is Ali"], ans: 2 },
+      { q: "4. Complete: 'I _______ from Saudi Arabia.'", opts: ["is", "am", "are", "do"], ans: 1 },
+      { q: "5. What question asks about someone's residence city?", opts: ["Where are you from?", "Where do you live?", "What do you do?", "Who are you?"], ans: 1 },
+      { q: "6. 'Have a nice day' is replied with:", opts: ["You too", "I don't know", "No problem", "Welcome"], ans: 0 },
+      { q: "7. Which sentence correctly states your age?", opts: ["I have twenty years", "I am twenty years old", "My age has twenty", "I old twenty"], ans: 1 },
+      { q: "8. What does 'What do you do?' mean?", opts: ["ما اسمك؟", "أين تسكن؟", "ماذا تعمل؟", "كيف حالك؟"], ans: 2 },
+      { q: "9. When asking for someone's full name, you ask:", opts: ["What's your full name?", "Where is your name?", "How is your name?", "Are you full name?"], ans: 0 },
+      { q: "10. In class, if you want to leave the room politely, you say:", opts: ["Can I go out?", "Stand up", "Look at the board", "Listen carefully"], ans: 0 },
+      { q: "11. 'Good evening' is said:", opts: ["في الصباح الباكر", "في المساء", "عند النوم", "في الظهيرة"], ans: 1 },
+      { q: "12. Choose the correct spelling for greeting a friend casually:", opts: ["Hi", "He", "Hee", "Hy"], ans: 0 },
+      { q: "13. What is the response to 'Thank you very much'?", opts: ["You're welcome", "I am fine", "Good morning", "I am a teacher"], ans: 0 },
+      { q: "14. 'I speak Arabic and English.' This sentence describes:", opts: ["Age", "Languages spoken", "Job", "Address"], ans: 1 },
+      { q: "15. How do you ask someone politely to repeat a sentence?", opts: ["Could you repeat that, please?", "Speak loud", "Say it now", "What is that?"], ans: 0 },
+      { q: "16. 'I am a student.' Here, 'student' refers to:", opts: ["اسم البلد", "الوظيفة أو الصفة الدراسية", "التحية", "الهواية"], ans: 1 },
+      { q: "17. Which greeting is used in the afternoon?", opts: ["Good night", "Good afternoon", "Good morning", "Goodbye"], ans: 1 },
+      { q: "18. Complete: '_______ to meet you.'", opts: ["Pleasure", "Good", "Pleased", "All of the above"], ans: 3 },
+      { q: "19. If you did not understand the teacher, you say:", opts: ["I don't understand", "I know the answer", "Good job", "I am fine"], ans: 0 },
+      { q: "20. When someone says 'See you tomorrow', you say:", opts: ["See you", "I am Ali", "Thank you very much", "I'm okay"], ans: 0 }
+    ];
+
+    // ==========================================
+    // 5. RENDER FUNCTIONS
+    // ==========================================
+    function renderSection(items, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = items.map(item => `
+        <div class="phrase-card">
+          <div class="phrase-texts">
+            <div class="phrase-en">${item.en.replace(/\n/g, '<br>')}</div>
+            <div class="phrase-ar">${item.ar}</div>
+          </div>
+          <button class="speak-btn" onclick="speakAmerican('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+        </div>
+      `).join('');
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById('quiz-questions-container');
+      container.innerHTML = unit1Questions.map((q, idx) => `
+        <div class="q-item">
+          <div class="q-text">${q.q}</div>
+          <div class="options-grid">
+            ${q.opts.map((opt, optIdx) => `
+              <label class="option-label">
+                <input type="radio" name="q_${idx}" value="${optIdx}">
+                <span>${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // 6. QUIZ GRADING & 80% PROGRESSION RULE
+    // ==========================================
+    function submitUnitQuiz() {
+      let score = 0;
+      let unanswered = false;
+
+      unit1Questions.forEach((q, idx) => {
+        const selected = document.querySelector(`input[name="q_${idx}"]:checked`);
+        if (selected) {
+          if (parseInt(selected.value) === q.ans) score++;
+        } else {
+          unanswered = true;
+        }
+      });
+
+      if (unanswered) {
+        if (!confirm("لم تقم بالإجابة على جميع الأسئلة العشرين. هل تريد المتابعة وتصحيح الاختبار؟")) {
+          return;
+        }
+      }
+
+      const percentage = Math.round((score / unit1Questions.length) * 100);
+      const passed = percentage >= 80;
+
+      const modalTitle = document.getElementById('result-title');
+      const scoreCircle = document.getElementById('result-score');
+      const resultMsg = document.getElementById('result-message');
+
+      scoreCircle.innerText = `${score} / 20 (${percentage}%)`;
+
+      if (passed) {
+        modalTitle.innerText = "تهانينا! لقد اجتزت الوحدة الأولى بنجاح 🎉";
+        modalTitle.style.color = "var(--success)";
+        resultMsg.innerText = "أحسنت! حققت نسبة 80% فأكثر وتم فتح الوحدة الثانية لك رسمياً.";
+        document.getElementById('unit-2-lock-card').innerHTML = `
+          <h3 style="color: var(--success); margin-bottom: 10px;">🔓 تم فتح الوحدة الثانية: Family & Friends</h3>
+          <p>يمكنك الآن بدء دراسة الوحدة الثانية ومحتوياتها بنجاح.</p>
+        `;
+        // حفظ الإنجاز في حساب الطالب محلياً وفي السحابة
+        localStorage.setItem('unit1_passed', 'true');
+        saveStudentProgress('A1_Unit1', score);
+      } else {
+        modalTitle.innerText = "للأسف لم تحقق نسبة الاجتياز المطلوبة ❌";
+        modalTitle.style.color = "var(--danger)";
+        resultMsg.innerText = "شرط الانتقال هو تحقيق 80% (16 من 20). راجع العبارات الصوتية وأعد المحاولة لتحقيق الطلاقة.";
+      }
+
+      document.getElementById('result-modal').style.display = 'flex';
+    }
+
+    // ==========================================
+    // 7. USER AUTH & ACCESS CONTROL
+    // ==========================================
+    function loginStudent() {
+      const name = document.getElementById('student-name').value.trim();
+      const code = document.getElementById('student-code').value.trim();
+      if (!name || !code) {
+        alert("يرجى إدخال الاسم الرباعي وكود الطالب.");
+        return;
+      }
+      localStorage.setItem('student_name', name);
+      localStorage.setItem('student_code', code);
+      showLoggedInUser(name);
+    }
+
+    function showLoggedInUser(name) {
+      document.getElementById('auth-logged-out').style.display = 'none';
+      document.getElementById('auth-logged-in').style.display = 'flex';
+      document.getElementById('user-display-name').innerText = name;
+    }
+
+    function requestPaidLevel(lvlName) {
+      const hasPaid = localStorage.getItem(`paid_access_${lvlName}`) === 'true';
+      if (hasPaid) {
+        alert(`أهلاً بك في المستوى ${lvlName}! المحتوى متاح لك.`);
+      } else {
+        document.getElementById('paywall-modal').style.display = 'flex';
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    // ==========================================
+    // 8. ADMIN ACTIONS
+    // ==========================================
+    function openAdminModal() {
+      const pass = prompt("أدخل كلمة مرور المشرف:");
+      if (pass === "admin1981" || pass === "0530665625") {
+        document.getElementById('admin-modal').style.display = 'flex';
+      } else {
+        alert("كلمة المرور غير صحيحة.");
+      }
+    }
+
+    let isMaintenance = false;
+    function toggleSiteStatus() {
+      isMaintenance = !isMaintenance;
+      const banner = document.getElementById('maintenance-banner');
+      const btn = document.getElementById('toggle-maintenance-btn');
+      if (isMaintenance) {
+        banner.style.display = 'block';
+        btn.innerText = "إلغاء الإيقاف وتشغيل المنصة";
+        btn.style.background = "var(--success)";
+      } else {
+        banner.style.display = 'none';
+        btn.innerText = "إيقاف المنصة مؤقتاً";
+        btn.style.background = "var(--danger)";
+      }
+    }
+
+    function adminGrantAccess() {
+      const target = document.getElementById('admin-target-student').value.trim();
+      if (!target) return alert("أدخل كود أو هاتف الطالب أولاً.");
+      localStorage.setItem(`paid_access_A2`, 'true');
+      alert(`تم تفعيل المستوى المدفوع A2 بنجاح للطالب: ${target}`);
+      closeModal('admin-modal');
+    }
+
+    function saveStudentProgress(unitId, score) {
+      if (db) {
+        const studentCode = localStorage.getItem('student_code') || 'guest';
+        db.collection("students_progress").doc(studentCode).set({
+          name: localStorage.getItem('student_name') || 'Unknown',
+          [unitId]: { score: score, passed: true, timestamp: new Date() }
+        }, { merge: true });
+      }
+    }
+
+    // On Load Initializations
+    window.onload = function() {
+      renderSection(unit1Phrases.part1, 'part1-phrases');
+      renderSection(unit1Phrases.part2, 'part2-phrases');
+      renderSection(unit1Phrases.part3, 'part3-phrases');
+      renderSection(unit1Phrases.dialogues, 'dialogues-phrases');
+      renderQuiz();
+
+      const savedName = localStorage.getItem('student_name');
+      if (savedName) showLoggedInUser(savedName);
+    };
+  </script>
+</body>
+</html>
