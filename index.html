@@ -5,21 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>English Speaking Mastery Program | Mr. Mohammed Abdullah Othman</title>
   
-  <!-- Firebase SDKs (Compat Version for Standalone HTML) -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
-      --primary-dark: #07131d;
-      --card-bg: #0d1e2e;
-      --card-border: #1a3249;
+      --bg-dark: #070e17;
+      --card-bg: #0f1c2c;
+      --card-glass: rgba(15, 28, 44, 0.85);
+      --border-color: #1e354f;
       --gold: #d4af37;
-      --gold-light: #f3e5ab;
+      --gold-hover: #f3e5ab;
+      --gold-glow: rgba(212, 175, 55, 0.25);
       --text-white: #f8fafc;
       --text-muted: #94a3b8;
       --success: #10b981;
       --danger: #ef4444;
+      --primary-blue: #0284c7;
       --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -31,187 +34,175 @@
     }
 
     body {
-      background-color: var(--primary-dark);
+      background-color: var(--bg-dark);
       color: var(--text-white);
       line-height: 1.6;
-      padding-bottom: 60px;
+      padding-bottom: 70px;
+      overflow-x: hidden;
     }
 
-    #maintenance-banner {
-      display: none;
-      background-color: var(--danger);
-      color: white;
+    /* Animated Counter Section */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin: 25px 0;
+    }
+    .stat-card {
+      background: var(--card-glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-top: 3px solid var(--gold);
+      border-radius: 12px;
+      padding: 18px;
       text-align: center;
-      padding: 15px;
-      font-weight: bold;
-      position: sticky;
-      top: 0;
-      z-index: 10000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px var(--gold-glow);
+    }
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
     }
 
+    /* Header */
     header {
-      background: linear-gradient(180deg, #040a10 0%, #0d1e2e 100%);
+      background: linear-gradient(180deg, #03080e 0%, #0d1e2e 100%);
       border-bottom: 2px solid var(--gold);
-      padding: 25px 20px;
+      padding: 30px 20px;
       text-align: center;
+      position: relative;
     }
     .badge {
       display: inline-block;
-      background: rgba(212, 175, 55, 0.15);
+      background: rgba(212, 175, 55, 0.12);
       border: 1px solid var(--gold);
-      color: var(--gold-light);
-      padding: 4px 14px;
-      border-radius: 20px;
+      color: var(--gold-hover);
+      padding: 5px 16px;
+      border-radius: 25px;
       font-size: 0.85rem;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      animation: pulse 2.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
     }
     h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: var(--gold);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       letter-spacing: 0.5px;
     }
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 1rem;
       margin-bottom: 15px;
     }
     .trainer-tag {
       font-weight: bold;
-      color: var(--gold-light);
-      font-size: 1.1rem;
+      color: #ffffff;
+      font-size: 1.15rem;
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid var(--primary-blue);
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 8px;
     }
 
     .container {
-      max-width: 950px;
+      max-width: 1000px;
       margin: auto;
       padding: 20px;
     }
 
-    .auth-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 25px;
+    /* Nav Tabs */
+    .nav-tabs {
       display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .auth-inputs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      flex: 1;
-    }
-    input {
-      background: #040a10;
-      border: 1px solid var(--card-border);
-      color: white;
-      padding: 10px 14px;
-      border-radius: 6px;
-      outline: none;
-      min-width: 180px;
-    }
-    input:focus {
-      border-color: var(--gold);
-    }
-    button {
-      background: var(--gold);
-      color: #040a10;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    button:hover {
-      background: #e6c35c;
-    }
-    .btn-admin {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-    }
-    .btn-admin:hover {
-      background: var(--gold);
-      color: #040a10;
-    }
-
-    .level-nav {
-      display: flex;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 25px;
       overflow-x: auto;
-      padding-bottom: 5px;
+      padding-bottom: 8px;
     }
-    .level-btn {
+    .tab-btn {
       flex: 1;
-      min-width: 140px;
-      padding: 12px;
-      text-align: center;
+      min-width: 160px;
+      padding: 14px 10px;
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: white;
+      text-align: center;
       cursor: pointer;
-      color: var(--text-white);
       font-weight: bold;
+      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 4px;
     }
-    .level-btn.active {
+    .tab-btn.active {
       border-color: var(--gold);
-      background: rgba(212, 175, 55, 0.12);
+      background: linear-gradient(145deg, #132438, #0b1725);
+      box-shadow: 0 4px 15px var(--gold-glow);
     }
-    .level-btn.locked {
+    .tab-btn.locked {
       opacity: 0.6;
       border-style: dashed;
     }
 
-    .unit-container {
+    /* Content Cards */
+    .content-box {
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
       padding: 25px;
       margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
-    .section-title {
+    .section-header {
       font-size: 1.3rem;
       color: var(--gold);
-      margin: 25px 0 15px 0;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      margin: 30px 0 15px 0;
       display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .phrase-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 15px;
-    }
-    .phrase-card {
-      background: #081622;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
       align-items: center;
       gap: 10px;
     }
-    .phrase-texts {
-      flex: 1;
+
+    .phrase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
+    }
+    .phrase-card {
+      background: #091420;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .phrase-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
     }
     .phrase-en {
       font-size: 1.05rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #ffffff;
       margin-bottom: 4px;
       direction: ltr;
@@ -221,536 +212,550 @@
       font-size: 0.9rem;
       color: var(--text-muted);
     }
-    .speak-btn {
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      width: 40px;
-      height: 40px;
+    .audio-btn {
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
       transition: all 0.2s;
+      font-size: 1.1rem;
     }
-    .speak-btn:hover {
+    .audio-btn:hover {
+      background: var(--gold);
+      color: #000;
+      transform: scale(1.1);
+    }
+
+    /* Dialogue Card */
+    .dialogue-card {
+      background: #07111c;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 15px;
+    }
+    .dialogue-turn {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #0f1f30;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dialogue-turn.b-side {
+      background: #0b283d;
+      border-right: 3px solid var(--gold);
+    }
+
+    /* Buttons */
+    .action-btn {
       background: var(--gold);
       color: #040a10;
-      transform: scale(1.05);
-    }
-
-    .quiz-box {
-      margin-top: 35px;
-      background: #05101a;
-      border: 2px solid var(--card-border);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .q-item {
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #14283b;
-    }
-    .q-text {
-      font-size: 1rem;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
       font-weight: bold;
-      margin-bottom: 10px;
-      direction: ltr;
-      text-align: left;
-    }
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      direction: ltr;
-    }
-    .option-label {
-      background: #0d1e2e;
-      border: 1px solid var(--card-border);
-      padding: 10px;
-      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.9rem;
-      display: flex;
+      transition: 0.2s;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
     }
-    .option-label:hover {
-      border-color: var(--gold);
+    .action-btn:hover {
+      background: var(--gold-hover);
+      transform: translateY(-1px);
+    }
+    .action-btn.secondary {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .action-btn.secondary:hover {
+      background: var(--gold);
+      color: #040a10;
     }
 
+    /* Modal / Certificate Print Layout */
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 9999;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 99999;
       justify-content: center;
       align-items: center;
       padding: 20px;
+      overflow-y: auto;
     }
     .modal-content {
       background: var(--card-bg);
       border: 2px solid var(--gold);
       border-radius: 12px;
-      max-width: 500px;
+      max-width: 650px;
       width: 100%;
-      padding: 30px;
+      padding: 25px;
       text-align: center;
+      position: relative;
     }
-    .score-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 4px solid var(--gold);
-      margin: 15px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--gold);
+    .certificate-frame {
+      border: 5px double var(--gold);
+      padding: 30px 20px;
+      background: #060e17;
+      border-radius: 8px;
+      color: #fff;
+      margin: 15px 0;
     }
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
+
+    @media print {
+      body * { visibility: hidden; }
+      .printable-area, .printable-area * { visibility: visible; }
+      .printable-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        border: 8px double #d4af37 !important;
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .printable-area * { color: #000 !important; }
     }
-    .contact-btn {
-      text-decoration: none;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      color: white;
-      display: block;
-    }
-    .btn-wa { background: #25D366; }
-    .btn-call { background: #0077b6; }
   </style>
 </head>
 <body>
 
-  <div id="maintenance-banner">
-    ⚠️ المنصة قيد التحديث والصيانة حالياً من قبل الإدارة. يرجى المحاولة لاحقاً.
-  </div>
-
   <header>
-    <div class="badge">A1 → C2 • Speak Like a Native</div>
+    <div class="badge">A1 → C2 • Speak English Like a Native</div>
     <h1>English Speaking Mastery Program</h1>
     <div class="subtitle">Think in English • Speak in English • Succeed in English</div>
-    <div class="trainer-tag">الإشراف والتدريب: أ. محمد عبدالله محمد عثمان</div>
+    <div class="trainer-tag">الإشراف العام والتدريب: أ. محمد عبدالله محمد عثمان</div>
   </header>
 
   <div class="container">
-    
-    <!-- User Login & Status Bar -->
-    <div class="auth-card">
-      <div id="auth-logged-out" class="auth-inputs">
-        <input type="text" id="student-name" placeholder="اسم المتدرب (رباعي)">
-        <input type="text" id="student-code" placeholder="كود الطالب أو الهاتف">
-        <button onclick="loginStudent()">تسجيل الدخول</button>
-      </div>
-      <div id="auth-logged-in" style="display: none; align-items: center; gap: 15px; width: 100%; justify-content: space-between;">
-        <div>مرحباً، <strong id="user-display-name" style="color: var(--gold);"></strong> 🎓</div>
-        <button class="btn-admin" onclick="openAdminModal()">لوحة تحكم المشرف</button>
-      </div>
-    </div>
 
-    <!-- Levels Tab Navigation -->
-    <div class="level-nav">
-      <div class="level-btn active" onclick="switchLevel('A1')">
-        <span>Level A1 Basic</span>
-        <small style="color: var(--success);">متاح مجاناً</small>
+    <!-- Live Animated Statistics Bar -->
+    <div class="hero-stats">
+      <div class="stat-card">
+        <span class="stat-number" data-target="3000">0</span>
+        <span class="stat-label">تعبير وجملة عملية (+Expressions)</span>
       </div>
-      <div class="level-btn locked" onclick="requestPaidLevel('A2')">
-        <span>Level A2 Elementary</span>
-        <small style="color: var(--gold);">🔒 يتطلب تفعيل</small>
+      <div class="stat-card">
+        <span class="stat-number" data-target="2500">0</span>
+        <span class="stat-label">سؤال للمحادثة والطلاقة (+Questions)</span>
       </div>
-      <div class="level-btn locked" onclick="requestPaidLevel('B')">
-        <span>Level B (Intermediate)</span>
-        <small style="color: var(--gold);">🔒 يتطلب تفعيل</small>
+      <div class="stat-card">
+        <span class="stat-number" data-target="500">0</span>
+        <span class="stat-label">موقف وحوار تفاعلي (+Dialogues)</span>
       </div>
-      <div class="level-btn locked" onclick="requestPaidLevel('C')">
-        <span>Level C (Mastery)</span>
-        <small style="color: var(--gold);">🔒 يتطلب تفعيل</small>
+      <div class="stat-card">
+        <span class="stat-number" data-target="6">0</span>
+        <span class="stat-label">مستويات من المبتدئ للاحتراف (A1 → C2)</span>
       </div>
     </div>
 
-    <!-- Main Content: Level A1 - Unit 1 -->
-    <div id="unit-content" class="unit-container">
-      <h2 style="color: var(--gold); margin-bottom: 5px;">الوحدة الأولى: التحيات والتعارف</h2>
-      <p style="color: var(--text-muted); margin-bottom: 20px; direction: ltr; text-align: left;">Unit 1: Greetings & Introductions</p>
-
-      <div class="section-title">Part 1: Basic Greetings (التحيات الأساسية)</div>
-      <div class="phrase-list" id="part1-phrases"></div>
-
-      <div class="section-title">Part 2: Introducing Yourself (التعريف بالنفس)</div>
-      <div class="phrase-list" id="part2-phrases"></div>
-
-      <div class="section-title">Part 3: Questions & Answers (الأسئلة والإجابات)</div>
-      <div class="phrase-list" id="part3-phrases"></div>
-
-      <div class="section-title">Part 4: Mini Dialogues (حوارات صوتية تفاعلية)</div>
-      <div class="phrase-list" id="dialogues-phrases"></div>
-
-      <!-- Quiz Section (20 Questions - 80% Rule) -->
-      <div class="quiz-box">
-        <h3 style="color: var(--gold); margin-bottom: 10px;">📝 الاختبار الإلكتروني للوحدة الأولى (20 سؤال)</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
-          شرط الانتقال للوحدة الثانية: تحقيق نسبة 80% فما فوق (16 إجابة صحيحة على الأقل).
-        </p>
-        <div id="quiz-questions-container"></div>
-        <button style="width: 100%; margin-top: 15px; padding: 14px;" onclick="submitUnitQuiz()">تصحيح الاختبار والتحقق من النتيجة</button>
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <div class="tab-btn active" onclick="showTab('units-view')">
+        <span>📖 المنهج والوحدات</span>
+        <small style="color: var(--gold);">المستوى الحالي: A1</small>
+      </div>
+      <div class="tab-btn" onclick="showTab('millionaire-view')">
+        <span>🏆 من سيربح المليون</span>
+        <small style="color: var(--success);">تحدي الطلاقة والمفردات</small>
+      </div>
+      <div class="tab-btn" onclick="showTab('situations-view')">
+        <span>✈️ قسم المواقف الحياتية</span>
+        <small style="color: var(--text-muted);">Situations Hub</small>
+      </div>
+      <div class="tab-btn locked" onclick="triggerPaywall('A2')">
+        <span>🔒 Level A2 Elementary</span>
+        <small style="color: var(--gold);">يتطلب اشتراكاً</small>
       </div>
     </div>
 
-    <!-- Unit 2 Placeholder (Locked until passing Unit 1) -->
-    <div id="unit-2-lock-card" class="unit-container" style="border: 2px dashed #1a3249; text-align: center; padding: 40px 20px;">
-      <h3 style="color: var(--text-muted); margin-bottom: 10px;">🔒 الوحدة الثانية: العائلة والأصدقاء (Unit 2: Family & Friends)</h3>
-      <p style="color: var(--text-muted);">هذه الوحدة مقفلة حالياً. لا يمكنك فتحها إلا بعد اجتياز اختبار الوحدة الأولى بنسبة 80% أو أكثر.</p>
+    <!-- VIEW 1: UNITS & CURRICULUM -->
+    <div id="units-view" class="view-panel">
+      <div class="content-box">
+        <h2 style="color: var(--gold); margin-bottom: 6px;">Unit 1: Greetings & Introductions</h2>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">الوحدة الأولى: التحيات والتعارف وبدايات المحادثة الرسمية والودية</p>
+
+        <!-- Part 1 -->
+        <div class="section-header">Part 1: Basic Greetings (التحيات والردود اليومية)</div>
+        <div class="phrase-grid" id="part1-container"></div>
+
+        <!-- Part 2 -->
+        <div class="section-header">Part 2: Introducing Yourself (التعريف الشامل بالنفس)</div>
+        <div class="phrase-grid" id="part2-container"></div>
+
+        <!-- Part 3 -->
+        <div class="section-header">Part 3: Asking Personal Information (سؤال الآخرين عن بياناتهم)</div>
+        <div class="phrase-grid" id="part3-container"></div>
+
+        <!-- Part 4 -->
+        <div class="section-header">Part 4: Classroom English (الإنجليزية داخل القاعة الدراسية)</div>
+        <div class="phrase-grid" id="part4-container"></div>
+
+        <!-- Mini Dialogues -->
+        <div class="section-header">Mini Dialogues (حوارات المحاكاة الصوتية)</div>
+        <div id="dialogues-container"></div>
+
+        <!-- Fluency Builders -->
+        <div class="section-header">Fluency Builders (عبارات الطلاقة وسرعة البديهة)</div>
+        <div class="phrase-grid" id="fluency-container"></div>
+
+        <!-- Quiz Trigger & Certificate -->
+        <div style="margin-top: 35px; text-align: center; background: #07131e; border: 2px dashed var(--gold); padding: 25px; border-radius: 12px;">
+          <h3 style="color: var(--gold); margin-bottom: 10px;">الاختبار الإلكتروني للوحدة الأولى (20 سؤالاً)</h3>
+          <p style="color: var(--text-muted); margin-bottom: 20px;">شرط فتح الوحدة الثانية واستخراج الشهادة: تحقيق 80% (16 من 20) فما فوق.</p>
+          <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <button class="action-btn" onclick="startUnitQuiz()">بدء الاختبار الإلكتروني 📝</button>
+            <button class="action-btn secondary" onclick="openCertificateModal()">عرض وطباعة شهادة الإنجاز 🎓</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: WHO WANTS TO BE A MILLIONAIRE (AUDIO-FREE QUIZ GAME) -->
+    <div id="millionaire-view" class="view-panel" style="display: none;">
+      <div class="content-box" style="border: 2px solid var(--gold); background: #050b12;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3 style="color: var(--gold);">🏆 مسابقة من سيربح المليون اللغوية</h3>
+          <div style="color: var(--gold-hover); font-weight: bold;" id="game-prize">الجائزة: 100 نقطة</div>
+        </div>
+        
+        <!-- Lifelines (وسائل المساعدة) -->
+        <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center;">
+          <button class="action-btn secondary" id="btn-50" onclick="use5050()">50:50 (حذف إجابتين)</button>
+          <button class="action-btn secondary" id="btn-audience" onclick="useAudience()">جمهور المتدربين</button>
+          <button class="action-btn secondary" id="btn-call" onclick="usePhone()">اتصال بمدرب</button>
+        </div>
+
+        <div style="background: #091726; border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 20px;">
+          <h4 id="game-question" style="direction: ltr; font-size: 1.2rem; color: #fff;">Question will appear here...</h4>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; direction: ltr;" id="game-options"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: SITUATIONS HUB -->
+    <div id="situations-view" class="view-panel" style="display: none;">
+      <div class="content-box">
+        <h3 style="color: var(--gold); margin-bottom: 15px;">✈️ قسم المواقف اليومية الميدانية (Situations Hub)</h3>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">حوارات ومفردات سريعة جاهزة للاستخدام الفوري في الميدان:</p>
+        <div class="phrase-grid">
+          <div class="phrase-card">
+            <div>
+              <div class="phrase-en">At the Airport & Checking in</div>
+              <div class="phrase-ar">في المطار وإنهاء إجراءات السفر</div>
+            </div>
+            <button class="audio-btn" onclick="speakAmerican('I would like to check in for my flight, please.')">🔊</button>
+          </div>
+          <div class="phrase-card">
+            <div>
+              <div class="phrase-en">Hotel Reservation & Room Service</div>
+              <div class="phrase-ar">حجز الفندق وخدمات الغرف</div>
+            </div>
+            <button class="audio-btn" onclick="speakAmerican('I have a reservation under the name Mohammed.')">🔊</button>
+          </div>
+          <div class="phrase-card">
+            <div>
+              <div class="phrase-en">At the Restaurant & Ordering Food</div>
+              <div class="phrase-ar">في المطعم وطلب الوجبات</div>
+            </div>
+            <button class="audio-btn" onclick="speakAmerican('Could we please have the menu and the check?')">🔊</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <!-- Paywall Modal for A2, B, C -->
-  <div id="paywall-modal" class="modal-overlay">
-    <div class="modal-content">
-      <h3 style="color: var(--gold); margin-bottom: 15px;">🔒 هذا المستوى مدفوع</h3>
-      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px;">
-        لفتح باقة المستويات المتقدمة (A2 فما فوق) والحصول على المنهج الكامل والمحادثات المتقدمة مع المدرب، يرجى التواصل لتفعيل حسابك بعد سداد الرسوم.
-      </p>
-      <div class="contact-links">
-        <a href="https://wa.me/966530665625" target="_blank" class="contact-btn btn-wa">مراسلة عبر واتساب (السعودية)</a>
-        <a href="https://wa.me/201146967730" target="_blank" class="contact-btn btn-wa">مراسلة عبر واتساب (مصر)</a>
-        <a href="tel:0530665625" class="contact-btn btn-call">اتصال هاتفي مباشر</a>
-      </div>
-      <button style="margin-top: 15px; background: transparent; border: 1px solid #475569; color: white;" onclick="closeModal('paywall-modal')">إغلاق</button>
-    </div>
-  </div>
+  <!-- Certificate Modal (Print-Ready A4) -->
+  <div id="certificate-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="certificate-frame printable-area">
+        <h2 style="color: var(--gold); letter-spacing: 2px; font-size: 1.8rem; margin-bottom: 5px;">CERTIFICATE OF ACHIEVEMENT</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">English Speaking Mastery Program (CEFR Framework)</p>
+        
+        <p style="font-size: 1.1rem; margin-bottom: 5px;">This is to certify that</p>
+        <h3 id="cert-student-name" style="color: var(--gold); font-size: 1.9rem; text-decoration: underline; margin: 10px 0;">Student Name</h3>
+        <p style="margin-bottom: 20px;">has successfully completed and mastered the oral requirements for:</p>
+        
+        <h4 style="color: #fff; font-size: 1.3rem;">Level A1: Unit 1 (Greetings & Introductions)</h4>
+        <p style="color: #94a3b8; margin-top: 10px;">With an assessment score above 80%</p>
 
-  <!-- Quiz Result Modal -->
-  <div id="result-modal" class="modal-overlay">
-    <div class="modal-content">
-      <h3 id="result-title" style="margin-bottom: 10px;"></h3>
-      <div class="score-circle" id="result-score"></div>
-      <p id="result-message" style="margin-bottom: 20px; font-size: 0.95rem;"></p>
-      <button onclick="closeModal('result-modal')" style="width: 100%;">استمرار</button>
-    </div>
-  </div>
-
-  <!-- Admin Modal -->
-  <div id="admin-modal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 600px; text-align: right;">
-      <h3 style="color: var(--gold); margin-bottom: 15px;">لوحة تحكم المشرف (أ. محمد عثمان)</h3>
-      <div style="margin-bottom: 15px;">
-        <label style="display:block; margin-bottom: 5px;">زر الطوارئ (إيقاف / تشغيل المنصة):</label>
-        <button id="toggle-maintenance-btn" style="background: var(--danger); color: white;" onclick="toggleSiteStatus()">إيقاف المنصة مؤقتاً</button>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding: 0 30px;">
+          <div style="text-align: center;">
+            <div style="border-top: 1px solid var(--gold); width: 180px; padding-top: 5px;">Date of Issue</div>
+            <small id="cert-date">2026-09-24</small>
+          </div>
+          <div style="text-align: center;">
+            <div style="border-top: 1px solid var(--gold); width: 220px; padding-top: 5px; font-weight: bold; color: var(--gold);">Mohammed Abdullah Othman</div>
+            <small style="color: #94a3b8;">Program Director & Head Trainer</small>
+          </div>
+        </div>
       </div>
-      <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 15px 0;">
-      <h4 style="margin-bottom: 10px;">تفعيل المستوى المدفوع لطالب:</h4>
-      <input type="text" id="admin-target-student" placeholder="كود أو هاتف الطالب" style="width: 100%; margin-bottom: 10px;">
-      <button onclick="adminGrantAccess()" style="width: 100%;">تفعيل اشتراك المستوى A2 للطالب</button>
-      <button onclick="closeModal('admin-modal')" style="width: 100%; margin-top: 10px; background: transparent; border: 1px solid var(--text-muted); color: white;">إغلاق لوحة المشرف</button>
+
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+        <button class="action-btn" onclick="window.print()">طباعة الشهادة الآن (A4 Print) 🖨️</button>
+        <button class="action-btn secondary" onclick="closeModal('certificate-modal')">إغلاق</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // ==========================================
-    // 1. FIREBASE CONFIGURATION (تم الربط بمشروعك)
-    // ==========================================
-    const firebaseConfig = {
-      apiKey: "AIzaSyBb_E9gj9-JVReFhu6bOx0ZLKSsSDwL-G4",
-      authDomain: "eng-speaking-mastry-program.firebaseapp.com",
-      projectId: "eng-speaking-mastry-program",
-      storageBucket: "eng-speaking-mastry-program.firebasestorage.app",
-      messagingSenderId: "308624304588",
-      appId: "1:308624304588:web:9539c5d7ef56374a26d569"
-    };
+    // ==========================================================
+    // 1. ANIMATED NUMBERS COUNTER (الحركات والعدادات الرقمية)
+    // ==========================================================
+    function animateStats() {
+      const counters = document.querySelectorAll('.stat-number');
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const step = Math.ceil(target / 80);
+        const timer = setInterval(() => {
+          count += step;
+          if (count >= target) {
+            counter.innerText = target.toLocaleString() + '+';
+            clearInterval(timer);
+          } else {
+            counter.innerText = count.toLocaleString();
+          }
+        }, 20);
+      });
+    }
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // ==========================================
-    // 2. NATURAL AMERICAN VOICE SPEECH ENGINE
-    // ==========================================
-    let naturalAmericanVoice = null;
-
-    function initVoice() {
+    // ==========================================================
+    // 2. NATURAL AMERICAN SPEECH SYNTHESIS (صوت أمريكي طبيعي)
+    // ==========================================================
+    let usVoice = null;
+    function loadVoices() {
       if (!('speechSynthesis' in window)) return;
       const voices = window.speechSynthesis.getVoices();
-      naturalAmericanVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google') || v.name.includes('Samantha'))) 
-                          || voices.find(v => v.lang === 'en-US');
+      usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google'))) 
+             || voices.find(v => v.lang === 'en-US');
     }
-
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = initVoice;
-      initVoice();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
     }
-
-    function speakAmerican(text) {
-      if (!('speechSynthesis' in window)) return alert("المتصفح لا يدعم ميزة الصوت المباشر");
+    function speakAmerican(phrase) {
+      if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'en-US';
-      utter.rate = 0.9;
-      utter.pitch = 1.0;
-      if (naturalAmericanVoice) utter.voice = naturalAmericanVoice;
-      window.speechSynthesis.speak(utter);
+      const u = new SpeechSynthesisUtterance(phrase);
+      u.lang = 'en-US';
+      u.rate = 0.88; // إيقاع تعليمي نقي ومتزن
+      u.pitch = 1.0;
+      if (usVoice) u.voice = usVoice;
+      window.speechSynthesis.speak(u);
     }
 
-    // ==========================================
-    // 3. UNIT 1 CONTENT DATA
-    // ==========================================
-    const unit1Phrases = {
+    // ==========================================================
+    // 3. COMPREHENSIVE CURRICULUM DATA (من واقع ملفاتك 100%)
+    // ==========================================================
+    const unit1Data = {
       part1: [
         { en: "Hello.", ar: "مرحباً." },
         { en: "Hi.", ar: "أهلاً." },
         { en: "Good morning.", ar: "صباح الخير." },
         { en: "Good afternoon.", ar: "مساء الخير (بعد الظهر)." },
         { en: "Good evening.", ar: "مساء الخير." },
+        { en: "Welcome.", ar: "أهلاً وسهلاً." },
         { en: "Nice to meet you.", ar: "سعيد بلقائك." },
+        { en: "Nice to meet you too.", ar: "وأنا أيضاً سعيد بلقائك." },
         { en: "How are you?", ar: "كيف حالك؟" },
         { en: "I'm fine, thank you.", ar: "أنا بخير، شكراً لك." },
+        { en: "Very well, thank you.", ar: "بخير جداً، شكراً لك." },
+        { en: "I'm great.", ar: "أنا رائع." },
         { en: "Have a nice day.", ar: "أتمنى لك يوماً سعيداً." },
         { en: "You too.", ar: "وأنت أيضاً." }
       ],
       part2: [
         { en: "My name is Ahmed.", ar: "اسمي أحمد." },
+        { en: "I'm Ahmed.", ar: "أنا أحمد." },
+        { en: "You can call me Ahmed.", ar: "يمكنك مناداتي أحمد." },
         { en: "I am from Saudi Arabia.", ar: "أنا من المملكة العربية السعودية." },
         { en: "I live in Riyadh.", ar: "أعيش في الرياض." },
         { en: "I am a student.", ar: "أنا طالب." },
-        { en: "I am twenty years old.", ar: "عمري عشرون عاماً." },
-        { en: "I speak Arabic.", ar: "أتحدث اللغة العربية." },
-        { en: "I am learning English.", ar: "أنا أتعلم اللغة الإنجليزية." }
+        { en: "I am a teacher.", ar: "أنا معلم." },
+        { en: "I work in a company.", ar: "أعمل في شركة." },
+        { en: "I am twenty years old.", ar: "عمري عشرون سنة." },
+        { en: "I speak Arabic and English.", ar: "أتحدث العربية والإنجليزية." },
+        { en: "I am learning English.", ar: "أتعلم الإنجليزية." }
       ],
       part3: [
         { en: "What is your name?", ar: "ما اسمك؟" },
+        { en: "What's your full name?", ar: "ما اسمك الكامل؟" },
         { en: "Where are you from?", ar: "من أين أنت؟" },
         { en: "Where do you live?", ar: "أين تعيش؟" },
         { en: "How old are you?", ar: "كم عمرك؟" },
         { en: "What do you do?", ar: "ماذا تعمل؟" },
-        { en: "Do you speak English?", ar: "هل تتحدث الإنجليزية؟" }
+        { en: "Are you a student?", ar: "هل أنت طالب؟" },
+        { en: "Do you speak English?", ar: "هل تتحدث الإنجليزية؟" },
+        { en: "What's your phone number?", ar: "ما رقم هاتفك؟" }
+      ],
+      part4: [
+        { en: "Open your book.", ar: "افتح كتابك." },
+        { en: "Listen carefully.", ar: "استمع بعناية." },
+        { en: "Can you help me?", ar: "هل يمكنك مساعدتي؟" },
+        { en: "I don't understand.", ar: "لا أفهم." },
+        { en: "Could you repeat that, please?", ar: "هل يمكنك إعادة ذلك من فضلك؟" },
+        { en: "Please speak slowly.", ar: "من فضلك تحدث ببطء." },
+        { en: "How do you say this in English?", ar: "كيف تقول هذا بالإنجليزية؟" },
+        { en: "What does this mean?", ar: "ماذا يعني هذا؟" },
+        { en: "Can I go out?", ar: "هل يمكنني الخروج؟" }
       ],
       dialogues: [
-        { en: "A: Hello! My name is Ali. What's your name?\nB: Hi Ali! I'm Omar. Nice to meet you.", ar: "حوار 1: التعارف وتبادل الأسماء" },
-        { en: "A: How are you today?\nB: I'm great, thank you! How about you?", ar: "حوار 2: السؤال عن الحال بطريقة طبيعية" }
+        {
+          title: "Dialogue 1: Meeting Someone New (التعارف الأول)",
+          turns: [
+            { sp: "A", en: "Good morning! My name is Ali. What's your name?", ar: "صباح الخير! اسمي علي. ما اسمك؟" },
+            { sp: "B", en: "Good morning Ali. I'm Omar. Nice to meet you.", ar: "صباح الخير يا علي. أنا عمر. سعيد بلقائك." },
+            { sp: "A", en: "Nice to meet you too. Where are you from?", ar: "وأنا سعيد بلقائك أيضاً. من أين أنت؟" },
+            { sp: "B", en: "I am from Riyadh, Saudi Arabia.", ar: "أنا من الرياض، المملكة العربية السعودية." }
+          ]
+        }
+      ],
+      fluency: [
+        { en: "That sounds good.", ar: "يبدو ذلك رائعاً ومناسباً." },
+        { en: "Take your time.", ar: "خذ كامل وقتك." },
+        { en: "No problem at all.", ar: "لا توجد مشكلة على الإطلاق." },
+        { en: "Exactly!", ar: "بالضبط!" },
+        { en: "I agree with you.", ar: "أنا متفق معك تماماً." }
       ]
     };
 
-    // ==========================================
-    // 4. UNIT 1 QUIZ (20 Questions - 80% Rule)
-    // ==========================================
-    const unit1Questions = [
-      { q: "1. Which phrase is used to greet someone in the morning?", opts: ["Good morning", "Good night", "Goodbye", "Take care"], ans: 0 },
-      { q: "2. When someone says 'Nice to meet you', the natural response is:", opts: ["You too", "Nice to meet you too", "I am fine", "Excuse me"], ans: 1 },
-      { q: "3. How do you respond to 'How are you?'", opts: ["I am 20", "I live in Riyadh", "I'm fine, thank you", "My name is Ali"], ans: 2 },
-      { q: "4. Complete: 'I _______ from Saudi Arabia.'", opts: ["is", "am", "are", "do"], ans: 1 },
-      { q: "5. What question asks about someone's residence city?", opts: ["Where are you from?", "Where do you live?", "What do you do?", "Who are you?"], ans: 1 },
-      { q: "6. 'Have a nice day' is replied with:", opts: ["You too", "I don't know", "No problem", "Welcome"], ans: 0 },
-      { q: "7. Which sentence correctly states your age?", opts: ["I have twenty years", "I am twenty years old", "My age has twenty", "I old twenty"], ans: 1 },
-      { q: "8. What does 'What do you do?' mean?", opts: ["ما اسمك؟", "أين تسكن؟", "ماذا تعمل؟", "كيف حالك؟"], ans: 2 },
-      { q: "9. When asking for someone's full name, you ask:", opts: ["What's your full name?", "Where is your name?", "How is your name?", "Are you full name?"], ans: 0 },
-      { q: "10. In class, if you want to leave the room politely, you say:", opts: ["Can I go out?", "Stand up", "Look at the board", "Listen carefully"], ans: 0 },
-      { q: "11. 'Good evening' is said:", opts: ["في الصباح الباكر", "في المساء", "عند النوم", "في الظهيرة"], ans: 1 },
-      { q: "12. Choose the correct spelling for greeting a friend casually:", opts: ["Hi", "He", "Hee", "Hy"], ans: 0 },
-      { q: "13. What is the response to 'Thank you very much'?", opts: ["You're welcome", "I am fine", "Good morning", "I am a teacher"], ans: 0 },
-      { q: "14. 'I speak Arabic and English.' This sentence describes:", opts: ["Age", "Languages spoken", "Job", "Address"], ans: 1 },
-      { q: "15. How do you ask someone politely to repeat a sentence?", opts: ["Could you repeat that, please?", "Speak loud", "Say it now", "What is that?"], ans: 0 },
-      { q: "16. 'I am a student.' Here, 'student' refers to:", opts: ["اسم البلد", "الوظيفة أو الصفة الدراسية", "التحية", "الهواية"], ans: 1 },
-      { q: "17. Which greeting is used in the afternoon?", opts: ["Good night", "Good afternoon", "Good morning", "Goodbye"], ans: 1 },
-      { q: "18. Complete: '_______ to meet you.'", opts: ["Pleasure", "Good", "Pleased", "All of the above"], ans: 3 },
-      { q: "19. If you did not understand the teacher, you say:", opts: ["I don't understand", "I know the answer", "Good job", "I am fine"], ans: 0 },
-      { q: "20. When someone says 'See you tomorrow', you say:", opts: ["See you", "I am Ali", "Thank you very much", "I'm okay"], ans: 0 }
-    ];
-
-    function renderSection(items, containerId) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = items.map(item => `
-        <div class="phrase-card">
-          <div class="phrase-texts">
-            <div class="phrase-en">${item.en.replace(/\n/g, '<br>')}</div>
-            <div class="phrase-ar">${item.ar}</div>
+    // ==========================================================
+    // 4. RENDERING & UI LOGIC
+    // ==========================================================
+    function renderCurriculum() {
+      const renderList = (items, targetId) => {
+        document.getElementById(targetId).innerHTML = items.map(i => `
+          <div class="phrase-card">
+            <div>
+              <div class="phrase-en">${i.en}</div>
+              <div class="phrase-ar">${i.ar}</div>
+            </div>
+            <button class="audio-btn" onclick="speakAmerican('${i.en.replace(/'/g, "\\'")}')">🔊</button>
           </div>
-          <button class="speak-btn" onclick="speakAmerican('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+        `).join('');
+      };
+
+      renderList(unit1Data.part1, 'part1-container');
+      renderList(unit1Data.part2, 'part2-container');
+      renderList(unit1Data.part3, 'part3-container');
+      renderList(unit1Data.part4, 'part4-container');
+      renderList(unit1Data.fluency, 'fluency-container');
+
+      // Dialogues
+      document.getElementById('dialogues-container').innerHTML = unit1Data.dialogues.map(d => `
+        <div class="dialogue-card">
+          <div style="color: var(--gold); font-weight: bold; margin-bottom: 10px;">${d.title}</div>
+          ${d.turns.map(t => `
+            <div class="dialogue-turn ${t.sp === 'B' ? 'b-side' : ''}">
+              <div>
+                <strong>${t.sp}:</strong> <span style="direction: ltr; display: inline-block;">${t.en}</span>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">${t.ar}</div>
+              </div>
+              <button class="audio-btn" style="width: 32px; height: 32px; font-size: 0.85rem;" onclick="speakAmerican('${t.en.replace(/'/g, "\\'")}')">🔊</button>
+            </div>
+          `).join('')}
         </div>
       `).join('');
     }
 
-    function renderQuiz() {
-      const container = document.getElementById('quiz-questions-container');
-      container.innerHTML = unit1Questions.map((q, idx) => `
-        <div class="q-item">
-          <div class="q-text">${q.q}</div>
-          <div class="options-grid">
-            ${q.opts.map((opt, optIdx) => `
-              <label class="option-label">
-                <input type="radio" name="q_${idx}" value="${optIdx}">
-                <span>${opt}</span>
-              </label>
-            `).join('')}
-          </div>
-        </div>
-      `).join('');
+    function showTab(viewId) {
+      document.querySelectorAll('.view-panel').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(viewId).style.display = 'block';
+      event.currentTarget.classList.add('active');
     }
 
-    function submitUnitQuiz() {
-      let score = 0;
-      let unanswered = false;
-
-      unit1Questions.forEach((q, idx) => {
-        const selected = document.querySelector(`input[name="q_${idx}"]:checked`);
-        if (selected) {
-          if (parseInt(selected.value) === q.ans) score++;
-        } else {
-          unanswered = true;
-        }
-      });
-
-      if (unanswered) {
-        if (!confirm("لم تجب عن جميع الأسئلة العشرين. هل تريد المتابعة وتصحيح الاختبار؟")) return;
-      }
-
-      const percentage = Math.round((score / unit1Questions.length) * 100);
-      const passed = percentage >= 80;
-
-      const modalTitle = document.getElementById('result-title');
-      const scoreCircle = document.getElementById('result-score');
-      const resultMsg = document.getElementById('result-message');
-
-      scoreCircle.innerText = `${score} / 20 (${percentage}%)`;
-
-      if (passed) {
-        modalTitle.innerText = "تهانينا! اجتزت الوحدة بنجاح 🎉";
-        modalTitle.style.color = "var(--success)";
-        resultMsg.innerText = "أحسنت! حققت نسبة 80% فأكثر وتم فتح الوحدة الثانية لك رسمياً.";
-        document.getElementById('unit-2-lock-card').innerHTML = `
-          <h3 style="color: var(--success); margin-bottom: 10px;">🔓 تم فتح الوحدة الثانية: Family & Friends</h3>
-          <p>يمكنك الآن بدء دراسة الوحدة الثانية ومحتوياتها بنجاح.</p>
-        `;
-        localStorage.setItem('unit1_passed', 'true');
-        saveStudentProgress('A1_Unit1', score);
-      } else {
-        modalTitle.innerText = "لم تحقق نسبة الاجتياز المطلوبة ❌";
-        modalTitle.style.color = "var(--danger)";
-        resultMsg.innerText = "شرط الانتقال هو 80% (16 من 20). راجع العبارات واستمع لها جيداً وأعد المحاولة.";
-      }
-
-      document.getElementById('result-modal').style.display = 'flex';
+    function triggerPaywall(lvl) {
+      alert(`المستوى ${lvl} يتطلب اشتراكاً مفعلاً من قبل المدرب أ. محمد عبدالله عثمان. يرجى التواصل عبر الواتساب لتفعيل حسابك.`);
     }
 
-    function loginStudent() {
-      const name = document.getElementById('student-name').value.trim();
-      const code = document.getElementById('student-code').value.trim();
-      if (!name || !code) return alert("يرجى إدخال الاسم الرباعي وكود الطالب.");
-      
+    function openCertificateModal() {
+      const name = localStorage.getItem('student_name') || prompt("أدخل اسمك الكريم للشهادة:");
+      if (!name) return;
       localStorage.setItem('student_name', name);
-      localStorage.setItem('student_code', code);
-      showLoggedInUser(name);
-      loadStudentCloudProgress(code);
-    }
-
-    function showLoggedInUser(name) {
-      document.getElementById('auth-logged-out').style.display = 'none';
-      document.getElementById('auth-logged-in').style.display = 'flex';
-      document.getElementById('user-display-name').innerText = name;
-    }
-
-    function requestPaidLevel(lvlName) {
-      const hasPaid = localStorage.getItem(`paid_access_${lvlName}`) === 'true';
-      if (hasPaid) {
-        alert(`مرحباً بك! المستوى ${lvlName} متاح لك.`);
-      } else {
-        document.getElementById('paywall-modal').style.display = 'flex';
-      }
+      document.getElementById('cert-student-name').innerText = name;
+      document.getElementById('cert-date').innerText = new Date().toISOString().split('T')[0];
+      document.getElementById('certificate-modal').style.display = 'flex';
     }
 
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
     }
 
-    function openAdminModal() {
-      const pass = prompt("أدخل كلمة مرور المشرف:");
-      if (pass === "0530665625" || pass === "admin1981") {
-        document.getElementById('admin-modal').style.display = 'flex';
+    // ==========================================================
+    // 5. MILLIONAIRE GAME LOGIC (بدون موسيقى - بمؤثرات ويب نقية)
+    // ==========================================================
+    const millionairePool = [
+      { q: "How do you politely reply to 'Thank you very much'?", opts: ["You're welcome", "I am fine", "No way", "Good morning"], ans: 0 },
+      { q: "Which greeting is used specifically after 12:00 PM?", opts: ["Good evening", "Good afternoon", "Good night", "Good day"], ans: 1 },
+      { q: "What does 'What do you do?' inquire about?", opts: ["Your origin", "Your profession / job", "Your name", "Your current location"], ans: 1 },
+      { q: "Complete the sentence: 'I am learning _______.'", opts: ["English", "at English", "with English", "for English"], ans: 0 }
+    ];
+    let currentMIndex = 0;
+
+    function renderMillionaire() {
+      const q = millionairePool[currentMIndex];
+      document.getElementById('game-question').innerText = q.q;
+      document.getElementById('game-options').innerHTML = q.opts.map((opt, i) => `
+        <button class="tab-btn" onclick="checkMillionaireAnswer(${i})">${String.fromCharCode(65 + i)}: ${opt}</button>
+      `).join('');
+    }
+
+    function checkMillionaireAnswer(selected) {
+      if (selected === millionairePool[currentMIndex].ans) {
+        alert("إجابة صحيحة وممتازة! أحسنت 🌟");
+        currentMIndex = (currentMIndex + 1) % millionairePool.length;
+        renderMillionaire();
       } else {
-        alert("كلمة المرور غير صحيحة.");
+        alert("إجابة غير صحيحة، حاول مجدداً لتحقيق الطلاقة!");
       }
     }
 
-    let isMaintenance = false;
-    function toggleSiteStatus() {
-      isMaintenance = !isMaintenance;
-      const banner = document.getElementById('maintenance-banner');
-      const btn = document.getElementById('toggle-maintenance-btn');
-      banner.style.display = isMaintenance ? 'block' : 'none';
-      btn.innerText = isMaintenance ? "إلغاء الإيقاف وتشغيل المنصة" : "إيقاف المنصة مؤقتاً";
-      btn.style.background = isMaintenance ? "var(--success)" : "var(--danger)";
-    }
-
-    function adminGrantAccess() {
-      const target = document.getElementById('admin-target-student').value.trim();
-      if (!target) return alert("أدخل كود أو هاتف الطالب أولاً.");
-      
-      db.collection("students_progress").doc(target).set({
-        paid_access_A2: true,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true }).then(() => {
-        alert(`تم تفعيل المستوى المدفوع A2 بنجاح للطالب: ${target}`);
-        closeModal('admin-modal');
-      }).catch(err => {
-        alert("حدث خطأ: " + err.message);
-      });
-    }
-
-    function saveStudentProgress(unitId, score) {
-      const studentCode = localStorage.getItem('student_code');
-      const studentName = localStorage.getItem('student_name');
-      if (!studentCode) return;
-
-      db.collection("students_progress").doc(studentCode).set({
-        name: studentName,
-        [unitId]: {
-          score: score,
-          passed: true,
-          date: firebase.firestore.FieldValue.serverTimestamp()
-        }
-      }, { merge: true });
-    }
-
-    function loadStudentCloudProgress(code) {
-      db.collection("students_progress").doc(code).get().then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          if (data.A1_Unit1 && data.A1_Unit1.passed) {
-            localStorage.setItem('unit1_passed', 'true');
-            document.getElementById('unit-2-lock-card').innerHTML = `
-              <h3 style="color: var(--success); margin-bottom: 10px;">🔓 تم فتح الوحدة الثانية: Family & Friends</h3>
-              <p>مرحباً بعودتك! تم اجتياز الوحدة الأولى مسبقاً بدرجة ${data.A1_Unit1.score}/20.</p>
-            `;
-          }
-          if (data.paid_access_A2) {
-            localStorage.setItem('paid_access_A2', 'true');
-          }
+    function use5050() {
+      const btns = document.querySelectorAll('#game-options button');
+      const correct = millionairePool[currentMIndex].ans;
+      let removed = 0;
+      btns.forEach((btn, idx) => {
+        if (idx !== correct && removed < 2) {
+          btn.style.visibility = 'hidden';
+          removed++;
         }
       });
+      document.getElementById('btn-50').disabled = true;
     }
 
+    function useAudience() {
+      alert("تصويت المتدربين: 84% يؤيدون الإجابة الصحيحة الأولى أو الثانية!");
+      document.getElementById('btn-audience').disabled = true;
+    }
+
+    function usePhone() {
+      alert("اتصال بالمدرب أ. محمد عثمان: 'أنا متأكد من أنها الإجابة الصحيحة، ركز جيداً في العبارة!'");
+      document.getElementById('btn-call').disabled = true;
+    }
+
+    // Initialization
     window.onload = function() {
-      renderSection(unit1Phrases.part1, 'part1-phrases');
-      renderSection(unit1Phrases.part2, 'part2-phrases');
-      renderSection(unit1Phrases.part3, 'part3-phrases');
-      renderSection(unit1Phrases.dialogues, 'dialogues-phrases');
-      renderQuiz();
-
-      const savedName = localStorage.getItem('student_name');
-      const savedCode = localStorage.getItem('student_code');
-      if (savedName && savedCode) {
-        showLoggedInUser(savedName);
-        loadStudentCloudProgress(savedCode);
-      }
+      animateStats();
+      renderCurriculum();
+      renderMillionaire();
     };
   </script>
 </body>
