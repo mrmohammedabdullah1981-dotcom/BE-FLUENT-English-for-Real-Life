@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Speaking Mastery Program | Mr. Mohammed Abdullah Othman</title>
+  <title>Fluent English | Speak English Fluently Through Real Life Situations</title>
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -11,18 +11,18 @@
 
   <style>
     :root {
-      --bg-dark: #070e17;
-      --card-bg: #0f1c2c;
-      --card-glass: rgba(15, 28, 44, 0.85);
-      --border-color: #1e354f;
-      --gold: #d4af37;
-      --gold-hover: #f3e5ab;
-      --gold-glow: rgba(212, 175, 55, 0.25);
-      --text-white: #f8fafc;
+      --bg-main: #060b14;
+      --card-bg: #0c1626;
+      --card-border: #16263d;
+      --gold-primary: #d4af37;
+      --gold-light: #f5e7a9;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --success: #10b981;
-      --danger: #ef4444;
-      --primary-blue: #0284c7;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-blue: #0284c7;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
       --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -34,728 +34,1174 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
+      background-color: var(--bg-main);
+      color: var(--text-main);
       line-height: 1.6;
-      padding-bottom: 70px;
       overflow-x: hidden;
-    }
-
-    /* Animated Counter Section */
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-      margin: 25px 0;
-    }
-    .stat-card {
-      background: var(--card-glass);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border-color);
-      border-top: 3px solid var(--gold);
-      border-radius: 12px;
-      padding: 18px;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px var(--gold-glow);
-    }
-    .stat-number {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--gold);
-      display: block;
-      margin-bottom: 4px;
-    }
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    /* Header */
-    header {
-      background: linear-gradient(180deg, #03080e 0%, #0d1e2e 100%);
-      border-bottom: 2px solid var(--gold);
-      padding: 30px 20px;
-      text-align: center;
       position: relative;
     }
-    .badge {
-      display: inline-block;
-      background: rgba(212, 175, 55, 0.12);
-      border: 1px solid var(--gold);
-      color: var(--gold-hover);
-      padding: 5px 16px;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      margin-bottom: 12px;
-      animation: pulse 2.5s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-      50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-    }
-    h1 {
-      font-size: 2rem;
-      color: var(--gold);
-      margin-bottom: 6px;
-      letter-spacing: 0.5px;
-    }
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 15px;
-    }
-    .trainer-tag {
-      font-weight: bold;
-      color: #ffffff;
-      font-size: 1.15rem;
-      background: rgba(2, 132, 199, 0.15);
-      border: 1px solid var(--primary-blue);
-      display: inline-block;
-      padding: 6px 18px;
-      border-radius: 8px;
+
+    /* Starry Night Canvas Background */
+    #stars-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
+    .main-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
     }
 
-    /* Nav Tabs */
-    .nav-tabs {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 25px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-    }
-    .tab-btn {
-      flex: 1;
-      min-width: 160px;
-      padding: 14px 10px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      color: white;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .tab-btn.active {
-      border-color: var(--gold);
-      background: linear-gradient(145deg, #132438, #0b1725);
-      box-shadow: 0 4px 15px var(--gold-glow);
-    }
-    .tab-btn.locked {
-      opacity: 0.6;
-      border-style: dashed;
-    }
-
-    /* Content Cards */
-    .content-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    }
-    .section-header {
-      font-size: 1.3rem;
-      color: var(--gold);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-      margin: 30px 0 15px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .phrase-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 14px;
-    }
-    .phrase-card {
-      background: #091420;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 16px;
+    /* Top Navigation */
+    .top-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      transition: transform 0.2s, border-color 0.2s;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+      margin-bottom: 40px;
     }
-    .phrase-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--gold);
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--gold-primary);
+      text-decoration: none;
     }
-    .phrase-en {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 4px;
-      direction: ltr;
-      text-align: left;
-    }
-    .phrase-ar {
+    .user-pill {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      padding: 6px 16px;
+      border-radius: 20px;
       font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      padding: 40px 10px 60px 10px;
+    }
+    .tag-badge {
+      display: inline-block;
+      border: 1px solid var(--gold-primary);
+      background: rgba(212, 175, 55, 0.08);
+      color: var(--gold-light);
+      padding: 6px 20px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      margin-bottom: 25px;
+      letter-spacing: 0.5px;
+    }
+    .hero-title-en {
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--gold-primary);
+      letter-spacing: 1px;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+    }
+    .hero-title-ar {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    /* Live Animated Counter Bar */
+    .counter-section {
+      text-align: center;
+      margin: 50px 0 80px 0;
+    }
+    .section-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+    .section-heading {
+      font-size: 2rem;
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .section-subtext {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 35px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .stat-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212, 175, 55, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      margin: 0 auto 18px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .stat-val {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--gold-primary);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .stat-label-ar {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .stat-label-en {
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
-    .audio-btn {
-      width: 44px;
-      height: 44px;
+
+    /* CEFR Levels 6-Card Grid */
+    .levels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+    .level-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .level-card:hover {
+      transform: translateY(-5px);
+    }
+    .level-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    .level-tag {
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .level-badge-status {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+    .level-name-ar {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .level-name-en {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .level-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      min-height: 44px;
+    }
+    .level-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .feature-pill {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .level-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    /* Situations 10-Card Hub */
+    .situations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 80px;
+    }
+    .situation-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .situation-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      border-color: var(--gold-primary);
+    }
+    .situation-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .situation-title-ar {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .situation-title-en {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .situation-link {
+      font-size: 0.8rem;
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    /* Situation Modal & Detailed Content View */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(3, 7, 13, 0.95);
+      z-index: 10000;
+      overflow-y: auto;
+      padding: 25px 15px;
+    }
+    .modal-inner {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-top: 3px solid var(--gold-primary);
+      max-width: 900px;
+      margin: 30px auto;
+      border-radius: 18px;
+      padding: 30px;
+      position: relative;
+    }
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      border: 1px solid var(--gold);
-      background: rgba(212, 175, 55, 0.1);
-      color: var(--gold);
+      cursor: pointer;
+    }
+    .unit-part-title {
+      font-size: 1.3rem;
+      color: var(--gold-primary);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+      margin: 30px 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .phrase-row {
+      background: #08111d;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+    .audio-play-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-primary);
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
-      transition: all 0.2s;
-      font-size: 1.1rem;
+      transition: 0.2s;
     }
-    .audio-btn:hover {
-      background: var(--gold);
+    .audio-play-btn:hover {
+      background: var(--gold-primary);
       color: #000;
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
 
-    /* Dialogue Card */
-    .dialogue-card {
-      background: #07111c;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 16px;
+    /* Quiz Box Inside Modal */
+    .quiz-card {
+      background: #060d17;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    .quiz-q-block {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #112033;
+    }
+    .quiz-q-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      direction: ltr;
+      text-align: left;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      direction: ltr;
+    }
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .option-btn:hover {
+      border-color: var(--gold-primary);
+    }
+
+    /* Contact Section */
+    .contact-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 40px 30px;
+      max-width: 800px;
+      margin: 0 auto 80px auto;
+      text-align: center;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
       margin-bottom: 15px;
     }
-    .dialogue-turn {
-      margin-bottom: 10px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      background: #0f1f30;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    input, textarea {
+      width: 100%;
+      background: #07101b;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      outline: none;
     }
-    .dialogue-turn.b-side {
-      background: #0b283d;
-      border-right: 3px solid var(--gold);
+    input:focus, textarea:focus {
+      border-color: var(--gold-primary);
+    }
+    .submit-gold-btn {
+      background: var(--gold-primary);
+      color: #060b14;
+      font-weight: 800;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      font-size: 1.05rem;
+      margin-top: 15px;
+      transition: 0.2s;
+    }
+    .submit-gold-btn:hover {
+      background: var(--gold-light);
     }
 
-    /* Buttons */
-    .action-btn {
-      background: var(--gold);
-      color: #040a10;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 50px 20px 30px 20px;
+      background: #04080f;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .footer-col h4 {
+      color: var(--gold-primary);
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    .footer-col p, .footer-col a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .whatsapp-badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-    }
-    .action-btn:hover {
-      background: var(--gold-hover);
-      transform: translateY(-1px);
-    }
-    .action-btn.secondary {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-    }
-    .action-btn.secondary:hover {
-      background: var(--gold);
-      color: #040a10;
-    }
-
-    /* Modal / Certificate Print Layout */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.88);
-      z-index: 99999;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .modal-content {
-      background: var(--card-bg);
-      border: 2px solid var(--gold);
-      border-radius: 12px;
-      max-width: 650px;
-      width: 100%;
-      padding: 25px;
-      text-align: center;
-      position: relative;
-    }
-    .certificate-frame {
-      border: 5px double var(--gold);
-      padding: 30px 20px;
-      background: #060e17;
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid #25D366;
+      color: #25D366;
+      padding: 8px 16px;
       border-radius: 8px;
-      color: #fff;
-      margin: 15px 0;
+      font-weight: 700;
+      text-decoration: none;
+      margin-top: 10px;
     }
 
-    @media print {
-      body * { visibility: hidden; }
-      .printable-area, .printable-area * { visibility: visible; }
-      .printable-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-        border: 8px double #d4af37 !important;
-        background: #fff !important;
-        color: #000 !important;
-      }
-      .printable-area * { color: #000 !important; }
+    @media (max-width: 768px) {
+      .hero-title-en { font-size: 2.2rem; }
+      .form-row, .options-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="badge">A1 → C2 • Speak English Like a Native</div>
-    <h1>English Speaking Mastery Program</h1>
-    <div class="subtitle">Think in English • Speak in English • Succeed in English</div>
-    <div class="trainer-tag">الإشراف العام والتدريب: أ. محمد عبدالله محمد عثمان</div>
-  </header>
+  <!-- Starry Background Animation -->
+  <canvas id="stars-bg"></canvas>
 
-  <div class="container">
-
-    <!-- Live Animated Statistics Bar -->
-    <div class="hero-stats">
-      <div class="stat-card">
-        <span class="stat-number" data-target="3000">0</span>
-        <span class="stat-label">تعبير وجملة عملية (+Expressions)</span>
+  <div class="main-wrapper">
+    
+    <!-- Navigation -->
+    <header class="top-nav">
+      <a href="#" class="brand-logo">
+        <span style="font-size: 1.6rem;">📖</span> FLUENT ENGLISH
+      </a>
+      <div id="auth-box">
+        <button class="user-pill" onclick="promptLogin()">تسجيل الدخول / كود الطالب</button>
       </div>
-      <div class="stat-card">
-        <span class="stat-number" data-target="2500">0</span>
-        <span class="stat-label">سؤال للمحادثة والطلاقة (+Questions)</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" data-target="500">0</span>
-        <span class="stat-label">موقف وحوار تفاعلي (+Dialogues)</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" data-target="6">0</span>
-        <span class="stat-label">مستويات من المبتدئ للاحتراف (A1 → C2)</span>
-      </div>
-    </div>
+    </header>
 
-    <!-- Navigation Tabs -->
-    <div class="nav-tabs">
-      <div class="tab-btn active" onclick="showTab('units-view')">
-        <span>📖 المنهج والوحدات</span>
-        <small style="color: var(--gold);">المستوى الحالي: A1</small>
-      </div>
-      <div class="tab-btn" onclick="showTab('millionaire-view')">
-        <span>🏆 من سيربح المليون</span>
-        <small style="color: var(--success);">تحدي الطلاقة والمفردات</small>
-      </div>
-      <div class="tab-btn" onclick="showTab('situations-view')">
-        <span>✈️ قسم المواقف الحياتية</span>
-        <small style="color: var(--text-muted);">Situations Hub</small>
-      </div>
-      <div class="tab-btn locked" onclick="triggerPaywall('A2')">
-        <span>🔒 Level A2 Elementary</span>
-        <small style="color: var(--gold);">يتطلب اشتراكاً</small>
-      </div>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="tag-badge">● منصة تعليمية احترافية متكاملة</div>
+      <h1 class="hero-title-en">Speak English Fluently<br>Through Real Life Situations</h1>
+      <h2 class="hero-title-ar">تحدث الإنجليزية بطلاقة من خلال مواقف الحياة الحقيقية</h2>
+      <p class="hero-desc">
+        تعلّم الإنجليزية بالطريقة الصحيحة — من خلال حوارات حقيقية وتدريبات عملية في ست مستويات متكاملة وفق إطار CEFR الدولي.
+      </p>
+    </section>
 
-    <!-- VIEW 1: UNITS & CURRICULUM -->
-    <div id="units-view" class="view-panel">
-      <div class="content-box">
-        <h2 style="color: var(--gold); margin-bottom: 6px;">Unit 1: Greetings & Introductions</h2>
-        <p style="color: var(--text-muted); margin-bottom: 25px;">الوحدة الأولى: التحيات والتعارف وبدايات المحادثة الرسمية والودية</p>
+    <!-- Animated Counters Bar -->
+    <section class="counter-section">
+      <div class="section-tag">أرقام تتحدث</div>
+      <h3 class="section-heading">منصة تعليمية متكاملة</h3>
+      <p class="section-subtext">كل ما تحتاجه لتعلم الإنجليزية باحترافية في مكان واحد</p>
 
-        <!-- Part 1 -->
-        <div class="section-header">Part 1: Basic Greetings (التحيات والردود اليومية)</div>
-        <div class="phrase-grid" id="part1-container"></div>
-
-        <!-- Part 2 -->
-        <div class="section-header">Part 2: Introducing Yourself (التعريف الشامل بالنفس)</div>
-        <div class="phrase-grid" id="part2-container"></div>
-
-        <!-- Part 3 -->
-        <div class="section-header">Part 3: Asking Personal Information (سؤال الآخرين عن بياناتهم)</div>
-        <div class="phrase-grid" id="part3-container"></div>
-
-        <!-- Part 4 -->
-        <div class="section-header">Part 4: Classroom English (الإنجليزية داخل القاعة الدراسية)</div>
-        <div class="phrase-grid" id="part4-container"></div>
-
-        <!-- Mini Dialogues -->
-        <div class="section-header">Mini Dialogues (حوارات المحاكاة الصوتية)</div>
-        <div id="dialogues-container"></div>
-
-        <!-- Fluency Builders -->
-        <div class="section-header">Fluency Builders (عبارات الطلاقة وسرعة البديهة)</div>
-        <div class="phrase-grid" id="fluency-container"></div>
-
-        <!-- Quiz Trigger & Certificate -->
-        <div style="margin-top: 35px; text-align: center; background: #07131e; border: 2px dashed var(--gold); padding: 25px; border-radius: 12px;">
-          <h3 style="color: var(--gold); margin-bottom: 10px;">الاختبار الإلكتروني للوحدة الأولى (20 سؤالاً)</h3>
-          <p style="color: var(--text-muted); margin-bottom: 20px;">شرط فتح الوحدة الثانية واستخراج الشهادة: تحقيق 80% (16 من 20) فما فوق.</p>
-          <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-            <button class="action-btn" onclick="startUnitQuiz()">بدء الاختبار الإلكتروني 📝</button>
-            <button class="action-btn secondary" onclick="openCertificateModal()">عرض وطباعة شهادة الإنجاز 🎓</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- VIEW 2: WHO WANTS TO BE A MILLIONAIRE (AUDIO-FREE QUIZ GAME) -->
-    <div id="millionaire-view" class="view-panel" style="display: none;">
-      <div class="content-box" style="border: 2px solid var(--gold); background: #050b12;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h3 style="color: var(--gold);">🏆 مسابقة من سيربح المليون اللغوية</h3>
-          <div style="color: var(--gold-hover); font-weight: bold;" id="game-prize">الجائزة: 100 نقطة</div>
-        </div>
-        
-        <!-- Lifelines (وسائل المساعدة) -->
-        <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center;">
-          <button class="action-btn secondary" id="btn-50" onclick="use5050()">50:50 (حذف إجابتين)</button>
-          <button class="action-btn secondary" id="btn-audience" onclick="useAudience()">جمهور المتدربين</button>
-          <button class="action-btn secondary" id="btn-call" onclick="usePhone()">اتصال بمدرب</button>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">💬</div>
+          <span class="stat-val" data-target="3500">0</span>
+          <div class="stat-label-ar">تعبير من الحياة الحقيقية</div>
+          <div class="stat-label-en">Real-Life Expressions</div>
         </div>
 
-        <div style="background: #091726; border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 20px;">
-          <h4 id="game-question" style="direction: ltr; font-size: 1.2rem; color: #fff;">Question will appear here...</h4>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">📖</div>
+          <span class="stat-val" data-target="500">0</span>
+          <div class="stat-label-ar">حوار عملي</div>
+          <div class="stat-label-en">Practice Dialogues</div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; direction: ltr;" id="game-options"></div>
-      </div>
-    </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">📊</div>
+          <span class="stat-val" data-target="6">0</span>
+          <div class="stat-label-ar">مستويات CEFR (A1–C2)</div>
+          <div class="stat-label-en">CEFR Levels</div>
+        </div>
 
-    <!-- VIEW 3: SITUATIONS HUB -->
-    <div id="situations-view" class="view-panel" style="display: none;">
-      <div class="content-box">
-        <h3 style="color: var(--gold); margin-bottom: 15px;">✈️ قسم المواقف اليومية الميدانية (Situations Hub)</h3>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">حوارات ومفردات سريعة جاهزة للاستخدام الفوري في الميدان:</p>
-        <div class="phrase-grid">
-          <div class="phrase-card">
-            <div>
-              <div class="phrase-en">At the Airport & Checking in</div>
-              <div class="phrase-ar">في المطار وإنهاء إجراءات السفر</div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">🧠</div>
+          <span class="stat-val" data-target="100">0</span>
+          <div class="stat-label-ar">اختبار تفاعلي</div>
+          <div class="stat-label-en">Interactive Quizzes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 Levels Grid (CEFR) -->
+    <section style="margin-bottom: 80px;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="section-tag">خارطة المستويات</div>
+        <h3 class="section-heading">مستويات المنهج المعتمدة</h3>
+        <p class="section-subtext">تدرج مدروس من التأسيس حتى الإتقان الكامل</p>
+      </div>
+
+      <div class="levels-grid">
+        <!-- A1 -->
+        <div class="level-card" style="border-top: 3px solid #10b981;">
+          <div>
+            <div class="level-top">
+              <div class="level-tag" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">A1</div>
+              <span class="level-badge-status" style="color: #10b981; border: 1px solid #10b981;">متاح مجاناً</span>
             </div>
-            <button class="audio-btn" onclick="speakAmerican('I would like to check in for my flight, please.')">🔊</button>
-          </div>
-          <div class="phrase-card">
-            <div>
-              <div class="phrase-en">Hotel Reservation & Room Service</div>
-              <div class="phrase-ar">حجز الفندق وخدمات الغرف</div>
+            <div class="level-name-ar">مبتدئ</div>
+            <div class="level-name-en">Beginner • 10 وحدات</div>
+            <p class="level-desc">تعلّم أساسيات اللغة الإنجليزية وأبسط المحادثات اليومية والتعريف بالنفس.</p>
+            <div class="level-features">
+              <span class="feature-pill">🎯 مواقف</span>
+              <span class="feature-pill">💬 حوارات</span>
+              <span class="feature-pill">📚 مفردات</span>
+              <span class="feature-pill">🔊 تدريب نطق</span>
+              <span class="feature-pill">📝 اختبارات</span>
             </div>
-            <button class="audio-btn" onclick="speakAmerican('I have a reservation under the name Mohammed.')">🔊</button>
           </div>
-          <div class="phrase-card">
-            <div>
-              <div class="phrase-en">At the Restaurant & Ordering Food</div>
-              <div class="phrase-ar">في المطعم وطلب الوجبات</div>
+          <button class="level-btn" style="background: #10b981; color: #04100c;" onclick="openSituationModal('hotel')">ابدأ المستوى ↵</button>
+        </div>
+
+        <!-- A2 -->
+        <div class="level-card" style="border-top: 3px solid #0284c7;">
+          <div>
+            <div class="level-top">
+              <div class="level-tag" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">A2</div>
+              <span class="level-badge-status">🔒 مقفل</span>
             </div>
-            <button class="audio-btn" onclick="speakAmerican('Could we please have the menu and the check?')">🔊</button>
+            <div class="level-name-ar">أساسي</div>
+            <div class="level-name-en">Elementary • 8 وحدات</div>
+            <p class="level-desc">وسّع مفرداتك وتحدث عن نفسك وعن مواقف بسيطة في السفر والعمل والصحة.</p>
+            <div class="level-features">
+              <span class="feature-pill">🎯 مواقف</span>
+              <span class="feature-pill">💬 حوارات</span>
+              <span class="feature-pill">📚 مفردات</span>
+              <span class="feature-pill">🔊 تدريب نطق</span>
+              <span class="feature-pill">📝 اختبارات</span>
+            </div>
           </div>
+          <button class="level-btn" style="background: rgba(2, 132, 199, 0.15); color: #0284c7; border: 1px solid #0284c7;" onclick="triggerPaywall('A2')">🔒 افتح هذا المستوى</button>
+        </div>
+
+        <!-- B1 -->
+        <div class="level-card" style="border-top: 3px solid #8b5cf6;">
+          <div>
+            <div class="level-top">
+              <div class="level-tag" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">B1</div>
+              <span class="level-badge-status">🔒 مقفل</span>
+            </div>
+            <div class="level-name-ar">متوسط</div>
+            <div class="level-name-en">Intermediate • 7 وحدات</div>
+            <p class="level-desc">تعامل مع مواقف الحياة اليومية بثقة وطلاقة، وناقش الآراء والقرارات.</p>
+            <div class="level-features">
+              <span class="feature-pill">🎯 مواقف</span>
+              <span class="feature-pill">💬 حوارات</span>
+              <span class="feature-pill">📚 مفردات</span>
+              <span class="feature-pill">🔊 تدريب نطق</span>
+              <span class="feature-pill">📝 اختبارات</span>
+            </div>
+          </div>
+          <button class="level-btn" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6; border: 1px solid #8b5cf6;" onclick="triggerPaywall('B1')">🔒 افتح هذا المستوى</button>
+        </div>
+
+        <!-- B2 -->
+        <div class="level-card" style="border-top: 3px solid #f59e0b;">
+          <div>
+            <div class="level-top">
+              <div class="level-tag" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">B2</div>
+              <span class="level-badge-status">🔒 مقفل</span>
+            </div>
+            <div class="level-name-ar">فوق المتوسط</div>
+            <div class="level-name-en">Upper Intermediate • 7 وحدات</div>
+            <p class="level-desc">عبّر عن آرائك وتحدث بشكل طبيعي في مواقف معقدة ونقاشات قيادية وفكرية.</p>
+            <div class="level-features">
+              <span class="feature-pill">🎯 مواقف</span>
+              <span class="feature-pill">💬 حوارات</span>
+              <span class="feature-pill">📚 مفردات</span>
+              <span class="feature-pill">🔊 تدريب نطق</span>
+              <span class="feature-pill">📝 اختبارات</span>
+            </div>
+          </div>
+          <button class="level-btn" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b;" onclick="triggerPaywall('B2')">🔒 افتح هذا المستوى</button>
+        </div>
+
+        <!-- C1 -->
+        <div class="level-card" style="border-top: 3px solid #ec4899;">
+          <div>
+            <div class="level-top">
+              <div class="level-tag" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">C1</div>
+              <span class="level-badge-status">🔒 مقفل</span>
+            </div>
+            <div class="level-name-ar">متقدم</div>
+            <div class="level-name-en">Advanced • 7 وحدات</div>
+            <p class="level-desc">أتقن اللغة واستخدمها بطريقة متقدمة واحترافية في الأوساط الأكاديمية والعملية.</p>
+            <div class="level-features">
+              <span class="feature-pill">🎯 مواقف</span>
+              <span class="feature-pill">💬 حوارات</span>
+              <span class="feature-pill">📚 مفردات</span>
+              <span class="feature-pill">🔊 تدريب نطق</span>
+              <span class="feature-pill">📝 اختبارات</span>
+            </div>
+          </div>
+          <button class="level-btn" style="background: rgba(236, 72, 153, 0.15); color: #ec4899; border: 1px solid #ec4899;" onclick="triggerPaywall('C1')">🔒 افتح هذا المستوى</button>
+        </div>
+
+        <!-- C2 -->
+        <div class="level-card" style="border-top: 3px solid #d4af37;">
+          <div>
+            <div class="level-top">
+              <div class="level-tag" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">C2</div>
+              <span class="level-badge-status">🔒 مقفل</span>
+            </div>
+            <div class="level-name-ar">إتقان</div>
+            <div class="level-name-en">Mastery • 5 وحدات</div>
+            <p class="level-desc">أعلى مستوى — تحدث بلغة الأمهات والخبراء وبدون أخطاء، بصياغات دقيقة ورصينة.</p>
+            <div class="level-features">
+              <span class="feature-pill">🎯 مواقف</span>
+              <span class="feature-pill">💬 حوارات</span>
+              <span class="feature-pill">📚 مفردات</span>
+              <span class="feature-pill">🔊 تدريب نطق</span>
+              <span class="feature-pill">📝 اختبارات</span>
+            </div>
+          </div>
+          <button class="level-btn" style="background: rgba(212, 175, 55, 0.15); color: #d4af37; border: 1px solid #d4af37;" onclick="triggerPaywall('C2')">🔒 افتح هذا المستوى</button>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Situations Hub (العوالم العشرة) -->
+    <section style="margin-bottom: 80px;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="section-tag">لماذا هذه الدورة؟</div>
+        <h3 class="section-heading">تعلّم الإنجليزية في كل موقف</h3>
+        <p class="section-subtext">لن تجد نفسك تبحث عن الكلمات — ستكون مستعداً لكل موقف تواجهه في حياتك اليومية</p>
+      </div>
+
+      <div class="situations-grid">
+        <div class="situation-card" onclick="openSituationModal('hotel')">
+          <div class="situation-icon-box" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">🏨</div>
+          <div class="situation-title-ar">في الفندق</div>
+          <div class="situation-title-en">At the Hotel</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('airport')">
+          <div class="situation-icon-box" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">✈️</div>
+          <div class="situation-title-ar">في المطار</div>
+          <div class="situation-title-en">At the Airport</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('work')">
+          <div class="situation-icon-box" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">💼</div>
+          <div class="situation-title-ar">في العمل</div>
+          <div class="situation-title-en">At Work</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('university')">
+          <div class="situation-icon-box" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">🏛️</div>
+          <div class="situation-title-ar">في الجامعة</div>
+          <div class="situation-title-en">At University</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('school')">
+          <div class="situation-icon-box" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">🎓</div>
+          <div class="situation-title-ar">في المدرسة</div>
+          <div class="situation-title-en">At School</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('daily')">
+          <div class="situation-icon-box" style="background: rgba(234, 179, 8, 0.15); color: #eab308;">☀️</div>
+          <div class="situation-title-ar">الحياة اليومية</div>
+          <div class="situation-title-en">Daily Life</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('social')">
+          <div class="situation-icon-box" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">👥</div>
+          <div class="situation-title-ar">المواقف الاجتماعية</div>
+          <div class="situation-title-en">Social Situations</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('hospital')">
+          <div class="situation-icon-box" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">❤️</div>
+          <div class="situation-title-ar">المستشفى</div>
+          <div class="situation-title-en">Hospital</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('shopping')">
+          <div class="situation-icon-box" style="background: rgba(217, 70, 239, 0.15); color: #d946ef;">🛍️</div>
+          <div class="situation-title-ar">التسوق</div>
+          <div class="situation-title-en">Shopping</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+
+        <div class="situation-card" onclick="openSituationModal('travel')">
+          <div class="situation-icon-box" style="background: rgba(20, 184, 166, 0.15); color: #14b8a6;">🌐</div>
+          <div class="situation-title-ar">أثناء السفر</div>
+          <div class="situation-title-en">While Traveling</div>
+          <div class="situation-link">اضغط للدخول ↵</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-card">
+      <div class="section-tag">تواصل معنا</div>
+      <h3 style="font-size: 1.8rem; margin-bottom: 8px;">هل لديك سؤال؟</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">نحن هنا لمساعدتك. راسلنا وسنرد عليك في أقرب وقت.</p>
+
+      <form onsubmit="handleContact(event)">
+        <div class="form-row">
+          <input type="text" id="contact-name" placeholder="الاسم الكامل" required>
+          <input type="email" id="contact-email" placeholder="البريد الإلكتروني" required>
+        </div>
+        <textarea id="contact-msg" rows="4" placeholder="اكتب رسالتك هنا..." required></textarea>
+        <button type="submit" class="submit-gold-btn">إرسال الرسالة ✈️</button>
+      </form>
+    </section>
 
   </div>
 
-  <!-- Certificate Modal (Print-Ready A4) -->
-  <div id="certificate-modal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 800px;">
-      <div class="certificate-frame printable-area">
-        <h2 style="color: var(--gold); letter-spacing: 2px; font-size: 1.8rem; margin-bottom: 5px;">CERTIFICATE OF ACHIEVEMENT</h2>
-        <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">English Speaking Mastery Program (CEFR Framework)</p>
-        
-        <p style="font-size: 1.1rem; margin-bottom: 5px;">This is to certify that</p>
-        <h3 id="cert-student-name" style="color: var(--gold); font-size: 1.9rem; text-decoration: underline; margin: 10px 0;">Student Name</h3>
-        <p style="margin-bottom: 20px;">has successfully completed and mastered the oral requirements for:</p>
-        
-        <h4 style="color: #fff; font-size: 1.3rem;">Level A1: Unit 1 (Greetings & Introductions)</h4>
-        <p style="color: #94a3b8; margin-top: 10px;">With an assessment score above 80%</p>
+  <!-- Situation Modal Viewer (At The Hotel - Complete Data) -->
+  <div id="situation-modal" class="modal-overlay">
+    <div class="modal-inner">
+      <button class="close-btn" onclick="closeSituationModal()">✕</button>
 
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding: 0 30px;">
-          <div style="text-align: center;">
-            <div style="border-top: 1px solid var(--gold); width: 180px; padding-top: 5px;">Date of Issue</div>
-            <small id="cert-date">2026-09-24</small>
-          </div>
-          <div style="text-align: center;">
-            <div style="border-top: 1px solid var(--gold); width: 220px; padding-top: 5px; font-weight: bold; color: var(--gold);">Mohammed Abdullah Othman</div>
-            <small style="color: #94a3b8;">Program Director & Head Trainer</small>
-          </div>
-        </div>
+      <div style="text-align: center; margin-bottom: 25px;">
+        <span class="section-tag">WORLD 1 • Level A1 Beginner</span>
+        <h2 style="color: var(--gold-primary); font-size: 2rem; margin-top: 5px;">🏨 AT THE HOTEL (في الفندق)</h2>
+        <p style="color: var(--text-muted); margin-top: 6px;">تخيل أنك وصلت للتو إلى فندق بعد رحلة طويلة. تحتاج إلى تسجيل الدخول واستلام المفتاح والتحدث مع الاستقبال.</p>
       </div>
 
-      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-        <button class="action-btn" onclick="window.print()">طباعة الشهادة الآن (A4 Print) 🖨️</button>
-        <button class="action-btn secondary" onclick="closeModal('certificate-modal')">إغلاق</button>
+      <!-- Warm-up Dialogue -->
+      <div class="unit-part-title">🎬 Part 1: Warm-up Dialogue (الحوار التمهيدي الأول)</div>
+      <div id="dialogue-1-phrases"></div>
+
+      <!-- Hotel Vocabulary -->
+      <div class="unit-part-title">📚 Part 2: Hotel Vocabulary (كلمات الفندق الهامة)</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px;" id="vocab-phrases"></div>
+
+      <!-- Useful Expressions -->
+      <div class="unit-part-title">💬 Part 3: Useful Hotel Expressions (العبارات الشائعة)</div>
+      <div id="useful-phrases"></div>
+
+      <!-- Quiz Section (20 Questions) -->
+      <div class="quiz-card">
+        <h3 style="color: var(--gold-primary); margin-bottom: 10px;">📝 Hotel Quiz (اختبار الوحدة الـ 20 سؤالاً)</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">شرط الاجتياز وتحقيق التميز: 16 من 20 فما فوق (80%).</p>
+        <div id="hotel-quiz-container"></div>
+        <button class="submit-gold-btn" onclick="submitHotelQuiz()">تصحيح الاختبار والتحقق من النتيجة 🎯</button>
       </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>FLUENT ENGLISH 📖</h4>
+        <p>منصة تعليمية متكاملة لتعلم اللغة الإنجليزية من خلال مواقف الحياة الحقيقية، موجهة لجميع المستويات من المبتدئ إلى المتقدمين وفق الإطار الأوروبي المشترك CEFR.</p>
+      </div>
+      <div class="footer-col">
+        <h4>روابط سريعة</h4>
+        <a href="#">الرئيسية</a>
+        <a href="#">المستويات (A1–C2)</a>
+        <a href="#">المحادثة مع AI</a>
+        <a href="#" onclick="openAdminPanel()">لوحة تحكم المشرف</a>
+      </div>
+      <div class="footer-col">
+        <h4>تواصل معنا</h4>
+        <p>المشرف العام والمدرب: أ. محمد عبدالله محمد عثمان</p>
+        <p>البريد: info@fluent-english.com</p>
+        <a href="https://wa.me/966530665625" target="_blank" class="whatsapp-badge">
+          <span>انضم لمجموعة الواتساب 💬</span>
+        </a>
+      </div>
+    </div>
+    <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 30px; padding-top: 20px; color: var(--text-muted); font-size: 0.85rem;">
+      جميع الحقوق محفوظة © 2026 • English Speaking Mastery Program
+    </div>
+  </footer>
 
   <script>
-    // ==========================================================
-    // 1. ANIMATED NUMBERS COUNTER (الحركات والعدادات الرقمية)
-    // ==========================================================
-    function animateStats() {
-      const counters = document.querySelectorAll('.stat-number');
-      counters.forEach(counter => {
-        const target = +counter.getAttribute('data-target');
-        let count = 0;
-        const step = Math.ceil(target / 80);
-        const timer = setInterval(() => {
-          count += step;
-          if (count >= target) {
-            counter.innerText = target.toLocaleString() + '+';
-            clearInterval(timer);
-          } else {
-            counter.innerText = count.toLocaleString();
-          }
-        }, 20);
-      });
-    }
-
-    // ==========================================================
-    // 2. NATURAL AMERICAN SPEECH SYNTHESIS (صوت أمريكي طبيعي)
-    // ==========================================================
-    let usVoice = null;
-    function loadVoices() {
-      if (!('speechSynthesis' in window)) return;
-      const voices = window.speechSynthesis.getVoices();
-      usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google'))) 
-             || voices.find(v => v.lang === 'en-US');
-    }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-      loadVoices();
-    }
-    function speakAmerican(phrase) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(phrase);
-      u.lang = 'en-US';
-      u.rate = 0.88; // إيقاع تعليمي نقي ومتزن
-      u.pitch = 1.0;
-      if (usVoice) u.voice = usVoice;
-      window.speechSynthesis.speak(u);
-    }
-
-    // ==========================================================
-    // 3. COMPREHENSIVE CURRICULUM DATA (من واقع ملفاتك 100%)
-    // ==========================================================
-    const unit1Data = {
-      part1: [
-        { en: "Hello.", ar: "مرحباً." },
-        { en: "Hi.", ar: "أهلاً." },
-        { en: "Good morning.", ar: "صباح الخير." },
-        { en: "Good afternoon.", ar: "مساء الخير (بعد الظهر)." },
-        { en: "Good evening.", ar: "مساء الخير." },
-        { en: "Welcome.", ar: "أهلاً وسهلاً." },
-        { en: "Nice to meet you.", ar: "سعيد بلقائك." },
-        { en: "Nice to meet you too.", ar: "وأنا أيضاً سعيد بلقائك." },
-        { en: "How are you?", ar: "كيف حالك؟" },
-        { en: "I'm fine, thank you.", ar: "أنا بخير، شكراً لك." },
-        { en: "Very well, thank you.", ar: "بخير جداً، شكراً لك." },
-        { en: "I'm great.", ar: "أنا رائع." },
-        { en: "Have a nice day.", ar: "أتمنى لك يوماً سعيداً." },
-        { en: "You too.", ar: "وأنت أيضاً." }
-      ],
-      part2: [
-        { en: "My name is Ahmed.", ar: "اسمي أحمد." },
-        { en: "I'm Ahmed.", ar: "أنا أحمد." },
-        { en: "You can call me Ahmed.", ar: "يمكنك مناداتي أحمد." },
-        { en: "I am from Saudi Arabia.", ar: "أنا من المملكة العربية السعودية." },
-        { en: "I live in Riyadh.", ar: "أعيش في الرياض." },
-        { en: "I am a student.", ar: "أنا طالب." },
-        { en: "I am a teacher.", ar: "أنا معلم." },
-        { en: "I work in a company.", ar: "أعمل في شركة." },
-        { en: "I am twenty years old.", ar: "عمري عشرون سنة." },
-        { en: "I speak Arabic and English.", ar: "أتحدث العربية والإنجليزية." },
-        { en: "I am learning English.", ar: "أتعلم الإنجليزية." }
-      ],
-      part3: [
-        { en: "What is your name?", ar: "ما اسمك؟" },
-        { en: "What's your full name?", ar: "ما اسمك الكامل؟" },
-        { en: "Where are you from?", ar: "من أين أنت؟" },
-        { en: "Where do you live?", ar: "أين تعيش؟" },
-        { en: "How old are you?", ar: "كم عمرك؟" },
-        { en: "What do you do?", ar: "ماذا تعمل؟" },
-        { en: "Are you a student?", ar: "هل أنت طالب؟" },
-        { en: "Do you speak English?", ar: "هل تتحدث الإنجليزية؟" },
-        { en: "What's your phone number?", ar: "ما رقم هاتفك؟" }
-      ],
-      part4: [
-        { en: "Open your book.", ar: "افتح كتابك." },
-        { en: "Listen carefully.", ar: "استمع بعناية." },
-        { en: "Can you help me?", ar: "هل يمكنك مساعدتي؟" },
-        { en: "I don't understand.", ar: "لا أفهم." },
-        { en: "Could you repeat that, please?", ar: "هل يمكنك إعادة ذلك من فضلك؟" },
-        { en: "Please speak slowly.", ar: "من فضلك تحدث ببطء." },
-        { en: "How do you say this in English?", ar: "كيف تقول هذا بالإنجليزية؟" },
-        { en: "What does this mean?", ar: "ماذا يعني هذا؟" },
-        { en: "Can I go out?", ar: "هل يمكنني الخروج؟" }
-      ],
-      dialogues: [
-        {
-          title: "Dialogue 1: Meeting Someone New (التعارف الأول)",
-          turns: [
-            { sp: "A", en: "Good morning! My name is Ali. What's your name?", ar: "صباح الخير! اسمي علي. ما اسمك؟" },
-            { sp: "B", en: "Good morning Ali. I'm Omar. Nice to meet you.", ar: "صباح الخير يا علي. أنا عمر. سعيد بلقائك." },
-            { sp: "A", en: "Nice to meet you too. Where are you from?", ar: "وأنا سعيد بلقائك أيضاً. من أين أنت؟" },
-            { sp: "B", en: "I am from Riyadh, Saudi Arabia.", ar: "أنا من الرياض، المملكة العربية السعودية." }
-          ]
-        }
-      ],
-      fluency: [
-        { en: "That sounds good.", ar: "يبدو ذلك رائعاً ومناسباً." },
-        { en: "Take your time.", ar: "خذ كامل وقتك." },
-        { en: "No problem at all.", ar: "لا توجد مشكلة على الإطلاق." },
-        { en: "Exactly!", ar: "بالضبط!" },
-        { en: "I agree with you.", ar: "أنا متفق معك تماماً." }
-      ]
+    // ==========================================
+    // 1. FIREBASE CONFIGURATION (المربوط بقاعدتك)
+    // ==========================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyBb_E9gj9-JVReFhu6bOx0ZLKSsSDwL-G4",
+      authDomain: "eng-speaking-mastry-program.firebaseapp.com",
+      projectId: "eng-speaking-mastry-program",
+      storageBucket: "eng-speaking-mastry-program.firebasestorage.app",
+      messagingSenderId: "308624304588",
+      appId: "1:308624304588:web:9539c5d7ef56374a26d569"
     };
 
-    // ==========================================================
-    // 4. RENDERING & UI LOGIC
-    // ==========================================================
-    function renderCurriculum() {
-      const renderList = (items, targetId) => {
-        document.getElementById(targetId).innerHTML = items.map(i => `
-          <div class="phrase-card">
-            <div>
-              <div class="phrase-en">${i.en}</div>
-              <div class="phrase-ar">${i.ar}</div>
-            </div>
-            <button class="audio-btn" onclick="speakAmerican('${i.en.replace(/'/g, "\\'")}')">🔊</button>
-          </div>
-        `).join('');
-      };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-      renderList(unit1Data.part1, 'part1-container');
-      renderList(unit1Data.part2, 'part2-container');
-      renderList(unit1Data.part3, 'part3-container');
-      renderList(unit1Data.part4, 'part4-container');
-      renderList(unit1Data.fluency, 'fluency-container');
+    // ==========================================
+    // 2. STARRY NIGHT ANIMATED CANVAS
+    // ==========================================
+    const canvas = document.getElementById('stars-bg');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
 
-      // Dialogues
-      document.getElementById('dialogues-container').innerHTML = unit1Data.dialogues.map(d => `
-        <div class="dialogue-card">
-          <div style="color: var(--gold); font-weight: bold; margin-bottom: 10px;">${d.title}</div>
-          ${d.turns.map(t => `
-            <div class="dialogue-turn ${t.sp === 'B' ? 'b-side' : ''}">
-              <div>
-                <strong>${t.sp}:</strong> <span style="direction: ltr; display: inline-block;">${t.en}</span>
-                <div style="font-size: 0.85rem; color: var(--text-muted);">${t.ar}</div>
-              </div>
-              <button class="audio-btn" style="width: 32px; height: 32px; font-size: 0.85rem;" onclick="speakAmerican('${t.en.replace(/'/g, "\\'")}')">🔊</button>
-            </div>
-          `).join('')}
-        </div>
-      `).join('');
-    }
-
-    function showTab(viewId) {
-      document.querySelectorAll('.view-panel').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(viewId).style.display = 'block';
-      event.currentTarget.classList.add('active');
-    }
-
-    function triggerPaywall(lvl) {
-      alert(`المستوى ${lvl} يتطلب اشتراكاً مفعلاً من قبل المدرب أ. محمد عبدالله عثمان. يرجى التواصل عبر الواتساب لتفعيل حسابك.`);
-    }
-
-    function openCertificateModal() {
-      const name = localStorage.getItem('student_name') || prompt("أدخل اسمك الكريم للشهادة:");
-      if (!name) return;
-      localStorage.setItem('student_name', name);
-      document.getElementById('cert-student-name').innerText = name;
-      document.getElementById('cert-date').innerText = new Date().toISOString().split('T')[0];
-      document.getElementById('certificate-modal').style.display = 'flex';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-
-    // ==========================================================
-    // 5. MILLIONAIRE GAME LOGIC (بدون موسيقى - بمؤثرات ويب نقية)
-    // ==========================================================
-    const millionairePool = [
-      { q: "How do you politely reply to 'Thank you very much'?", opts: ["You're welcome", "I am fine", "No way", "Good morning"], ans: 0 },
-      { q: "Which greeting is used specifically after 12:00 PM?", opts: ["Good evening", "Good afternoon", "Good night", "Good day"], ans: 1 },
-      { q: "What does 'What do you do?' inquire about?", opts: ["Your origin", "Your profession / job", "Your name", "Your current location"], ans: 1 },
-      { q: "Complete the sentence: 'I am learning _______.'", opts: ["English", "at English", "with English", "for English"], ans: 0 }
-    ];
-    let currentMIndex = 0;
-
-    function renderMillionaire() {
-      const q = millionairePool[currentMIndex];
-      document.getElementById('game-question').innerText = q.q;
-      document.getElementById('game-options').innerHTML = q.opts.map((opt, i) => `
-        <button class="tab-btn" onclick="checkMillionaireAnswer(${i})">${String.fromCharCode(65 + i)}: ${opt}</button>
-      `).join('');
-    }
-
-    function checkMillionaireAnswer(selected) {
-      if (selected === millionairePool[currentMIndex].ans) {
-        alert("إجابة صحيحة وممتازة! أحسنت 🌟");
-        currentMIndex = (currentMIndex + 1) % millionairePool.length;
-        renderMillionaire();
-      } else {
-        alert("إجابة غير صحيحة، حاول مجدداً لتحقيق الطلاقة!");
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < 90; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.3,
+          alpha: Math.random(),
+          speed: 0.005 + Math.random() * 0.015
+        });
       }
     }
 
-    function use5050() {
-      const btns = document.querySelectorAll('#game-options button');
-      const correct = millionairePool[currentMIndex].ans;
-      let removed = 0;
-      btns.forEach((btn, idx) => {
-        if (idx !== correct && removed < 2) {
-          btn.style.visibility = 'hidden';
-          removed++;
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.alpha += star.speed;
+        const currentAlpha = Math.abs(Math.sin(star.alpha));
+        ctx.fillStyle = `rgba(212, 175, 55, ${currentAlpha * 0.6})`;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    drawStars();
+
+    // ==========================================
+    // 3. ANIMATED NUMBER COUNTERS
+    // ==========================================
+    function runCounters() {
+      const counters = document.querySelectorAll('.stat-val');
+      counters.forEach(c => {
+        const target = +c.getAttribute('data-target');
+        let count = 0;
+        const duration = 1500;
+        const step = Math.ceil(target / (duration / 25));
+        const timer = setInterval(() => {
+          count += step;
+          if (count >= target) {
+            c.innerText = (target === 6 ? target : '+' + target.toLocaleString());
+            clearInterval(timer);
+          } else {
+            c.innerText = (target === 6 ? count : '+' + count.toLocaleString());
+          }
+        }, 25);
+      });
+    }
+
+    // ==========================================
+    // 4. NATURAL AMERICAN SPEECH SYNTHESIS ENGINE
+    // ==========================================
+    let naturalVoice = null;
+    function initSpeech() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      naturalVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google')))
+                  || voices.find(v => v.lang === 'en-US');
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = initSpeech;
+      initSpeech();
+    }
+    function playUS(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.88;
+      utter.pitch = 1.0;
+      if (naturalVoice) utter.voice = naturalVoice;
+      window.speechSynthesis.speak(utter);
+    }
+
+    // ==========================================
+    // 5. AT THE HOTEL - FULL VERBATIM CONTENT
+    // ==========================================
+    const hotelData = {
+      dialogue1: [
+        { en: "Receptionist: Good afternoon. Welcome to Blue Sky Hotel.", ar: "موظف الاستقبال: مساء الخير. مرحبًا بك في فندق بلو سكاي." },
+        { en: "Guest: Good afternoon. Thank you.", ar: "النزيل: مساء الخير. شكرًا لك." },
+        { en: "Receptionist: How can I help you?", ar: "موظف الاستقبال: كيف يمكنني مساعدتك؟" },
+        { en: "Guest: I'd like to check in.", ar: "النزيل: أود تسجيل الدخول." },
+        { en: "Receptionist: Certainly. Do you have a reservation?", ar: "موظف الاستقبال: بكل سرور. هل لديك حجز؟" },
+        { en: "Guest: Yes, I do.", ar: "النزيل: نعم، لدي." },
+        { en: "Receptionist: May I have your passport, please?", ar: "موظف الاستقبال: هل يمكنني الحصول على جواز سفرك من فضلك؟" },
+        { en: "Guest: Of course. Here you are.", ar: "النزيل: بالتأكيد. تفضل." },
+        { en: "Receptionist: Thank you. Your room is ready. Room 205.", ar: "موظف الاستقبال: شكرًا لك. غرفتك جاهزة. رقم الغرفة 205." },
+        { en: "Guest: Perfect. Thank you very much.", ar: "النزيل: ممتاز. شكرًا جزيلًا." },
+        { en: "Receptionist: You're welcome. Enjoy your stay. Have a wonderful day.", ar: "موظف الاستقبال: على الرحب والسعة. نتمنى لك إقامة سعيدة. يومًا رائعًا." }
+      ],
+      vocab: [
+        { en: "Hotel", ar: "فندق" }, { en: "Reception", ar: "الاستقبال" },
+        { en: "Receptionist", ar: "موظف الاستقبال" }, { en: "Guest", ar: "نزيل" },
+        { en: "Single room", ar: "غرفة مفردة" }, { en: "Double room", ar: "غرفة مزدوجة" },
+        { en: "Key card", ar: "بطاقة الغرفة" }, { en: "Passport", ar: "جواز السفر" },
+        { en: "Reservation", ar: "حجز" }, { en: "Check in", ar: "تسجيل الدخول" },
+        { en: "Check out", ar: "تسجيل المغادرة" }, { en: "Elevator", ar: "المصعد" },
+        { en: "Breakfast", ar: "الإفطار" }, { en: "Luggage", ar: "الأمتعة" },
+        { en: "Wi-Fi", ar: "الإنترنت اللاسلكي" }, { en: "Lobby", ar: "بهو الفندق" }
+      ],
+      useful: [
+        { en: "Welcome to our hotel.", ar: "أهلاً بك في فندقنا." },
+        { en: "I'd like to check in.", ar: "أود تسجيل الدخول." },
+        { en: "I have a reservation.", ar: "لدي حجز." },
+        { en: "Here is my passport.", ar: "هذا جواز سفري." },
+        { en: "Your room is ready.", ar: "غرفتك جاهزة." },
+        { en: "Here is your key card.", ar: "هذه بطاقة غرفتك." },
+        { en: "What time is breakfast?", ar: "في أي وقت يقدم الإفطار?" },
+        { en: "Breakfast is included.", ar: "الإفطار مشمول." },
+        { en: "Is Wi-Fi free?", ar: "هل الواي فاي مجاني؟" },
+        { en: "Have a nice stay.", ar: "إقامة سعيدة." }
+      ],
+      quiz: [
+        { q: "Where do you check in at a hotel?", opts: ["Restaurant", "Reception", "Hospital", "Library"], ans: 1 },
+        { q: "Who helps guests at the reception?", opts: ["Doctor", "Teacher", "Receptionist", "Pilot"], ans: 2 },
+        { q: "What do you usually show when checking in?", opts: ["Apple", "Passport", "Pen", "Charger"], ans: 1 },
+        { q: "What does Guest mean?", opts: ["مدير", "موظف", "نزيل", "سائق"], ans: 2 },
+        { q: "What is the opposite of Check in?", opts: ["Check out", "Breakfast", "Reception", "Lobby"], ans: 0 },
+        { q: "Where do you sleep in a hotel?", opts: ["Lobby", "Restaurant", "Room", "Elevator"], ans: 2 },
+        { q: "Which sentence is the most polite?", opts: ["Give me a room", "I want a room", "I'd like a room, please", "Room now"], ans: 2 },
+        { q: "What do you use to open your hotel room?", opts: ["Spoon", "Key card", "Book", "Ticket"], ans: 1 },
+        { q: "What is Breakfast?", opts: ["العشاء", "الغداء", "الإفطار", "الحلوى"], ans: 2 },
+        { q: "Where can you wait before going to your room?", opts: ["Bathroom", "Lobby", "Kitchen", "Gym"], ans: 1 },
+        { q: "How do you ask for the internet password?", opts: ["Where is my passport?", "What's the Wi-Fi password?", "Is breakfast ready?", "Where is the room?"], ans: 1 },
+        { q: "What is Luggage?", opts: ["الأمتعة", "الغرفة", "المفتاح", "الفندق"], ans: 0 },
+        { q: "Which room is for one person?", opts: ["Double room", "Family room", "Single room", "Meeting room"], ans: 2 },
+        { q: "How do you thank someone politely?", opts: ["Bye", "Thanks", "Thank you very much", "Okay"], ans: 2 },
+        { q: "Which answer is correct after 'Thank you'?", opts: ["Good night", "You're welcome", "See you", "Excuse me"], ans: 1 },
+        { q: "What does Reservation mean?", opts: ["مفتاح", "حجز", "طابق", "مطعم"], ans: 1 },
+        { q: "Which sentence means أود تسجيل الدخول?", opts: ["I'd like to check in.", "I'd like to check out.", "I'd like breakfast.", "I'd like coffee."], ans: 0 },
+        { q: "What does Elevator mean?", opts: ["المصعد", "السلم", "الباب", "النافذة"], ans: 0 },
+        { q: "When do you check out?", opts: ["When you arrive", "When you leave the hotel", "Before breakfast", "At reception only"], ans: 1 },
+        { q: "Which sentence is grammatically correct?", opts: ["I has a reservation.", "I have a reservation.", "I am reservation.", "I reservation."], ans: 1 }
+      ]
+    };
+
+    function renderHotelContent() {
+      // Dialogue
+      document.getElementById('dialogue-1-phrases').innerHTML = hotelData.dialogue1.map(d => `
+        <div class="phrase-row">
+          <div>
+            <div style="font-weight: 700; direction: ltr; text-align: left; font-size: 1.05rem; color: #fff;">${d.en}</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">${d.ar}</div>
+          </div>
+          <button class="audio-play-btn" onclick="playUS('${d.en.replace(/'/g, "\\'")}')">🔊</button>
+        </div>
+      `).join('');
+
+      // Vocab
+      document.getElementById('vocab-phrases').innerHTML = hotelData.vocab.map(v => `
+        <div class="phrase-row" style="padding: 10px 14px;">
+          <div>
+            <div style="font-weight: 700; direction: ltr; text-align: left; color: #fff;">${v.en}</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem;">${v.ar}</div>
+          </div>
+          <button class="audio-play-btn" style="width: 32px; height: 32px; font-size: 0.9rem;" onclick="playUS('${v.en}')">🔊</button>
+        </div>
+      `).join('');
+
+      // Useful
+      document.getElementById('useful-phrases').innerHTML = hotelData.useful.map(u => `
+        <div class="phrase-row">
+          <div>
+            <div style="font-weight: 700; direction: ltr; text-align: left; font-size: 1.05rem; color: #fff;">${u.en}</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">${u.ar}</div>
+          </div>
+          <button class="audio-play-btn" onclick="playUS('${u.en.replace(/'/g, "\\'")}')">🔊</button>
+        </div>
+      `).join('');
+
+      // Quiz
+      document.getElementById('hotel-quiz-container').innerHTML = hotelData.quiz.map((q, idx) => `
+        <div class="quiz-q-block">
+          <div class="quiz-q-text">${idx + 1}. ${q.q}</div>
+          <div class="options-grid">
+            ${q.opts.map((opt, oIdx) => `
+              <button class="option-btn" id="q_${idx}_opt_${oIdx}" onclick="selectAnswer(${idx},${oIdx})">${String.fromCharCode(65 + oIdx)})${opt}</button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const selectedAnswers = {};
+    function selectAnswer(qIdx, oIdx) {
+      selectedAnswers[qIdx] = oIdx;
+      hotelData.quiz[qIdx].opts.forEach((_, i) => {
+        const btn = document.getElementById(`q_${qIdx}_opt_${i}`);
+        if (i === oIdx) {
+          btn.style.borderColor = "var(--gold-primary)";
+          btn.style.background = "rgba(212, 175, 55, 0.2)";
+        } else {
+          btn.style.borderColor = "var(--card-border)";
+          btn.style.background = "var(--card-bg)";
         }
       });
-      document.getElementById('btn-50').disabled = true;
     }
 
-    function useAudience() {
-      alert("تصويت المتدربين: 84% يؤيدون الإجابة الصحيحة الأولى أو الثانية!");
-      document.getElementById('btn-audience').disabled = true;
+    function submitHotelQuiz() {
+      let score = 0;
+      hotelData.quiz.forEach((q, idx) => {
+        if (selectedAnswers[idx] === q.ans) score++;
+      });
+      const pct = Math.round((score / hotelData.quiz.length) * 100);
+      alert(`نتيجتك: ${score} من 20 (${pct}%)\n` + (pct >= 80 ? "🎉 رائع جداً! تم اجتياز اختبار الفندق بنجاح." : "حاول مرة أخرى لتحقيق نسبة 80% فما فوق."));
+      
+      const sCode = localStorage.getItem('student_code');
+      if (sCode) {
+        db.collection("students_progress").doc(sCode).set({
+          hotel_quiz: { score: score, passed: pct >= 80, date: firebase.firestore.FieldValue.serverTimestamp() }
+        }, { merge: true });
+      }
     }
 
-    function usePhone() {
-      alert("اتصال بالمدرب أ. محمد عثمان: 'أنا متأكد من أنها الإجابة الصحيحة، ركز جيداً في العبارة!'");
-      document.getElementById('btn-call').disabled = true;
+    function openSituationModal(type) {
+      if (type === 'hotel') {
+        document.getElementById('situation-modal').style.display = 'block';
+      } else {
+        alert("جارٍ تحميل محتوى هذا الموقف المعتمد من الكورس...");
+      }
+    }
+    function closeSituationModal() {
+      document.getElementById('situation-modal').style.display = 'none';
     }
 
-    // Initialization
+    function triggerPaywall(lvl) {
+      alert(`المستوى ${lvl} من المستويات المتقدمة المخصصة للمشتركين.\nيرجى التواصل مع المشرف أ. محمد عبدالله عثمان لتفعيل الحساب.`);
+    }
+
+    function promptLogin() {
+      const name = prompt("أدخل اسم المتدرب الرباعي:");
+      const code = prompt("أدخل كود الطالب أو رقم الهاتف:");
+      if (name && code) {
+        localStorage.setItem('student_name', name);
+        localStorage.setItem('student_code', code);
+        document.getElementById('auth-box').innerHTML = `<span class="user-pill">مرحباً: ${name} 🎓</span>`;
+      }
+    }
+
+    function openAdminPanel() {
+      const pass = prompt("أدخل كلمة مرور المشرف:");
+      if (pass === "0530665625" || pass === "admin1981") {
+        const target = prompt("أدخل كود أو هاتف الطالب لتفعيل المستويات المدفوعة له:");
+        if (target) {
+          db.collection("students_progress").doc(target).set({
+            paid_full_access: true,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).then(() => {
+            alert(`تم تفعيل كافة المستويات بنجاح للطالب: ${target}`);
+          });
+        }
+      } else {
+        alert("كلمة المرور غير صحيحة.");
+      }
+    }
+
+    function handleContact(e) {
+      e.preventDefault();
+      const n = document.getElementById('contact-name').value;
+      const m = document.getElementById('contact-msg').value;
+      alert(`شكراً لك يا ${n}، تم إرسال رسالتك للمشرف بنجاح!`);
+      e.target.reset();
+    }
+
     window.onload = function() {
-      animateStats();
-      renderCurriculum();
-      renderMillionaire();
+      runCounters();
+      renderHotelContent();
+      const savedName = localStorage.getItem('student_name');
+      if (savedName) {
+        document.getElementById('auth-box').innerHTML = `<span class="user-pill">مرحباً: ${savedName} 🎓</span>`;
+      }
     };
   </script>
 </body>
