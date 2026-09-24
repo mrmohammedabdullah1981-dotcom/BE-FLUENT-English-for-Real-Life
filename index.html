@@ -3,431 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fluent English | Speak English Fluently Through Real Life Situations</title>
+  <title>Fluent English | English Speaking Mastery Program</title>
   
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-
   <style>
     :root {
       --bg-dark: #060b14;
       --card-bg: #0c1626;
       --card-border: #16263d;
-      --gold-main: #d4af37;
+      --gold-primary: #d4af37;
       --gold-light: #f5e7a9;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent-green: #10b981;
       --accent-blue: #0284c7;
-      --accent-purple: #8b5cf6;
-      --accent-amber: #f59e0b;
-      --accent-rose: #f43f5e;
       --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-family);
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      line-height: 1.6;
-      overflow-x: hidden;
-      position: relative;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); }
+    body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; position: relative; }
 
     /* خلفية النجوم المتحركة */
-    #stars-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
+    #stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-    .main-container {
-      position: relative;
-      z-index: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.15); margin-bottom: 30px; }
+    .logo { font-size: 1.4rem; font-weight: 800; color: var(--gold-primary); text-decoration: none; }
+    .user-tag { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-primary); color: var(--gold-light); padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; }
 
-    /* الشريط العلوي */
-    header.nav-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-      margin-bottom: 30px;
-    }
-    .brand-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--gold-main);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .user-btn {
-      background: rgba(212, 175, 55, 0.1);
-      border: 1px solid var(--gold-main);
-      color: var(--gold-light);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
+    /* قسم الهيرو */
+    .hero { text-align: center; padding: 30px 10px 45px 10px; }
+    .hero-badge { display: inline-block; border: 1px solid var(--gold-primary); background: rgba(212, 175, 55, 0.08); color: var(--gold-light); padding: 5px 22px; border-radius: 30px; font-size: 0.85rem; margin-bottom: 20px; }
+    .hero-en { font-size: 2.8rem; font-weight: 900; color: var(--gold-primary); line-height: 1.2; margin-bottom: 15px; }
+    .hero-ar { font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
+    .hero-desc { color: var(--text-muted); font-size: 1rem; max-width: 750px; margin: 0 auto; }
 
-    /* واجهة الهيرو */
-    .hero-box {
-      text-align: center;
-      padding: 30px 10px 50px 10px;
-    }
-    .tag-badge {
-      display: inline-block;
-      border: 1px solid var(--gold-main);
-      background: rgba(212, 175, 55, 0.08);
-      color: var(--gold-light);
-      padding: 6px 22px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      margin-bottom: 20px;
-    }
-    .hero-en {
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--gold-main);
-      line-height: 1.2;
-      margin-bottom: 15px;
-      text-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
-    }
-    .hero-ar {
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 10px;
-    }
-    .hero-sub {
-      color: var(--text-muted);
-      font-size: 1rem;
-      max-width: 750px;
-      margin: 0 auto;
-    }
+    /* قسم العدادات الرقمية المتحركة */
+    .counters-wrapper { text-align: center; margin: 35px 0 55px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 25px 20px; text-align: center; transition: 0.3s; }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(212, 175, 55, 0.4); }
+    .stat-val { font-size: 2.4rem; font-weight: 800; color: var(--gold-primary); display: block; margin-bottom: 4px; min-height: 48px; }
+    .stat-title { font-size: 1rem; font-weight: 700; color: #fff; }
+    .stat-sub { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* قسم العدادات المتحركة بالأرقام */
-    .counter-wrapper {
-      text-align: center;
-      margin: 40px 0 70px 0;
-    }
-    .section-tag {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 4px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: 2rem;
-      color: #fff;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-    .section-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 30px;
-    }
+    /* شبكة المستويات الستة */
+    .levels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 70px; }
+    .lvl-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
+    .lvl-card:hover { transform: translateY(-5px); border-color: var(--gold-primary); }
+    .lvl-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .lvl-pill { padding: 4px 12px; border-radius: 8px; font-weight: 800; font-size: 1.1rem; }
+    .lvl-btn { width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; margin-top: 15px; font-size: 0.95rem; }
 
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-    }
-    .stat-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 25px 20px;
-      text-align: center;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-    .stat-box:hover {
-      transform: translateY(-5px);
-      border-color: rgba(212, 175, 55, 0.4);
-    }
-    .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      margin: 0 auto 15px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-    }
-    .stat-num {
-      font-size: 2.3rem;
-      font-weight: 800;
-      color: var(--gold-main);
-      display: block;
-      margin-bottom: 4px;
-      min-height: 45px;
-    }
-    .stat-text-ar {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    .stat-text-en {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+    /* شاشة دراسة المستوى والوحدات */
+    #level-view-section { display: none; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 30px; margin-bottom: 60px; }
+    .unit-pill-btn { background: #08121f; border: 1px solid var(--card-border); color: var(--text-muted); padding: 10px 16px; border-radius: 8px; cursor: pointer; margin-left: 8px; margin-bottom: 10px; font-weight: 600; }
+    .unit-pill-btn.active { border-color: var(--gold-primary); color: var(--gold-primary); background: rgba(212, 175, 55, 0.1); }
 
-    /* العوالم والمواقف (Situations Hub) */
-    .grid-hub {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 70px;
-    }
-    .hub-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 20px 15px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .hub-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--gold-main);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-    }
-    .hub-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      margin: 0 auto 10px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-    }
-    .hub-title-ar {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    .hub-title-en {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .hub-action {
-      font-size: 0.8rem;
-      color: var(--gold-main);
-    }
+    .phrase-box { background: #07121f; border: 1px solid var(--card-border); border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+    .phrase-en { font-size: 1.05rem; font-weight: 700; color: #fff; direction: ltr; text-align: left; }
+    .phrase-ar { font-size: 0.9rem; color: var(--text-muted); margin-top: 3px; }
+    
+    .audio-play { width: 38px; height: 38px; border-radius: 50%; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary); color: var(--gold-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; font-size: 1.1rem; border: none; }
+    .audio-play:hover { background: var(--gold-primary); color: #000; }
 
-    /* قائمة وحدات المستوى A1 */
-    .units-wrapper {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 30px;
-      margin-bottom: 70px;
-    }
-    .unit-selector {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      margin-bottom: 25px;
-      border-bottom: 1px solid var(--card-border);
-    }
-    .unit-tab-btn {
-      background: #08111d;
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 10px 18px;
-      border-radius: 10px;
-      white-space: nowrap;
-      cursor: pointer;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-    .unit-tab-btn.active {
-      border-color: var(--gold-main);
-      color: var(--gold-main);
-      background: rgba(212, 175, 55, 0.1);
-    }
+    .quiz-card { background: #060e18; border: 1px solid var(--card-border); border-radius: 12px; padding: 22px; margin-top: 35px; }
+    .gold-btn { background: var(--gold-primary); color: #060b14; font-weight: 800; padding: 12px; border-radius: 8px; border: none; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1rem; }
 
-    .part-header {
-      font-size: 1.2rem;
-      color: var(--gold-main);
-      margin: 25px 0 12px 0;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #142336;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .phrase-item {
-      background: #081320;
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-    .phrase-en-text {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-      direction: ltr;
-      text-align: left;
-    }
-    .phrase-ar-text {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-    .audio-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px solid var(--gold-main);
-      color: var(--gold-main);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: 0.2s;
-      font-size: 1.1rem;
-    }
-    .audio-btn:hover {
-      background: var(--gold-main);
-      color: #000;
-      transform: scale(1.08);
-    }
-
-    /* اختبار الوحدة */
-    .quiz-container {
-      background: #060e18;
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 24px;
-      margin-top: 35px;
-    }
-    .q-item {
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #112033;
-    }
-    .q-title {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      direction: ltr;
-      text-align: left;
-    }
-    .q-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      direction: ltr;
-    }
-    .opt-label {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .gold-action-btn {
-      background: var(--gold-main);
-      color: #060b14;
-      font-weight: 800;
-      padding: 12px 24px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
-      margin-top: 15px;
-    }
-
-    /* نافذة الموقف المنبثقة (Situations Modal) */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(3, 7, 13, 0.92);
-      z-index: 10000;
-      overflow-y: auto;
-      padding: 20px;
-    }
-    .modal-body {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-top: 3px solid var(--gold-main);
-      max-width: 850px;
-      margin: 30px auto;
-      border-radius: 16px;
-      padding: 25px;
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: white;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    /* الفوتر */
-    footer {
-      border-top: 1px solid var(--card-border);
-      padding: 40px 20px 25px 20px;
-      background: #04080f;
-    }
-    .footer-content {
-      max-width: 1200px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 30px;
-    }
+    footer { border-top: 1px solid var(--card-border); padding: 35px 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
 
     @media (max-width: 768px) {
       .hero-en { font-size: 2.1rem; }
-      .q-options { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -435,162 +80,611 @@
 
   <canvas id="stars-bg"></canvas>
 
-  <div class="main-container">
+  <div class="container">
     
-    <!-- Top Nav -->
-    <header class="nav-header">
-      <a href="#" class="brand-title">📖 FLUENT ENGLISH</a>
-      <div id="auth-slot">
-        <button class="user-btn" onclick="loginPrompt()">تسجيل الدخول / كود الطالب</button>
+    <header>
+      <a href="#" class="logo">📖 FLUENT ENGLISH</a>
+      <div id="user-display">
+        <button class="user-tag" onclick="promptStudentLogin()">تسجيل دخول المتدرب 👤</button>
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-box">
-      <div class="tag-badge">● منصة تعليمية احترافية متكاملة</div>
-      <h1 class="hero-en">Speak English Fluently<br>Through Real Life Situations</h1>
+    <!-- الواجهة الرئيسية -->
+    <section class="hero" id="main-hero">
+      <div class="hero-badge">● منصة تعليمية متكاملة</div>
+      <h1 class="hero-en">Speak English Fluently</h1>
       <h2 class="hero-ar">تحدث الإنجليزية بطلاقة من خلال مواقف الحياة الحقيقية</h2>
-      <p class="hero-sub">
-        تعلّم الإنجليزية بالطريقة الصحيحة — من خلال حوارات حقيقية وتدريبات عملية في ست مستويات متكاملة وفق إطار CEFR الدولي.
-      </p>
+      <p class="hero-desc">تعلم الإنجليزية بالطريقة الصحيحة والحديثة — من خلال حوارات حقيقية ونطق احترافي واختبارات مرحلية وفق معايير CEFR الدولية.</p>
     </section>
 
-    <!-- Live Animated Counters Bar -->
-    <section class="counter-wrapper">
-      <div class="section-tag">أرقام تتحدث</div>
-      <h3 class="section-title">منصة تعليمية متكاملة</h3>
-      <p class="section-desc">كل ما تحتاجه لتعلم الإنجليزية باحترافية في مكان واحد</p>
-
-      <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">💬</div>
-          <span class="stat-num" data-target="3500">0</span>
-          <div class="stat-text-ar">تعبير من الحياة الحقيقية</div>
-          <div class="stat-text-en">Real-Life Expressions</div>
+    <!-- الأرقام والعدادات التي تتحرك وتعد تلقائياً -->
+    <section class="counters-wrapper" id="main-counters">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-val" data-target="3500">0</span>
+          <div class="stat-title">تعبير من الحياة الحقيقية</div>
+          <div class="stat-sub">Real-Life Expressions</div>
         </div>
-
-        <div class="stat-box">
-          <div class="stat-icon" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">📖</div>
-          <span class="stat-num" data-target="500">0</span>
-          <div class="stat-text-ar">حوار عملي</div>
-          <div class="stat-text-en">Practice Dialogues</div>
+        <div class="stat-card">
+          <span class="stat-val" data-target="500">0</span>
+          <div class="stat-title">حوار عملي</div>
+          <div class="stat-sub">Practice Dialogues</div>
         </div>
-
-        <div class="stat-box">
-          <div class="stat-icon" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">📊</div>
-          <span class="stat-num" data-target="6">0</span>
-          <div class="stat-text-ar">مستويات CEFR (A1–C2)</div>
-          <div class="stat-text-en">CEFR Levels</div>
+        <div class="stat-card">
+          <span class="stat-val" data-target="6">0</span>
+          <div class="stat-title">مستويات CEFR (A1–C2)</div>
+          <div class="stat-sub">CEFR Levels</div>
         </div>
-
-        <div class="stat-box">
-          <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">🧠</div>
-          <span class="stat-num" data-target="100">0</span>
-          <div class="stat-text-ar">اختبار تفاعلي</div>
-          <div class="stat-text-en">Interactive Quizzes</div>
+        <div class="stat-card">
+          <span class="stat-val" data-target="100">0</span>
+          <div class="stat-title">اختبار تفاعلي</div>
+          <div class="stat-sub">Interactive Quizzes</div>
         </div>
       </div>
     </section>
 
-    <!-- Situations Hub (العوالم الحياتية) -->
-    <section style="margin-bottom: 60px;">
-      <div style="text-align: center; margin-bottom: 30px;">
-        <div class="section-tag">لماذا هذه الدورة؟</div>
-        <h3 class="section-title">تعلّم الإنجليزية في كل موقف</h3>
-        <p class="section-desc">لن تجد نفسك تبحث عن الكلمات — ستكون مستعداً لكل موقف تواجهه في حياتك اليومية</p>
+    <!-- شبكة اختيار المستويات -->
+    <section id="levels-selection-area">
+      <div style="text-align: center; margin-bottom: 35px;">
+        <h3 style="font-size: 1.8rem; color: #fff;">اختر المستوى للبدء الفوري</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">المستوى A كامل الآن بكافة وحداته الـ 18 المعتمدة</p>
       </div>
 
-      <div class="grid-hub">
-        <div class="hub-card" onclick="openSituation('hotel')">
-          <div class="hub-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">🏨</div>
-          <div class="hub-title-ar">في الفندق</div>
-          <div class="hub-title-en">At the Hotel</div>
-          <div class="hub-action">اضغط للدخول ↵</div>
+      <div class="levels-grid">
+        <!-- A1 -->
+        <div class="lvl-card" style="border-top: 3px solid #10b981;">
+          <div>
+            <div class="lvl-top">
+              <span class="lvl-pill" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">A1</span>
+              <span style="color: #10b981; font-size: 0.85rem;">مكتمل (10 وحدات)</span>
+            </div>
+            <h3 style="font-size: 1.4rem; color: #fff;">مبتدئ • Basic</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">التحيات، العائلة، الأرقام والساعة، الفصل والمدرسة، المنزل والروتين، الطعام، التسوق، الملابس، الهوايات، والطقس.</p>
+          </div>
+          <button class="lvl-btn" style="background: #10b981; color: #000;" onclick="enterLevel('A1')">دخول المستوى A1 ↵</button>
         </div>
-        <div class="hub-card" onclick="openSituation('airport')">
-          <div class="hub-icon" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">✈️</div>
-          <div class="hub-title-ar">في المطار</div>
-          <div class="hub-title-en">At the Airport</div>
-          <div class="hub-action">اضغط للدخول ↵</div>
+
+        <!-- A2 -->
+        <div class="lvl-card" style="border-top: 3px solid #0284c7;">
+          <div>
+            <div class="lvl-top">
+              <span class="lvl-pill" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">A2</span>
+              <span style="color: #0284c7; font-size: 0.85rem;">مكتمل (8 وحدات)</span>
+            </div>
+            <h3 style="font-size: 1.4rem; color: #fff;">أساسي • Elementary</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">السفر والنقل، الفنادق، الصحة وعند الطبيب، بيئة العمل ومقابلات التوظيف، التكنولوجيا، الشكاوى، ومهارات الدراسة والترفيه.</p>
+          </div>
+          <button class="lvl-btn" style="background: #0284c7; color: #fff;" onclick="enterLevel('A2')">دخول المستوى A2 ↵</button>
         </div>
-        <div class="hub-card" onclick="openSituation('work')">
-          <div class="hub-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">💼</div>
-          <div class="hub-title-ar">في العمل</div>
-          <div class="hub-title-en">At Work</div>
-          <div class="hub-action">اضغط للدخول ↵</div>
+
+        <!-- B1 -->
+        <div class="lvl-card" style="border-top: 3px solid #8b5cf6;">
+          <div>
+            <div class="lvl-top">
+              <span class="lvl-pill" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">B1</span>
+              <span style="color: var(--text-muted); font-size: 0.85rem;">🔒 مقفل</span>
+            </div>
+            <h3 style="font-size: 1.4rem; color: #fff;">متوسط • Intermediate</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">الآراء والنقاشات، حل المشكلات واتخاذ القرارات، سرد القصص، والتطوير الشخصي.</p>
+          </div>
+          <button class="lvl-btn" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6; border: 1px solid #8b5cf6;" onclick="alert('سيتم إدراجه فوراً في الخطوة التالية.')">🔒 فتح المستوى B1</button>
         </div>
-        <div class="hub-card" onclick="alert('المستوى A2: سيتم فتحه بعد إتمام المستوى التأسيسي')">
-          <div class="hub-icon" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">🏛️</div>
-          <div class="hub-title-ar">في الجامعة</div>
-          <div class="hub-title-en">At University</div>
-          <div class="hub-action">🔒 يتطلب تفعيل</div>
+
+        <!-- B2 -->
+        <div class="lvl-card" style="border-top: 3px solid #f59e0b;">
+          <div>
+            <div class="lvl-top">
+              <span class="lvl-pill" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">B2</span>
+              <span style="color: var(--text-muted); font-size: 0.85rem;">🔒 مقفل</span>
+            </div>
+            <h3 style="font-size: 1.4rem; color: #fff;">فوق المتوسط • Upper Intermediate</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">النقاشات المتقدمة، التفكير النقدي، القيادة والتأثير وصناعة القرار.</p>
+          </div>
+          <button class="lvl-btn" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b;" onclick="alert('المستوى محجوز للمشتركين.')">🔒 فتح المستوى B2</button>
+        </div>
+
+        <!-- C1 -->
+        <div class="lvl-card" style="border-top: 3px solid #ec4899;">
+          <div>
+            <div class="lvl-top">
+              <span class="lvl-pill" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">C1</span>
+              <span style="color: var(--text-muted); font-size: 0.85rem;">🔒 مقفل</span>
+            </div>
+            <h3 style="font-size: 1.4rem; color: #fff;">متقدم • Advanced</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">التواصل الأكاديمي، البلاغة والإقناع المتقدم، والسياسة الدولية والاقتصاد.</p>
+          </div>
+          <button class="lvl-btn" style="background: rgba(236, 72, 153, 0.15); color: #ec4899; border: 1px solid #ec4899;" onclick="alert('المستوى محجوز للمشتركين.')">🔒 فتح المستوى C1</button>
+        </div>
+
+        <!-- C2 -->
+        <div class="lvl-card" style="border-top: 3px solid #d4af37;">
+          <div>
+            <div class="lvl-top">
+              <span class="lvl-pill" style="background: rgba(212, 175, 55, 0.15); color: #d4af37;">C2</span>
+              <span style="color: var(--text-muted); font-size: 0.85rem;">🔒 مقفل</span>
+            </div>
+            <h3 style="font-size: 1.4rem; color: #fff;">إتقان • Mastery</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">الدقة اللغوية والفروق الدقيقة، الخطاب الفكري، والفكاهة بمستوى المتحدث الأصلي.</p>
+          </div>
+          <button class="lvl-btn" style="background: rgba(212, 175, 55, 0.15); color: #d4af37; border: 1px solid #d4af37;" onclick="alert('المستوى محجوز للمشتركين.')">🔒 فتح المستوى C2</button>
         </div>
       </div>
     </section>
 
-    <!-- المنهج الكامل لمستوى A1 (الوحدات الـ 10 كاملة) -->
-    <section class="units-wrapper">
-      <div style="margin-bottom: 20px;">
-        <span class="section-tag" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">المستوى الحالي: A1 Beginner</span>
-        <h3 style="color: var(--gold-main); font-size: 1.6rem; margin-top: 6px;">منهج المحادثة التأسيسي المتكامل</h3>
+    <!-- شاشة عرض وحدات ومحتوى المستوى المختار -->
+    <section id="level-view-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <button class="user-tag" onclick="backToLevels()">← العودة لقائمة المستويات</button>
+        <span style="color: var(--gold-primary); font-weight: bold;" id="current-level-label">المستوى</span>
       </div>
 
-      <!-- Unit Tabs -->
-      <div class="unit-selector" id="unit-tabs-container"></div>
+      <!-- أشرطة وحدات المستوى -->
+      <div id="units-nav-buttons" style="margin-bottom: 25px; overflow-x: auto; white-space: nowrap; padding-bottom: 8px;"></div>
 
-      <!-- Dynamic Unit Content Display -->
-      <div id="unit-display-area"></div>
+      <!-- مساحة عرض تفاصيل الوحدة -->
+      <div id="unit-content-display"></div>
     </section>
+
+    <footer>
+      جميع الحقوق محفوظة © 2026 • English Speaking Mastery Program • إشراف أ. محمد عبدالله محمد عثمان
+    </footer>
 
   </div>
-
-  <!-- Situation Modal -->
-  <div id="situation-modal" class="modal-backdrop">
-    <div class="modal-body">
-      <button class="modal-close" onclick="closeSituation()">✕</button>
-      <div id="situation-content-slot"></div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div>
-        <h4 style="color: var(--gold-main); margin-bottom: 12px;">FLUENT ENGLISH 📖</h4>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">البرنامج المعتمد لتطوير مهارات التحدث بالإنجليزية وفق معايير CEFR الدولية وبدون موسيقى.</p>
-      </div>
-      <div>
-        <h4 style="color: var(--gold-main); margin-bottom: 12px;">الإشراف العام</h4>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">أ. محمد عبدالله محمد عثمان</p>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">مشرف ومعلم اللغة الإنجليزية</p>
-      </div>
-      <div>
-        <h4 style="color: var(--gold-main); margin-bottom: 12px;">التواصل والمتابعة</h4>
-        <a href="https://wa.me/966530665625" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold;">
-          💬 واتساب: 0530665625
-        </a>
-      </div>
-    </div>
-  </footer>
 
   <script>
-    // ==========================================
-    // 1. FIREBASE CONFIG
-    // ==========================================
-    const firebaseConfig = {
-      apiKey: "AIzaSyBb_E9gj9-JVReFhu6bOx0ZLKSsSDwL-G4",
-      authDomain: "eng-speaking-mastry-program.firebaseapp.com",
-      projectId: "eng-speaking-mastry-program",
-      storageBucket: "eng-speaking-mastry-program.firebasestorage.app",
-      messagingSenderId: "308624304588",
-      appId: "1:308624304588:web:9539c5d7ef56374a26d569"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // ==========================================================
+    // 1. قاعدة بيانات المستوى A بالكامل (A1: 10 وحدات + A2: 8 وحدات)
+    // ==========================================================
+    const DATA_A1 = [
+      {
+        id: 1,
+        titleEn: "Unit 1: Greetings & Introductions",
+        titleAr: "الوحدة 1: التحيات والتعارف",
+        sections: [
+          {
+            nameEn: "Basic Greetings", nameAr: "التحيات الأساسية",
+            items: [
+              { en: "Hello.", ar: "مرحبًا." }, { en: "Hi.", ar: "أهلًا." },
+              { en: "Good morning.", ar: "صباح الخير." }, { en: "Good afternoon.", ar: "مساء الخير (بعد الظهر)." },
+              { en: "Good evening.", ar: "مساء الخير." }, { en: "Welcome.", ar: "أهلًا وسهلًا." },
+              { en: "Nice to meet you.", ar: "سعيد بلقائك." }, { en: "Nice to meet you too.", ar: "وأنا أيضًا سعيد بلقائك." },
+              { en: "How are you? - I'm fine.", ar: "كيف حالك؟ - أنا بخير." },
+              { en: "Have a nice day. - You too.", ar: "أتمنى لك يومًا سعيدًا. - وأنت أيضًا." }
+            ]
+          },
+          {
+            nameEn: "Introducing Yourself & Classroom English", nameAr: "التعريف بالنفس والفصل",
+            items: [
+              { en: "My name is Ahmed. / I live in Riyadh.", ar: "اسمي أحمد. / أعيش في الرياض." },
+              { en: "I am a student. / I am a teacher.", ar: "أنا طالب. / أنا معلم." },
+              { en: "I am from Saudi Arabia.", ar: "أنا من المملكة العربية السعودية." },
+              { en: "Can you help me? / I don't understand.", ar: "هل يمكنك مساعدتي؟ / لا أفهم." },
+              { en: "Could you repeat that, please?", ar: "هل يمكنك إعادة ذلك من فضلك؟" },
+              { en: "Please speak slowly.", ar: "من فضلك تحدث ببطء." },
+              { en: "Excuse me. / Sorry, I'm late.", ar: "عذرًا. / آسف، لقد تأخرت." }
+            ]
+          }
+        ],
+        dialogues: [
+          {
+            title: "Meeting Someone",
+            lines: [
+              { sp: "A", en: "Hello. What's your name?", ar: "مرحبًا. ما اسمك؟" },
+              { sp: "B", en: "My name is Ali. Nice to meet you.", ar: "اسمي علي. سعيد بلقائك." }
+            ]
+          }
+        ],
+        fluency: [
+          { en: "Really?", ar: "حقًا؟" }, { en: "That's great.", ar: "هذا رائع." },
+          { en: "Sounds good.", ar: "يبدو جيدًا." }, { en: "Exactly.", ar: "بالضبط." }
+        ],
+        quiz: [
+          { q: "How do you respond to 'Nice to meet you'?", opts: ["Good evening", "Nice to meet you too", "I am fine", "No problem"], ans: 1 },
+          { q: "What is the meaning of 'Excuse me'?", opts: ["من فضلك", "عذرًا", "أهلًا", "شكرًا"], ans: 1 }
+        ]
+      },
+      {
+        id: 2,
+        titleEn: "Unit 2: Family & Friends",
+        titleAr: "الوحدة 2: العائلة والأصدقاء",
+        sections: [
+          {
+            nameEn: "Family Members & Describing People", nameAr: "أفراد العائلة ووصف الأشخاص",
+            items: [
+              { en: "Father / Mother / Brother / Sister", ar: "أب / أم / أخ / أخت" },
+              { en: "Son / Daughter / Grandfather / Grandmother", ar: "ابن / ابنة / جد / جدة" },
+              { en: "Uncle / Aunt / Cousin", ar: "عم أو خال / عمة أو خالة / ابن العم أو الخال" },
+              { en: "My father is a teacher. / My mother is a doctor.", ar: "والدي معلم. / والدتي طبيبة." },
+              { en: "He is tall and friendly.", ar: "هو طويل وودود." },
+              { en: "She has long hair and she is kind.", ar: "لديها شعر طويل وهي لطيفة." },
+              { en: "He is smart and hardworking.", ar: "هو ذكي ومجتهد." }
+            ]
+          }
+        ],
+        dialogues: [
+          {
+            title: "Talking About Family",
+            lines: [
+              { sp: "A", en: "Do you have any brothers?", ar: "هل لديك إخوة؟" },
+              { sp: "B", en: "Yes, I have two brothers.", ar: "نعم، لدي أخوان." }
+            ]
+          }
+        ],
+        fluency: [
+          { en: "That's true.", ar: "هذا صحيح." }, { en: "I agree.", ar: "أوافق." }, { en: "Lucky you!", ar: "يا لك من محظوظ!" }
+        ],
+        quiz: [
+          { q: "Who is your mother's sister?", opts: ["Aunt", "Uncle", "Niece", "Cousin"], ans: 0 },
+          { q: "'He is generous.' means:", opts: ["هو ذكي", "هو كريم", "هو طويل", "هو صبور"], ans: 1 }
+        ]
+      },
+      {
+        id: 3,
+        titleEn: "Unit 3: Numbers, Time, Days & Months",
+        titleAr: "الوحدة 3: الأرقام والوقت والأيام والشهور",
+        sections: [
+          {
+            nameEn: "Time, Days & Months", nameAr: "الساعة، الأيام، والشهور",
+            items: [
+              { en: "What time is it? - It's three o'clock.", ar: "كم الساعة؟ - الساعة الثالثة." },
+              { en: "It's half past three. / It's quarter past six.", ar: "الساعة الثالثة والنصف. / السادسة والربع." },
+              { en: "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday", ar: "الإثنين، الثلاثاء، الأربعاء، الخميس، الجمعة، السبت، الأحد" },
+              { en: "January, February, March, April, May, June", ar: "يناير، فبراير، مارس، أبريل، مايو، يونيو" },
+              { en: "July, August, September, October, November, December", ar: "يوليو، أغسطس، سبتمبر، أكتوبر، نوفمبر، ديسمبر" }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Let me check.", ar: "دعني أتحقق." }, { en: "Right now.", ar: "الآن." }],
+        quiz: [
+          { q: "What time is 'quarter past six'?", opts: ["6:15", "6:30", "6:45", "5:45"], ans: 0 },
+          { q: "Which day comes after Monday?", opts: ["Sunday", "Tuesday", "Wednesday", "Friday"], ans: 1 }
+        ]
+      },
+      {
+        id: 4,
+        titleEn: "Unit 4: School & Classroom English",
+        titleAr: "الوحدة 4: المدرسة واللغة داخل الفصل",
+        sections: [
+          {
+            nameEn: "School & Subjects", nameAr: "المدرسة والمواد الدراسية",
+            items: [
+              { en: "Teacher, Student, Classmate, Principal, Classroom, Library", ar: "معلم، طالب، زميل، مدير، فصل، مكتبة" },
+              { en: "Book, Notebook, Pen, Pencil, Eraser, Desk, Chair", ar: "كتاب، دفتر، قلم، قلم رصاص، ممحاة، مكتب، كرسي" },
+              { en: "Open your book. / Listen carefully. / Look at the board.", ar: "افتح كتابك. / استمع جيدًا. / انظر إلى السبورة." },
+              { en: "English is my favorite subject. / Mathematics is difficult.", ar: "الإنجليزية مادتي المفضلة. / الرياضيات صعبة." },
+              { en: "We have a test tomorrow. / I passed the exam.", ar: "لدينا اختبار غدًا. / نجحت في الاختبار." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Good question.", ar: "سؤال جيد." }, { en: "I got it.", ar: "فهمتها." }],
+        quiz: [
+          { q: "What do you write with?", opts: ["Eraser", "Pen", "Desk", "Bag"], ans: 1 },
+          { q: "What does 'Look at the board' mean?", opts: ["افتح كتابك", "انظر إلى السبورة", "اكتب واجبك", "اجلس"], ans: 1 }
+        ]
+      },
+      {
+        id: 5,
+        titleEn: "Unit 5: Home & Daily Routine",
+        titleAr: "الوحدة 5: المنزل والروتين اليومي",
+        sections: [
+          {
+            nameEn: "Rooms & Routine", nameAr: "غرف المنزل والروتين اليومي",
+            items: [
+              { en: "House, Apartment, Living room, Bedroom, Kitchen, Bathroom", ar: "منزل، شقة، غرفة المعيشة، غرفة النوم، المطبخ، الحمام" },
+              { en: "Bed, Sofa, Table, Refrigerator, Washing machine, Air conditioner", ar: "سرير، أريكة، طاولة، ثلاجة، غسالة، مكيف" },
+              { en: "I wake up at six o'clock. / I brush my teeth.", ar: "أستيقظ الساعة السادسة. / أنظف أسناني." },
+              { en: "I take a shower and have breakfast.", ar: "أستحم وأتناول الإفطار." },
+              { en: "I always wake up early. / I go to bed at ten.", ar: "أستيقظ دائمًا مبكرًا. / أنام الساعة العاشرة." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Right away.", ar: "فورًا." }, { en: "That's my routine.", ar: "هذا روتيني." }],
+        quiz: [
+          { q: "Where do you sleep?", opts: ["Kitchen", "Bedroom", "Bathroom", "Garage"], ans: 1 },
+          { q: "What do you do at 10 PM?", opts: ["I go to bed", "I have breakfast", "I go to school", "I cook"], ans: 0 }
+        ]
+      },
+      {
+        id: 6,
+        titleEn: "Unit 6: Food & Drinks",
+        titleAr: "الوحدة 6: الطعام والمشروبات",
+        sections: [
+          {
+            nameEn: "Food & Restaurant", nameAr: "الأطعمة والمطعم",
+            items: [
+              { en: "Breakfast, Lunch, Dinner, Bread, Rice, Chicken, Meat, Fish", ar: "إفطار، غداء، عشاء، خبز، أرز، دجاج، لحم، سمك" },
+              { en: "Water, Juice, Tea, Coffee, Milk", ar: "ماء، عصير، شاي، قهوة، حليب" },
+              { en: "I'm hungry. / The food is delicious.", ar: "أنا جائع. / الطعام لذيذ." },
+              { en: "I'd like a menu, please. / Can I have the bill?", ar: "أريد قائمة الطعام من فضلك. / هل يمكنني الحصول على الفاتورة؟" }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "I'm starving.", ar: "أنا جائع جدًا." }, { en: "Sounds delicious.", ar: "يبدو لذيذًا." }],
+        quiz: [
+          { q: "What do you ask for at the end of a meal?", opts: ["The menu", "The bill", "Water", "Breakfast"], ans: 1 },
+          { q: "Which of these is a drink?", opts: ["Bread", "Apple", "Coffee", "Rice"], ans: 2 }
+        ]
+      },
+      {
+        id: 7,
+        titleEn: "Unit 7: Shopping & Money",
+        titleAr: "الوحدة 7: التسوق والمال",
+        sections: [
+          {
+            nameEn: "Shopping & Clothes", nameAr: "التسوق والملابس والأسعار",
+            items: [
+              { en: "Supermarket, Mall, Pharmacy, Product, Price, Discount, Receipt", ar: "سوبر ماركت، مركز تجاري، صيدلية، منتج، سعر، خصم، إيصال" },
+              { en: "How much is this? - It costs fifty riyals.", ar: "بكم هذا؟ - يكلف خمسين ريالًا." },
+              { en: "Can I pay by card? / Do you accept cash?", ar: "هل يمكنني الدفع بالبطاقة؟ / هل تقبلون النقد؟" },
+              { en: "Do you have a larger size? / Can I try it on?", ar: "هل لديكم مقاس أكبر؟ / هل يمكنني قياسه؟" }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Keep the change.", ar: "احتفظ بالباقي." }, { en: "I'm just looking.", ar: "أنا فقط أتصفح." }],
+        quiz: [
+          { q: "How do you ask about the cost of an item?", opts: ["What size is it?", "How much is this?", "Where is the mall?", "Is it blue?"], ans: 1 },
+          { q: "What does 'Can I try it on?' mean?", opts: ["هل يمكنني شراؤه؟", "هل يمكنني قياسه؟", "أين الخصم؟", "كم سعره؟"], ans: 1 }
+        ]
+      },
+      {
+        id: 8,
+        titleEn: "Unit 8: Colors, Clothes & Appearance",
+        titleAr: "الوحدة 8: الألوان والملابس والمظهر الشخصي",
+        sections: [
+          {
+            nameEn: "Colors & Appearance", nameAr: "الألوان والمظهر الخارجي",
+            items: [
+              { en: "Red, Blue, Green, Yellow, Black, White, Brown", ar: "أحمر، أزرق، أخضر، أصفر، أسود، أبيض، بني" },
+              { en: "Shirt, Pants, Jeans, Jacket, Shoes, Suit, Tie", ar: "قميص، بنطال، جينز، سترة، أحذية، بدلة، ربطة عنق" },
+              { en: "He is tall and has short black hair.", ar: "هو طويل ولديه شعر أسود قصير." },
+              { en: "You look great today! / Nice outfit.", ar: "تبدو رائعًا اليوم! / ملابس جميلة." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "That color suits you.", ar: "هذا اللون يليق بك." }, { en: "That's my style.", ar: "هذا أسلوبي." }],
+        quiz: [
+          { q: "Which word means 'أحذية'?", opts: ["Socks", "Shoes", "Shirt", "Tie"], ans: 1 },
+          { q: "What does 'He has brown eyes' describe?", opts: ["ملابسه", "عينيه", "طوله", "وظيفته"], ans: 1 }
+        ]
+      },
+      {
+        id: 9,
+        titleEn: "Unit 9: Hobbies, Sports & Free Time",
+        titleAr: "الوحدة 9: الهوايات والرياضة ووقت الفراغ",
+        sections: [
+          {
+            nameEn: "Hobbies & Sports", nameAr: "الهوايات والرياضات",
+            items: [
+              { en: "Reading, Writing, Drawing, Photography, Cooking, Traveling", ar: "القراءة، الكتابة، الرسم، التصوير، الطبخ، السفر" },
+              { en: "Football, Basketball, Swimming, Running, Cycling, Gym", ar: "كرة القدم، السلة، السباحة، الجري، الدراجات، النادي الرياضي" },
+              { en: "My hobby is reading. / I play football every week.", ar: "هوايتي هي القراءة. / ألعب كرة القدم كل أسبوع." },
+              { en: "I go swimming twice a week.", ar: "أذهب للسباحة مرتين في الأسبوع." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "I'm a big fan of football.", ar: "أنا من عشاق كرة القدم." }, { en: "That's awesome.", ar: "هذا رائع." }],
+        quiz: [
+          { q: "Which sport requires water?", opts: ["Running", "Basketball", "Swimming", "Football"], ans: 2 },
+          { q: "What does 'twice a week' mean?", opts: ["كل يوم", "مرتين في الأسبوع", "مرة في الشهر", "نادرًا"], ans: 1 }
+        ]
+      },
+      {
+        id: 10,
+        titleEn: "Unit 10: Weather, Seasons & Nature",
+        titleAr: "الوحدة 10: الطقس والفصول والطبيعة",
+        sections: [
+          {
+            nameEn: "Weather & Nature", nameAr: "الطقس والفصول والطبيعة",
+            items: [
+              { en: "It's sunny / hot / warm / cool / cold / raining / snowing.", ar: "الجو مشمس / حار / دافئ / معتدل / بارد / ممطر / مثلج." },
+              { en: "Spring, Summer, Autumn / Fall, Winter", ar: "الربيع، الصيف، الخريف، الشتاء" },
+              { en: "Mountain, River, Lake, Sea, Beach, Desert, Forest", ar: "جبل، نهر، بحيرة، بحر، شاطئ، صحراء، غابة" },
+              { en: "How's the weather today? - It's sunny and warm.", ar: "كيف الطقس اليوم؟ - الجو مشمس ودافئ." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "What a beautiful day!", ar: "يا له من يوم جميل!" }, { en: "Don't forget your umbrella.", ar: "لا تنسَ مظلتك." }],
+        quiz: [
+          { q: "In which season do flowers bloom?", opts: ["Winter", "Spring", "Autumn", "Summer"], ans: 1 },
+          { q: "What do you carry when it rains?", opts: ["Coat only", "An umbrella", "Sunglasses", "Swimsuit"], ans: 1 }
+        ]
+      }
+    ];
 
-    // ==========================================
-    // 2. STARRY BACKGROUND (النجوم المتحركة)
-    // ==========================================
+    const DATA_A2 = [
+      {
+        id: 1,
+        titleEn: "Unit 1: Travel & Transportation",
+        titleAr: "الوحدة 1: السفر ووسائل النقل",
+        sections: [
+          {
+            nameEn: "Transport & Airport", nameAr: "وسائل النقل والمطار",
+            items: [
+              { en: "Car, Taxi, Bus, Train, Metro, Airplane, Flight, Airport", ar: "سيارة، تاكسي، حافلة، قطار، مترو، طائرة، رحلة، مطار" },
+              { en: "Passport, Visa, Ticket, Boarding pass, Luggage, Suitcase", ar: "جواز سفر، تأشيرة، تذكرة، بطاقة صعود الطائرة، أمتعة، حقيبة سفر" },
+              { en: "Where is the check-in counter? / The flight was delayed.", ar: "أين كاونتر تسجيل السفر؟ / تأخرت الرحلة." },
+              { en: "Turn left. / Turn right. / Go straight.", ar: "انعطف يسارًا. / انعطف يمينًا. / سر مباشرة." }
+            ]
+          }
+        ],
+        dialogues: [
+          {
+            title: "At the Airport",
+            lines: [
+              { sp: "Passenger", en: "Where is Gate 15?", ar: "أين البوابة 15؟" },
+              { sp: "Staff", en: "Go straight and turn left.", ar: "اذهب مباشرة ثم انعطف يسارًا." }
+            ]
+          }
+        ],
+        fluency: [{ en: "Have a safe trip.", ar: "رحلة آمنة." }, { en: "That sounds exciting.", ar: "يبدو ذلك ممتعًا." }],
+        quiz: [
+          { q: "What paper do you need to board the plane?", opts: ["Receipt", "Boarding pass", "Hotel Key", "License"], ans: 1 },
+          { q: "What is the opposite of 'Turn left'?", opts: ["Turn right", "Go straight", "Stop", "Wait"], ans: 0 }
+        ]
+      },
+      {
+        id: 2,
+        titleEn: "Unit 2: Hotels, Accommodation & Tourism",
+        titleAr: "الوحدة 2: الفنادق والسياحة",
+        sections: [
+          {
+            nameEn: "Hotel & Facilities", nameAr: "الفندق والخدمات الفندقية",
+            items: [
+              { en: "Hotel, Single room, Double room, Suite, Key card, Reservation", ar: "فندق، غرفة مفردة، غرفة مزدوجة، جناح، بطاقة الغرفة، حجز" },
+              { en: "I'd like to book a room. / Is breakfast included?", ar: "أود حجز غرفة. / هل الإفطار مشمول؟" },
+              { en: "What time is check-out? / The air conditioner isn't working.", ar: "متى موعد المغادرة؟ / المكيف لا يعمل." },
+              { en: "Museum, Castle, Historical site, Tourist attraction", ar: "متحف، قلعة، موقع تاريخي، معلم سياحي" }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Have a pleasant stay.", ar: "إقامة ممتعة." }, { en: "It was well worth it.", ar: "كان يستحق ذلك." }],
+        quiz: [
+          { q: "Which room is for one person?", opts: ["Double room", "Single room", "Family room", "Suite"], ans: 1 },
+          { q: "What do you report if the AC is broken?", opts: ["AC is working", "AC isn't working", "Key is lost", "I need bill"], ans: 1 }
+        ]
+      },
+      {
+        id: 3,
+        titleEn: "Unit 3: Health, Illness & At the Doctor",
+        titleAr: "الوحدة 3: الصحة والمرض وعند الطبيب",
+        sections: [
+          {
+            nameEn: "Symptoms & Pharmacy", nameAr: "الأعراض والصيدلية",
+            items: [
+              { en: "Doctor, Nurse, Hospital, Clinic, Appointment, Medicine", ar: "طبيب، ممرض، مستشفى، عيادة، موعد، دواء" },
+              { en: "Headache, Fever, Cough, Sore throat, Stomachache", ar: "صداع، حمى، سعال، التهاب الحلق، ألم المعدة" },
+              { en: "I don't feel well. / I'd like to make an appointment.", ar: "لا أشعر أنني بخير. / أود حجز موعد طبي." },
+              { en: "Pharmacy, Prescription, Painkiller, Antibiotic", ar: "صيدلية، وصفة طبية، مسكن، مضاد حيوي" }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Get well soon.", ar: "أتمنى لك الشفاء العاجل." }, { en: "Take care of yourself.", ar: "اعتنِ بنفسك." }],
+        quiz: [
+          { q: "What medicine relieves bodily pain?", opts: ["Painkiller", "Syrup", "Vitamin", "Soap"], ans: 0 },
+          { q: "What does 'Sore throat' mean?", opts: ["صداع", "التهاب الحلق", "ألم ظهر", "كسر"], ans: 1 }
+        ]
+      },
+      {
+        id: 4,
+        titleEn: "Unit 4: Work, Jobs & Careers",
+        titleAr: "الوحدة 4: العمل والوظائف والمسار المهني",
+        sections: [
+          {
+            nameEn: "Workplace & Interviews", nameAr: "بيئة العمل والمقابلات",
+            items: [
+              { en: "Company, Employee, Colleague, Manager, Meeting, Project, Deadline", ar: "شركة، موظف، زميل، مدير، اجتماع، مشروع، موعد نهائي" },
+              { en: "I work as an engineer. / I work for a large company.", ar: "أعمل كمهندس. / أعمل في شركة كبيرة." },
+              { en: "Communication, Leadership, Teamwork, Problem-solving", ar: "التواصل، القيادة، العمل الجماعي، حل المشكلات" },
+              { en: "Why do you want this job? - To develop my skills.", ar: "لماذا تريد هذه الوظيفة؟ - لتطوير مهاراتي." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "From my experience...", ar: "من خلال خبرتي..." }, { en: "Keep up the good work.", ar: "واصل العمل الجيد." }],
+        quiz: [
+          { q: "Who is a person you work with?", opts: ["Boss", "Colleague", "Customer", "Patient"], ans: 1 },
+          { q: "What does 'Deadline' mean?", opts: ["موعد نهائي", "راتب", "إجازة", "ترقية"], ans: 0 }
+        ]
+      },
+      {
+        id: 5,
+        titleEn: "Unit 5: Technology, Internet & Social Media",
+        titleAr: "الوحدة 5: التكنولوجيا والإنترنت والتواصل الاجتماعي",
+        sections: [
+          {
+            nameEn: "Devices & Internet", nameAr: "الأجهزة والإنترنت والأمان",
+            items: [
+              { en: "Computer, Laptop, Smartphone, Tablet, Charger, Headphones", ar: "حاسوب، لابتوب، هاتف ذكي، تابلت، شاحن، سماعات" },
+              { en: "Application, Download, Upload, Password, Wi-Fi, Slow internet", ar: "تطبيق، تنزيل، رفع، كلمة مرور، واي فاي، إنترنت بطيء" },
+              { en: "Post, Comment, Share, Privacy, Security, Strong password", ar: "منشور، تعليق، مشاركة، خصوصية، أمان، كلمة مرور قوية" }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "The battery is low.", ar: "البطارية منخفضة." }, { en: "As far as I know...", ar: "على حد علمي..." }],
+        quiz: [
+          { q: "What do you use to secure an account?", opts: ["Weak password", "Strong password", "Public link", "Nothing"], ans: 1 },
+          { q: "What does 'Upload' mean?", opts: ["تنزيل", "رفع ملف", "مسح", "تسجيل"], ans: 1 }
+        ]
+      },
+      {
+        id: 6,
+        titleEn: "Unit 6: Shopping, Customer Service & Complaints",
+        titleAr: "الوحدة 6: التسوق وخدمة العملاء والشكاوى",
+        sections: [
+          {
+            nameEn: "Complaints & Refunds", nameAr: "الشكاوى والاسترجاع",
+            items: [
+              { en: "Brand, Quality, Warranty, Return, Exchange, Refund", ar: "علامة تجارية، جودة، ضمان، إرجاع، استبدال، استرداد أموال" },
+              { en: "The product is damaged. / The item doesn't work.", ar: "المنتج تالف. / المنتج لا يعمل." },
+              { en: "I'd like to make a complaint. / I'd like a refund.", ar: "أود تقديم شكوى. / أود استرداد أموالي." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "I apologize for the inconvenience.", ar: "أعتذر عن الإزعاج." }, { en: "Problem solved.", ar: "تم حل المشكلة." }],
+        quiz: [
+          { q: "What do you ask for to get your money back?", opts: ["A warranty", "A refund", "A card", "A bag"], ans: 1 },
+          { q: "What does 'The product is damaged' mean?", opts: ["المنتج رائع", "المنتج تالف", "المنتج مجاني", "المنتج قديم"], ans: 1 }
+        ]
+      },
+      {
+        id: 7,
+        titleEn: "Unit 7: Education, Learning & Study Skills",
+        titleAr: "الوحدة 7: التعليم والتعلم ومهارات الدراسة",
+        sections: [
+          {
+            nameEn: "Study & University", nameAr: "الجامعة ومهارات المذاكرة",
+            items: [
+              { en: "University, College, Professor, Library, Exam, Assignment", ar: "جامعة، كلية، أستاذ جامعي، مكتبة، اختبار، واجب" },
+              { en: "I take notes during class. / Repetition helps me remember.", ar: "أدون الملاحظات أثناء الدرس. / التكرار يساعدني على التذكر." },
+              { en: "Practice makes perfect. / Education opens doors.", ar: "الممارسة تؤدي إلى الإتقان. / التعليم يفتح الأبواب." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "Never stop improving.", ar: "لا تتوقف عن التطور." }, { en: "In the long run...", ar: "على المدى الطويل..." }],
+        quiz: [
+          { q: "Complete: 'Practice makes _______.'", opts: ["tired", "perfect", "easy", "late"], ans: 1 },
+          { q: "What does 'take notes' mean?", opts: ["تسليم الواجب", "تدوين الملاحظات", "الرسوب", "القراءة فقط"], ans: 1 }
+        ]
+      },
+      {
+        id: 8,
+        titleEn: "Unit 8: Culture, Entertainment & Free Time",
+        titleAr: "الوحدة 8: الثقافة والترفيه وأوقات الفراغ",
+        sections: [
+          {
+            nameEn: "Culture & Movies", nameAr: "الترفيه والأفلام والآراء",
+            items: [
+              { en: "Entertainment, Museum, Exhibition, Movie, Series, Concert", ar: "ترفيه، متحف، معرض، فيلم، مسلسل، حفل موسيقي" },
+              { en: "I watched a great movie yesterday. / I highly recommend it.", ar: "شاهدت فيلمًا رائعًا أمس. / أوصي به بشدة." },
+              { en: "In my opinion... / I completely agree.", ar: "في رأيي... / أوافق تمامًا." }
+            ]
+          }
+        ],
+        dialogues: [],
+        fluency: [{ en: "I had a great time.", ar: "قضيت وقتًا رائعًا." }, { en: "It was unforgettable.", ar: "كان لا يُنسى." }],
+        quiz: [
+          { q: "Where do you view historical items?", opts: ["Gym", "Museum", "Cinema", "Mall"], ans: 1 },
+          { q: "What does 'I highly recommend it' mean?", opts: ["لا أنصح به", "أوصي به بشدة", "إنه ممل", "لم يعجبني"], ans: 1 }
+        ]
+      }
+    ];
+
+    // ==========================================================
+    // 2. المحرك والرسوم المتحركة
+    // ==========================================================
     const canvas = document.getElementById('stars-bg');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -599,41 +693,31 @@
       canvas.height = window.innerHeight;
       stars = [];
       for (let i = 0; i < 90; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 1.3,
-          a: Math.random(),
-          speed: 0.005 + Math.random() * 0.015
-        });
+        stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.3, a: Math.random(), s: 0.01 });
       }
     }
-    function renderStars() {
+    function drawStars() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach(s => {
-        s.a += s.speed;
-        const currentAlpha = Math.abs(Math.sin(s.a));
-        ctx.fillStyle = `rgba(212, 175, 55, ${currentAlpha * 0.6})`;
+        s.a += s.s;
+        ctx.fillStyle = `rgba(212, 175, 55, ${Math.abs(Math.sin(s.a)) * 0.6})`;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
       });
-      requestAnimationFrame(renderStars);
+      requestAnimationFrame(drawStars);
     }
     window.addEventListener('resize', resizeStars);
     resizeStars();
-    renderStars();
+    drawStars();
 
-    // ==========================================
-    // 3. ANIMATED NUMBER COUNTERS (الأرقام تعد وتتحرك)
-    // ==========================================
-    function countUp() {
-      const counters = document.querySelectorAll('.stat-num');
+    // تشغيل العدادات
+    function runCounters() {
+      const counters = document.querySelectorAll('.stat-val');
       counters.forEach(c => {
         const target = +c.getAttribute('data-target');
         let current = 0;
-        const duration = 1600;
-        const step = Math.ceil(target / (duration / 25));
+        const step = Math.ceil(target / 60);
         const timer = setInterval(() => {
           current += step;
           if (current >= target) {
@@ -646,308 +730,180 @@
       });
     }
 
-    // ==========================================
-    // 4. NATURAL AMERICAN SPEECH SYNTHESIS ENGINE
-    // ==========================================
-    let naturalVoice = null;
-    function loadVoices() {
-      if (!('speechSynthesis' in window)) return;
-      const voices = window.speechSynthesis.getVoices();
-      naturalVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google')))
-                  || voices.find(v => v.lang === 'en-US');
-    }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-      loadVoices();
-    }
+    // النطق الصوتي الأمريكي النقي
     function speak(text) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'en-US';
-      utter.rate = 0.88;
-      utter.pitch = 1.0;
-      if (naturalVoice) utter.voice = naturalVoice;
-      window.speechSynthesis.speak(utter);
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.88;
+      window.speechSynthesis.speak(u);
     }
 
-    // ==========================================
-    // 5. A1 CURRICULUM DATA STORE
-    // ==========================================
-    const a1Units = [
-      {
-        id: 1,
-        titleAr: "الوحدة 1: التحيات والتعارف",
-        titleEn: "Unit 1: Greetings & Introductions",
-        parts: [
-          {
-            name: "Part 1: Basic Greetings (التحيات الأساسية)",
-            items: [
-              { en: "Hello.", ar: "مرحبًا." }, { en: "Hi.", ar: "أهلًا." },
-              { en: "Good morning.", ar: "صباح الخير." }, { en: "Good afternoon.", ar: "مساء الخير (بعد الظهر)." },
-              { en: "Good evening.", ar: "مساء الخير." }, { en: "Welcome.", ar: "أهلًا وسهلًا." },
-              { en: "Nice to meet you.", ar: "سعيد بلقائك." }, { en: "Nice to meet you too.", ar: "وأنا أيضًا سعيد بلقائك." },
-              { en: "How are you?", ar: "كيف حالك؟" }, { en: "I'm fine.", ar: "أنا بخير." },
-              { en: "Very well, thank you.", ar: "بخير جدًا، شكرًا لك." }, { en: "Have a nice day.", ar: "أتمنى لك يومًا سعيدًا." }
-            ]
-          },
-          {
-            name: "Part 2: Introducing Yourself (التعريف بالنفس)",
-            items: [
-              { en: "My name is Ahmed.", ar: "اسمي أحمد." }, { en: "I am from Saudi Arabia.", ar: "أنا من المملكة العربية السعودية." },
-              { en: "I live in Riyadh.", ar: "أعيش في الرياض." }, { en: "I am a student.", ar: "أنا طالب." },
-              { en: "I am twenty years old.", ar: "عمري عشرون سنة." }, { en: "I speak Arabic.", ar: "أتحدث العربية." }
-            ]
-          },
-          {
-            name: "Part 4: Classroom English (داخل الفصل)",
-            items: [
-              { en: "Can you help me?", ar: "هل يمكنك مساعدتي؟" }, { en: "I don't understand.", ar: "لا أفهم." },
-              { en: "Could you repeat that, please?", ar: "هل يمكنك إعادة ذلك من فضلك؟" }, { en: "Can I go out?", ar: "هل يمكنني الخروج؟" }
-            ]
-          }
-        ],
-        quiz: [
-          { q: "Which greeting is used in the morning?", opts: ["Good night", "Good morning", "Goodbye", "Take care"], ans: 1 },
-          { q: "Response to 'Nice to meet you':", opts: ["You too", "Nice to meet you too", "I am fine", "Excuse me"], ans: 1 },
-          { q: "I _______ from Saudi Arabia.", opts: ["is", "am", "are", "do"], ans: 1 }
-        ]
-      },
-      {
-        id: 2,
-        titleAr: "الوحدة 2: العائلة والأصدقاء",
-        titleEn: "Unit 2: Family & Friends",
-        parts: [
-          {
-            name: "Part 1: Family Members (أفراد العائلة)",
-            items: [
-              { en: "This is my family.", ar: "هذه عائلتي." }, { en: "I have a big family.", ar: "لدي عائلة كبيرة." },
-              { en: "Father / Mother", ar: "أب / أم" }, { en: "Brother / Sister", ar: "أخ / أخت" },
-              { en: "My parents live in Riyadh.", ar: "يعيش والداي في الرياض." }
-            ]
-          },
-          {
-            name: "Part 5: Describing People (وصف الأشخاص)",
-            items: [
-              { en: "He is tall.", ar: "هو طويل." }, { en: "She has long hair.", ar: "لديها شعر طويل." },
-              { en: "He is friendly.", ar: "هو ودود." }, { en: "She is kind.", ar: "هي لطيفة." }
-            ]
-          }
-        ],
-        quiz: [
-          { q: "Who is your father's brother?", opts: ["Uncle", "Cousin", "Aunt", "Nephew"], ans: 0 },
-          { q: "'He is tall.' describes his:", opts: ["Job", "Appearance", "Age", "Country"], ans: 1 }
-        ]
-      },
-      {
-        id: 3,
-        titleAr: "الوحدة 3: الأرقام والوقت والأيام والشهور",
-        titleEn: "Unit 3: Numbers, Time, Days & Months",
-        parts: [
-          {
-            name: "Part 3: Time (الوقت)",
-            items: [
-              { en: "What time is it?", ar: "كم الساعة؟" }, { en: "It's one o'clock.", ar: "الساعة الواحدة." },
-              { en: "It's half past three.", ar: "الساعة الثالثة والنصف." }, { en: "It's quarter past six.", ar: "السادسة والربع." }
-            ]
-          },
-          {
-            name: "Part 4: Days of the Week (أيام الأسبوع)",
-            items: [
-              { en: "Monday, Tuesday, Wednesday", ar: "الإثنين، الثلاثاء، الأربعاء" },
-              { en: "Thursday, Friday, Saturday, Sunday", ar: "الخميس، الجمعة، السبت، الأحد" }
-            ]
-          }
-        ],
-        quiz: [
-          { q: "What day comes after Monday?", opts: ["Sunday", "Tuesday", "Wednesday", "Friday"], ans: 1 },
-          { q: "Quarter past six means:", opts: ["6:15", "6:30", "6:45", "7:00"], ans: 0 }
-        ]
+    // ==========================================================
+    // 3. التنقل بين المستويات والوحدات والاختبارات
+    // ==========================================================
+    let currentLevelData = DATA_A1;
+    let activeUnitIndex = 0;
+
+    function enterLevel(lvl) {
+      if (lvl === 'A1') {
+        currentLevelData = DATA_A1;
+        document.getElementById('current-level-label').innerText = "المستوى الحالي: A1 Basic (10 وحدات)";
+      } else if (lvl === 'A2') {
+        currentLevelData = DATA_A2;
+        document.getElementById('current-level-label').innerText = "المستوى الحالي: A2 Elementary (8 وحدات)";
       }
-    ];
+      activeUnitIndex = 0;
+      document.getElementById('levels-selection-area').style.display = 'none';
+      document.getElementById('level-view-section').style.display = 'block';
+      renderUnitsNav();
+      renderActiveUnit();
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
 
-    let currentUnitIdx = 0;
+    function backToLevels() {
+      document.getElementById('level-view-section').style.display = 'none';
+      document.getElementById('levels-selection-area').style.display = 'block';
+    }
 
-    function renderUnitTabs() {
-      const container = document.getElementById('unit-tabs-container');
-      container.innerHTML = a1Units.map((u, i) => `
-        <button class="unit-tab-btn ${i === currentUnitIdx ? 'active' : ''}" onclick="selectUnit(${i})">
+    function renderUnitsNav() {
+      const bar = document.getElementById('units-nav-buttons');
+      bar.innerHTML = currentLevelData.map((u, i) => `
+        <button class="unit-pill-btn ${i === activeUnitIndex ? 'active' : ''}" onclick="selectUnit(${i})">
           ${u.titleAr}
         </button>
       `).join('');
     }
 
     function selectUnit(idx) {
-      currentUnitIdx = idx;
-      renderUnitTabs();
-      renderUnitDetails();
+      activeUnitIndex = idx;
+      renderUnitsNav();
+      renderActiveUnit();
     }
 
-    function renderUnitDetails() {
-      const unit = a1Units[currentUnitIdx];
-      const area = document.getElementById('unit-display-area');
+    function renderActiveUnit() {
+      const unit = currentLevelData[activeUnitIndex];
+      const area = document.getElementById('unit-content-display');
 
       let html = `
-        <div style="margin-bottom: 20px;">
-          <h2 style="color: var(--gold-main); font-size: 1.5rem;">${unit.titleAr}</h2>
+        <div style="margin-bottom: 25px; border-bottom: 1px solid var(--card-border); padding-bottom: 15px;">
+          <h2 style="color: var(--gold-primary); font-size: 1.6rem;">${unit.titleAr}</h2>
           <p style="color: var(--text-muted); font-size: 0.95rem; direction: ltr; text-align: left;">${unit.titleEn}</p>
         </div>
       `;
 
-      unit.parts.forEach(part => {
-        html += `<div class="part-header">${part.name}</div>`;
-        part.items.forEach(item => {
+      // عرض الأقسام والعبارات
+      unit.sections.forEach(sec => {
+        html += `<h3 style="color: var(--gold-light); margin: 20px 0 10px 0; font-size: 1.15rem;">${sec.nameAr} (${sec.nameEn})</h3>`;
+        sec.items.forEach(item => {
           html += `
-            <div class="phrase-item">
+            <div class="phrase-box">
               <div>
-                <div class="phrase-en-text">${item.en}</div>
-                <div class="phrase-ar-text">${item.ar}</div>
+                <div class="phrase-en">${item.en}</div>
+                <div class="phrase-ar">${item.ar}</div>
               </div>
-              <button class="audio-btn" onclick="speak('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+              <button class="audio-play" onclick="speak('${item.en.replace(/'/g, "\\'")}')">🔊</button>
             </div>
           `;
         });
       });
 
-      // Quiz
-      html += `
-        <div class="quiz-container">
-          <h3 style="color: var(--gold-main); margin-bottom: 15px;">📝 اختبار الوحدة (${unit.quiz.length} أسئلة)</h3>
-          ${unit.quiz.map((q, qI) => `
-            <div class="q-item">
-              <div class="q-title">${qI + 1}.${q.q}</div>
-              <div class="q-options">
-                ${q.opts.map((opt, oI) => `
-                  <label class="opt-label">
-                    <input type="radio" name="unit_q_${qI}" value="${oI}">
-                    <span>${opt}</span>
-                  </label>
-                `).join('')}
+      // الحوارات إن وجدت
+      if (unit.dialogues && unit.dialogues.length > 0) {
+        html += `<h3 style="color: var(--gold-light); margin: 25px 0 10px 0; font-size: 1.15rem;">المحادثات والحوارات المباشرة</h3>`;
+        unit.dialogues.forEach(d => {
+          html += `<div style="color: #fff; font-weight: bold; margin: 10px 0;">${d.title}</div>`;
+          d.lines.forEach(line => {
+            html += `
+              <div class="phrase-box" style="border-right: 3px solid var(--gold-primary);">
+                <div>
+                  <div class="phrase-en"><strong>${line.sp}:</strong> ${line.en}</div>
+                  <div class="phrase-ar">${line.ar}</div>
+                </div>
+                <button class="audio-play" onclick="speak('${line.en.replace(/'/g, "\\'")}')">🔊</button>
               </div>
+            `;
+          });
+        });
+      }
+
+      // عبارات الطلاقة
+      if (unit.fluency && unit.fluency.length > 0) {
+        html += `<h3 style="color: var(--gold-light); margin: 25px 0 10px 0; font-size: 1.15rem;">عبارات الطلاقة السريعة (Fluency Builders)</h3>`;
+        unit.fluency.forEach(f => {
+          html += `
+            <div class="phrase-box">
+              <div>
+                <div class="phrase-en">${f.en}</div>
+                <div class="phrase-ar">${f.ar}</div>
+              </div>
+              <button class="audio-play" onclick="speak('${f.en.replace(/'/g, "\\'")}')">🔊</button>
             </div>
-          `).join('')}
-          <button class="gold-action-btn" onclick="submitCurrentUnitQuiz()">تصحيح الاختبار السحابي</button>
-        </div>
-      `;
+          `;
+        });
+      }
+
+      // قسم الاختبار التفاعلي والانتقال للوحدة التالية
+      if (unit.quiz && unit.quiz.length > 0) {
+        html += `
+          <div class="quiz-card">
+            <h3 style="color: var(--gold-primary); margin-bottom: 10px;">📝 اختبار الوحدة (${unit.quiz.length} أسئلة)</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">يجب الإجابة الصحيحة بنسبة 80% فما فوق لفتح الوحدة التالية تلقائيًا:</p>
+            ${unit.quiz.map((q, qIdx) => `
+              <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #14243b;">
+                <div style="direction: ltr; text-align: left; font-weight: bold; margin-bottom: 8px;">${qIdx + 1}.${q.q}</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; direction: ltr;">
+                  ${q.opts.map((opt, oIdx) => `
+                    <label style="background: #08121f; border: 1px solid var(--card-border); padding: 8px 12px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                      <input type="radio" name="current_q_${qIdx}" value="${oIdx}">
+                      <span>${opt}</span>
+                    </label>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+            <button class="gold-btn" onclick="gradeAndAdvance()">تصحيح الاختبار والانتقال للوحدة التالية ↵</button>
+          </div>
+        `;
+      }
 
       area.innerHTML = html;
     }
 
-    function submitCurrentUnitQuiz() {
-      const unit = a1Units[currentUnitIdx];
-      let score = 0;
+    function gradeAndAdvance() {
+      const unit = currentLevelData[activeUnitIndex];
+      let correct = 0;
       unit.quiz.forEach((q, idx) => {
-        const sel = document.querySelector(`input[name="unit_q_${idx}"]:checked`);
-        if (sel && parseInt(sel.value) === q.ans) score++;
+        const checked = document.querySelector(`input[name="current_q_${idx}"]:checked`);
+        if (checked && parseInt(checked.value) === q.ans) correct++;
       });
-      const pct = Math.round((score / unit.quiz.length) * 100);
-      alert(`نتيجتك: ${score} من ${unit.quiz.length} (${pct}%)\n` + (pct >= 80 ? "🎉 أحسنت! تم اجتياز اختبار الوحدة بنجاح." : "راجع عبارات الوحدة وأعد المحاولة لتحقيق 80% فما فوق."));
-      
-      const sCode = localStorage.getItem('student_code');
-      if (sCode) {
-        db.collection("students_progress").doc(sCode).set({
-          [`Unit_${unit.id}`]: { score, pct, passed: pct >= 80, date: firebase.firestore.FieldValue.serverTimestamp() }
-        }, { merge: true });
+
+      const pct = Math.round((correct / unit.quiz.length) * 100);
+      if (pct >= 80) {
+        alert(`🎉 أحسنت صنعاً! نتيجتك: ${correct} من ${unit.quiz.length} (${pct}%).\nتم اجتياز الوحدة بنجاح والانتقال للوحدة التالية.`);
+        if (activeUnitIndex < currentLevelData.length - 1) {
+          activeUnitIndex++;
+          renderUnitsNav();
+          renderActiveUnit();
+          window.scrollTo({ top: 300, behavior: 'smooth' });
+        } else {
+          alert("🎓 مبارك! لقد أتممت جميع وحدات هذا المستوى بنجاح تام!");
+        }
+      } else {
+        alert(`نتيجتك: ${correct} من ${unit.quiz.length} (${pct}%).\nتحتاج إلى نسبة 80% فما فوق لتجاوز الوحدة. راجع عبارات الدرس وحاول مرة أخرى.`);
       }
     }
 
-    // ==========================================
-    // 6. SITUATION DETAILS (HOTEL, AIRPORT, WORK)
-    // ==========================================
-    function openSituation(type) {
-      const modal = document.getElementById('situation-modal');
-      const slot = document.getElementById('situation-content-slot');
-      
-      if (type === 'hotel') {
-        slot.innerHTML = `
-          <h2 style="color: var(--gold-main); margin-bottom: 10px;">🏨 At the Hotel (في الفندق)</h2>
-          <p style="color: var(--text-muted); margin-bottom: 20px;">حوارات وكلمات تسجيل الدخول والخدمات الفندقية:</p>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">Good afternoon. Welcome to Blue Sky Hotel.</div>
-              <div class="phrase-ar-text">مساء الخير. مرحبًا بك في فندق بلو سكاي.</div>
-            </div>
-            <button class="audio-btn" onclick="speak('Good afternoon. Welcome to Blue Sky Hotel.')">🔊</button>
-          </div>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">I'd like to check in. I have a reservation.</div>
-              <div class="phrase-ar-text">أود تسجيل الدخول. لدي حجز.</div>
-            </div>
-            <button class="audio-btn" onclick="speak('I would like to check in. I have a reservation.')">🔊</button>
-          </div>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">What time is breakfast? Is Wi-Fi free?</div>
-              <div class="phrase-ar-text">في أي وقت يقدم الإفطار؟ وهل الواي فاي مجاني؟</div>
-            </div>
-            <button class="audio-btn" onclick="speak('What time is breakfast? Is Wi-Fi free?')">🔊</button>
-          </div>
-        `;
-      } else if (type === 'airport') {
-        slot.innerHTML = `
-          <h2 style="color: var(--gold-main); margin-bottom: 10px;">✈️ At the Airport (في المطار)</h2>
-          <p style="color: var(--text-muted); margin-bottom: 20px;">إنهاء إجراءات السفر وبطاقة صعود الطائرة:</p>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">May I see your passport, please?</div>
-              <div class="phrase-ar-text">هل يمكنني رؤية جواز سفرك من فضلك؟</div>
-            </div>
-            <button class="audio-btn" onclick="speak('May I see your passport, please?')">🔊</button>
-          </div>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">Here is your boarding pass. Gate 12.</div>
-              <div class="phrase-ar-text">هذه بطاقة صعود الطائرة الخاصة بك. البوابة 12.</div>
-            </div>
-            <button class="audio-btn" onclick="speak('Here is your boarding pass. Gate 12.')">🔊</button>
-          </div>
-        `;
-      } else if (type === 'work') {
-        slot.innerHTML = `
-          <h2 style="color: var(--gold-main); margin-bottom: 10px;">💼 At Work (في العمل)</h2>
-          <p style="color: var(--text-muted); margin-bottom: 20px;">الترحيب بالمدير والزملاء في اليوم الأول:</p>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">Good morning. Today is my first day.</div>
-              <div class="phrase-ar-text">صباح الخير. اليوم هو أول يوم لي.</div>
-            </div>
-            <button class="audio-btn" onclick="speak('Good morning. Today is my first day.')">🔊</button>
-          </div>
-          <div class="phrase-item">
-            <div>
-              <div class="phrase-en-text">Welcome to the team! We have a meeting at ten.</div>
-              <div class="phrase-ar-text">أهلاً بك في الفريق! لدينا اجتماع الساعة العاشرة.</div>
-            </div>
-            <button class="audio-btn" onclick="speak('Welcome to the team! We have a meeting at ten.')">🔊</button>
-          </div>
-        `;
-      }
-      modal.style.display = 'block';
-    }
-
-    function closeSituation() {
-      document.getElementById('situation-modal').style.display = 'none';
-    }
-
-    function loginPrompt() {
-      const name = prompt("أدخل اسم الطالب رباعي:");
-      const code = prompt("أدخل كود الطالب أو رقم الهاتف:");
-      if (name && code) {
-        localStorage.setItem('student_name', name);
-        localStorage.setItem('student_code', code);
-        document.getElementById('auth-slot').innerHTML = `<span class="user-btn">مرحباً: ${name} 🎓</span>`;
+    function promptStudentLogin() {
+      const name = prompt("أدخل اسم المتدرب الكريم:");
+      if (name) {
+        document.getElementById('user-display').innerHTML = `<span class="user-tag">مرحباً: ${name} 🎓</span>`;
       }
     }
 
     window.onload = function() {
-      countUp();
-      renderUnitTabs();
-      renderUnitDetails();
-      const sName = localStorage.getItem('student_name');
-      if (sName) {
-        document.getElementById('auth-slot').innerHTML = `<span class="user-btn">مرحباً: ${sName} 🎓</span>`;
-      }
+      runCounters();
     };
   </script>
 </body>
